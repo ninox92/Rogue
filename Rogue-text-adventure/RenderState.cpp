@@ -1,0 +1,5 @@
+enum RenderState
+{
+	RENDER,
+	WAIT
+};
