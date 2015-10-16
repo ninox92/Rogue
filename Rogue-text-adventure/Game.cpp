@@ -5,7 +5,7 @@ using namespace std;
 Game::Game()
 {
 	map = new Map(10, 10);
-	this->setGameState(RUNNING);
+	this->setGameState(GameState::RUNNING);
 	start();
 }
 
@@ -18,20 +18,23 @@ Game::~Game()
 
 void Game::start()
 {
+	
 	/*string name;
 	cout << "Name your awesome hero! ";
 	cin >> name;*/
 	hero = new Hero("henk");
 	cout << "Are you ready for an adventure " + hero->getName() + "?" << endl;
+	cout << "You have landed inside a dungeon!" << endl;
+	cout << "We must find our way out alive." << endl;
 
-
-	this->setRenderState(RENDER);
+	this->setRenderState(RenderState::RENDER);
 }
 
 void Game::render()
 {
-	this->setRenderState(WAIT);//Reset the render state to wait
+	this->setRenderState(RenderState::WAIT);//Reset the render state to wait
 	cout << map->display();
+	//nextTurn();
 }
 
 void Game::clear()
@@ -41,31 +44,19 @@ void Game::clear()
 
 void Game::nextTurn()
 {
-	
 	this->clear();
 	//Wait for user input 
+	Direction d = inputController.getDirectionFromInput();
 	
 	//Do a new action
-	this->setRenderState(RENDER);//Render for one cycle
+	this->setRenderState(RenderState::RENDER);//Render for one cycle
 }
 
 void Game::getUserInput()
 {
 	char direction;
 	cin >> direction;
-	switch (tolower(direction))
-	{
-	case 'n':
-		break;
-	case 'e':
-		break;
-	case 's':
-		break;
-	case 'w':
-		break;
-	default:
-		break;
-	}
+	
 }
 
 

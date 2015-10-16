@@ -2,6 +2,7 @@
 #include "Hero.h"
 #include "GameState.cpp"
 #include "RenderState.cpp"
+#include "InputController.h"
 #include <stdlib.h>
 #pragma once
 
@@ -11,8 +12,11 @@ class Game
 private:
 	Map* map;
 	Hero* hero;
-	GameState gameState = INIT;
-	RenderState renderState = WAIT;
+	InputController inputController;
+
+	GameState gameState = GameState::INIT;
+	RenderState renderState = RenderState::WAIT;
+	
 	
 public:
 	Game();

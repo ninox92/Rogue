@@ -1,4 +1,4 @@
-enum RenderState
+enum class RenderState
 {
 	RENDER,
 	WAIT

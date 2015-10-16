@@ -146,28 +146,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractAction.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Hero.h" />
+    <ClInclude Include="InputController.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="NPC.h" />
+    <ClInclude Include="Passage.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="RoomObject.h" />
     <ClInclude Include="Trap.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractAction.cpp" />
     <ClCompile Include="Direction.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Hero.cpp" />
+    <ClCompile Include="InputController.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="NPC.cpp" />
+    <ClCompile Include="Passage.cpp" />
     <ClCompile Include="RenderState.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomObject.cpp" />
+    <ClCompile Include="RoomType.cpp" />
     <ClCompile Include="Trap.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

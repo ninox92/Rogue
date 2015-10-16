@@ -1,9 +1,10 @@
 #include "Room.h"
 
 
+
 Room::Room() : GameObject("Empty Room"){}// Default constructor
-Room::Room(std::string size, std::string token, int row, int col) : 
-	size(size), token(token), row(row), col(col), GameObject(size + " Room")
+Room::Room(std::string size, int col, int row) : 
+	size(size), col(col), row(row), GameObject(size + " Room")
 {
 }
 
@@ -13,18 +14,60 @@ Room::~Room()
 }
 
 
-bool Room::isClean()
-{
-	return this->clean;
-}
-
-bool Room::isExplored() {
-	return true;//this->explored;
-}
 void Room::visit() {
-	this->explored = true;
+	this->visited = true;
 }
 std::string Room::display() {
-	if (!this->isExplored()) return " *";
-	return " "+this->token;
+	//if (!this->explored) return ".";
+	return " " + getToken();
+}
+
+void Room::setPassage(Direction dir, Passage p)
+{
+	switch (dir)
+	{
+	case Direction::NONE:
+		break;
+	case Direction::NORTH:
+		north = p;
+		break;
+	case Direction::EAST:
+		east = p;
+		break;
+	case Direction::SOUTH:
+		south = p;
+		break;
+	case Direction::WEST:
+		west = p;
+		break;
+	default:
+		break;
+	}
+}
+
+
+std::string Room::getToken()
+{
+	std::string s;
+	switch (type)
+	{
+	case RoomType::INIT:
+		s = "*";
+		break;
+	case RoomType::START:
+		s = "S";
+		break;
+	case RoomType::END:
+		s = "F";
+		break;
+	case RoomType::ROOM:
+		s = "N";
+		break;
+	case RoomType::COLLAPSED:
+		s = "~";
+		break;
+	default:
+		break;
+	}
+	return s;
 }

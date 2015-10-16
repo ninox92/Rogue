@@ -5,11 +5,12 @@ using namespace std;
 
 int	main()
 {
-	Game* game = new Game();
+	Game game;
 	do {
-		if (game->getRenderState() == RENDER)
-			game->render();
-	} while (game->getGameState() == RUNNING);
+		if (game.getRenderState() == RenderState::RENDER) {
+			game.render();
+		}
+	} while (game.getGameState() == GameState::RUNNING);
 
 
 	return	0;
