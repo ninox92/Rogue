@@ -18,7 +18,10 @@ void Room::visit() {
 	this->visited = true;
 }
 std::string Room::display() {
-	//if (!this->explored) return ".";
+	if (type == RoomType::START || type == RoomType::END)
+		return " " + getToken();
+	if (!this->visited) return " .";
+	
 	return " " + getToken();
 }
 

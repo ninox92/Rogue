@@ -13,13 +13,13 @@ Hero::~Hero()
 void Hero::move(Direction direction) {
 	switch (direction)
 	{
-	case NORTH:
+	case Direction::NORTH:
 		break;
-	case EAST:
+	case Direction::EAST:
 		break;
-	case SOUTH:
+	case Direction::SOUTH:
 		break;
-	case WEST:
+	case Direction::WEST:
 		break;
 
 	default:

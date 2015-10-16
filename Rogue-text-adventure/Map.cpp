@@ -33,11 +33,10 @@ void Map::build() {
 		}
 	}
 
-	Room* start = rooms[97];//rooms[ptY*width + ptX];
+	Room* start = rooms[ptY*width + ptX];
 	start->setType(RoomType::START);
 
-	//Room* end = rooms[3];
-	//start->setType(RoomType::END);
+	rooms[3]->setType(RoomType::END);
 
 
 	std::stack<Room*> stack;
@@ -66,6 +65,7 @@ void Map::build() {
 			
 			//create a passage between the neighbour and current room
 			stack.push(r);
+
 			r->visit();
 			std::cout << display();
 			current = r;
