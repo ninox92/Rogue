@@ -1,4 +1,5 @@
 #pragma once
+#include <map>
 #include "GameObject.h"
 #include "Hero.h"
 #include "Passage.h"
@@ -15,8 +16,9 @@ private:
 	RoomType type = RoomType::INIT;
 	std::string size;
 	
-	bool clean;
-	bool visited;
+	bool _hasHero;
+	bool _isClean;
+	bool _isVisited;
 
 	Passage* north = nullptr;
 	Passage* east = nullptr;
@@ -34,15 +36,20 @@ public:
 
 	int const getX() { return this->col; }
 	int const getY() { return this->row; }
+	Passage* const getPassage(Direction d);
 
-	bool const isClean() { return this->clean; }// Is the room clean
-	bool const isVisited() { return this->visited; } // is the room explored
+	bool const hasHero() { return this->_hasHero; }
+	bool const isClean() { return this->_isClean; }// Is the room clean
+	bool const isVisited() { return this->_isVisited; } // is the room explored
 	void visit(); // visit the room
 
 	std::string displayHorizontal();
 	std::string displayVertical();
 
+	void setHero(bool h) { this->_hasHero = h; }
 	void setPassage(Direction dir, Passage* p);
-	std::string getAllPossibleMoveDirections();
+	std::map<std::string, Direction> getAllPossibleMoveDirections();
+
+
 };
 

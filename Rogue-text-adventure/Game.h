@@ -23,16 +23,15 @@ private:
 	void start();
 	void clear();
 	void nextLevel();
-	void nextTurn();
+	void createHero();
 	void createMap();
-	void getUserInput();
 
 public:
 	Game();
 	~Game();
 	
 	void render();
-	void createHero();
+	void askQuestion();
 	
 	GameState const getGameState();
 	RenderState const getRenderState();

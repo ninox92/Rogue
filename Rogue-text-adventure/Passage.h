@@ -1,17 +1,19 @@
+#pragma once
+#include <map>
+#include "Direction.cpp"
 
 class Room;
-#pragma once
 
 class Passage
 {
-	Room* previous;
-	Room* next;
+	std::map<Direction, Room*> map;
 public:
 	Passage();//Default Constructor
-	Passage(Room* next, Room* previous);
 	~Passage();
 
-	Room* const Next() { return next; }
-	Room* const Previous() { return previous; }
+
+	void Add(Room* r, Direction d);
+
+	Room* GetRoom(Direction d);
 };
 

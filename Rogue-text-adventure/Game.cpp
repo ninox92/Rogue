@@ -1,11 +1,11 @@
 using namespace std;
 #include "Game.h"
 #include <iostream>
+#include "ConsoleColor.h"
 
 
 std::random_device dev;
 std::default_random_engine dre{ dev() };
-
 Game::Game()
 {
 	this->createHero();
@@ -22,10 +22,6 @@ Game::~Game()
 
 void Game::start()
 {
-	
-	
-	
-
 	cout << "Are you ready for an adventure " + hero->getName() + "?" << endl;
 	cout << "You have landed inside a dungeon!" << endl;
 	cout << "We must find our way out alive." << endl;
@@ -35,8 +31,7 @@ void Game::start()
 void Game::render()
 {
 	this->setRenderState(RenderState::WAIT);//Reset the render state to wait
-	cout << currentMap->show();
-	nextTurn();
+	cout << green <<currentMap->show();
 }
 
 void Game::createHero()
@@ -58,14 +53,17 @@ void Game::nextLevel()
 	this->createMap();
 }
 
-void Game::nextTurn()
+void Game::askQuestion()
 {
 	//this->clear();
-	//Wait for user input 
-	std::string posDirs = hero->getCurrentRoom()->getAllPossibleMoveDirections();
+	std::map<std::string, Direction> posDirs = hero->getCurrentRoom()->getAllPossibleMoveDirections();
 	Direction d = inputController.getDirectionFromInput(posDirs);
-	
-	//Do a new action
+	if (hero->lookForPassage(d)) {
+		hero->move(d);
+	}
+	else {
+		askQuestion();
+	}
 	this->setRenderState(RenderState::RENDER);//Render for one cycle
 }
 
@@ -81,11 +79,6 @@ void Game::createMap()
 	hero->move(currentMap->getStartRoom());
 }
 
-void Game::getUserInput()
-{
-	char direction;
-	cin >> direction;
-}
 
 
 void Game::setGameState(GameState state)

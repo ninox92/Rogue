@@ -21,7 +21,7 @@ public:
 	~InputController();
 
 	std::string WaitAndGetInput();
-	Direction getDirectionFromInput(std::string possibleDirections);
+	Direction getDirectionFromInput(std::map<std::string, Direction> possibleDirections);
 
 };
 

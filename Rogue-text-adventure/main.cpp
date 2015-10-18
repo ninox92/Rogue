@@ -9,6 +9,7 @@ int	main()
 	do {
 		if (game.getRenderState() == RenderState::RENDER) {
 			game.render();
+			game.askQuestion();
 		}
 	} while (game.getGameState() == GameState::RUNNING);
 

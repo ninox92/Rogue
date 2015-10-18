@@ -3,14 +3,21 @@
 
 
 
-Passage::Passage() : next { nullptr }, previous { nullptr }
-{
-}
-
-Passage::Passage(Room * next, Room * previous) : next{ next }, previous{ previous }
+Passage::Passage()
 {
 }
 
 Passage::~Passage()
 {
+}
+
+void Passage::Add(Room * r, Direction d)
+{
+	this->map.insert({ d,r });
+}
+
+Room * Passage::GetRoom(Direction d)
+{
+	if (map.find(d) != map.end()) return map[d];
+	return nullptr;
 }

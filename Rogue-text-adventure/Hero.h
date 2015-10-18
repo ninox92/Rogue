@@ -27,8 +27,9 @@ public:
 	~Hero();
 	
 
-	void move(Room* next) {	currentRoom = next; }
-
+	void move(Room* next);
+	bool lookForPassage(Direction dir);
+	void move(Direction dir);
 
 
 	void upExp(int exp) { experience += exp; }
