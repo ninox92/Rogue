@@ -4,10 +4,13 @@
 class GameObject
 {
 public:
-	GameObject(std::string type);
-	~GameObject();
-	std::string Identify();
+	GameObject();
+	virtual ~GameObject();
+	std::string const Identify();
+	std::string const GetType();
+	void SetType(std::string t) { type = t; }
+
 private:
-	std::string type;
+	std::string type = "";
 	
 };

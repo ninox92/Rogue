@@ -20,31 +20,12 @@ string InputController::WaitAndGetInput()
 	return input;
 }
 
-Direction InputController::getDirectionFromInput()
+Direction InputController::getDirectionFromInput(string possibleDirections)
 {
 	cout << "Wich way should we explore?" << endl;
-	cout << "north, east, south, west" << endl;
+	cout << possibleDirections << endl;
 	string s_dir = WaitAndGetInput();
 	bool exists = stringDirMap.find(s_dir) != stringDirMap.end();
 	if (!exists) return Direction::NONE;
 	return this->stringDirMap[s_dir];
-	/*switch (e_dir)
-	{
-	case Direction::NORTH:
-		dir = Direction::NORTH;
-		break;
-	case Direction::EAST:
-		dir = Direction::EAST;
-		break;
-	case Direction::SOUTH:
-		dir = Direction::SOUTH;
-		break;
-	case Direction::WEST:
-		dir = Direction::WEST;
-		break;
-	default:
-		dir = Direction::NONE;
-		break;
-	}
-	return dir;*/
 }

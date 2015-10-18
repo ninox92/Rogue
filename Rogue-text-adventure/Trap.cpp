@@ -2,8 +2,9 @@
 
 
 
-Trap::Trap() : GameObject("Trap")
+Trap::Trap() : GameObject()
 {
+	SetType("Trap");
 }
 
 

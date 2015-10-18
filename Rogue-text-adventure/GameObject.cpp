@@ -1,12 +1,16 @@
 #include "GameObject.h";
 
-GameObject::GameObject(std::string type) : type(type)
-{
 
+GameObject::GameObject()
+{
 }
 GameObject::~GameObject() {
 
 }
-std::string GameObject::Identify() {
-	return " is a "+this->type;
+std::string const GameObject::GetType()
+{
+	return this->type;
+}
+std::string const GameObject::Identify() {
+	return " is a "+ GetType();
 }

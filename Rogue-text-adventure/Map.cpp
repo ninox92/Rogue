@@ -4,13 +4,12 @@
 
 
 
-Map::Map() : width(0), height(0), rooms(0)
+Map::Map()
 {
 }
 
-Map::Map(int width, int height) : width(width), height(height), rooms(width*height)
+Map::Map(int width, int height, std::default_random_engine dre) : dre(dre), width(width), height(height), rooms(width*height)
 {
-	this->build();
 }
 
 
@@ -18,13 +17,18 @@ Map::~Map()
 {//Deconstructor
 }
 
+void Map::create() {
+	this->init();
+	this->build();
+}
 
-void Map::build() {
-	std::uniform_int_distribution<int> xDist { 0, width -1 };
+void Map::init()
+{
+	std::uniform_int_distribution<int> xDist{ 0, width - 1 };
 	//ptx =
 	ptX = xDist(dre);//Set Begin X
 	ptY = height - 1;// Set Begin Y
-	
+
 	//Build basic map
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++)
@@ -32,17 +36,37 @@ void Map::build() {
 			this->rooms[y*width + x] = createRoom((x + 1), (y + 1));
 		}
 	}
+	//Set Begin
+	setStartRoom(rooms[97]);//rooms[ptY*width + ptX];
+	if (this->level == 1) {
+		//Begin level needs Start point
+		getStartRoom()->setType(RoomType::START);
+	}
+	else {
+		//Begin is a latter Down, to the previous level
+		getStartRoom()->setType(RoomType::LATTER_DOWN);
+	}
 
-	Room* start = rooms[ptY*width + ptX];
-	start->setType(RoomType::START);
+	//Set End
+	if (this->level == 10)//Max level
+	{
+		setEndRoom(rooms[3]);
+		getEndRoom()->setType(RoomType::END);
+	}
+	else {
+		//End room is a latter up 
+		setEndRoom(rooms[3]);
+		getEndRoom()->setType(RoomType::LATTER_UP);
+	}
+}
 
-	rooms[3]->setType(RoomType::END);
 
+void Map::build() {
 
 	std::stack<Room*> stack;
-	stack.push(start);
+	stack.push(getStartRoom());
 
-	Room* current = start;
+	Room* current = stack.top();
 	while (stack.size() > 0) {
 		std::vector<Room*> neighbours = getNeighbours(current->getX()-1, current->getY()-1);
 		
@@ -60,14 +84,12 @@ void Map::build() {
 			{
 				r = neighbours.at(0);
 			}
-			
-			Direction d = getDirection(*current, *r);
-			
 			//create a passage between the neighbour and current room
+			setPassages(current, r);
 			stack.push(r);
 
 			r->visit();
-			std::cout << display();
+			//std::cout << show();
 			current = r;
 		}
 		else if (stack.size() > 1) {
@@ -78,8 +100,6 @@ void Map::build() {
 		else {
 			return;
 		}
-		//get all neighbours from top stack
-		
 		
 	}
 
@@ -87,35 +107,47 @@ void Map::build() {
 
 
 
-std::string Map::display() {
+std::string Map::show() {
 	std::string s = "";
+	std::string rowS = "";
 	int row = 1;
 	for (int y = 0; y < height; y++) {
+		
 		for (int x = 0; x < width; x++)
 		{
 			
 			if (row == (width+1)) {
-				s += "\n";
+				s += "\n"+rowS+"\n";
 				row = 1;
+				rowS = "";
 			}
-			s += this->rooms[y*width + x]->display();
+			s += this->rooms[y*width + x]->displayHorizontal();
+			rowS += this->rooms[y*width + x]->displayVertical();
 			row++;
 		}
+		
 	}
 	return s + "\n\n";
 }
 
 Room* Map::createRoom(int x, int y) {
-	return new Room("small", x, y);
+	return new Room(x, y);
 }
 
-void Map::setPassages()
+
+void Map::setPassages(Room* p1, Room* p2)
 {
+	Direction d = getDirection(*p1, *p2);
+	Direction od = getOpositeDirection(d);
+	Passage* p = new Passage(p2, p1);
+	p1->setPassage(d, p);
+	p2->setPassage(od, p);
+	passages.push_back(p);
 }
 
 std::vector<Room*> Map::getNeighbours(int x, int y)
 {
-	std::cout << "x{" << x << "} Y{" << y << "}";
+	std::cout << "x{" << x << "} Y{" << y << "}" << std::endl;
 	std::vector<Room*> tmp; 
 	int maxX = y  * width + (width - 1);
 	int minX = y  * width;
@@ -129,22 +161,22 @@ std::vector<Room*> Map::getNeighbours(int x, int y)
 
 	if (north >= 0 && y >= 0 && y <= (height-1) && !rooms[north]->isVisited()) 
 	{
-		std::cout << "NORTH found";
+		std::cout << "NORTH found" << std::endl;
 		//rooms[north]->setType(RoomType::END);
 		tmp.push_back(rooms[north]);
 	}
 	if(east >= minX && east <= maxX && !rooms[east]->isVisited()) {
-		std::cout << "EAST found";
+		std::cout << "EAST found" << std::endl;
 		//rooms[east]->setType(RoomType::END);
 		tmp.push_back(rooms[east]);
 	}
 	if (south >= 0 && south <= rooms.size()-1 && y <= (height - 1) && !rooms[south]->isVisited()) {
-		std::cout << "SOUTH found";
+		std::cout << "SOUTH found" << std::endl;
 		//rooms[south]->setType(RoomType::END);
 		tmp.push_back(rooms[south]);
 	}
 	if (west >= minX && west <= maxX && !rooms[west]->isVisited()){
-		std::cout << "WEST found";
+		std::cout << "WEST found" << std::endl;
 		//rooms[west]->setType(RoomType::END);
 		tmp.push_back(rooms[west]);
 	}
@@ -163,8 +195,35 @@ Direction Map::getDirection(Room& cur, Room& next) {
 
 	if (nX < cX) d = Direction::WEST;
 	if (nX > cX) d = Direction::EAST;
-	if (nY > cX) d = Direction::SOUTH;
+	if (nY > cY) d = Direction::SOUTH;
 	if (nY < cY) d = Direction::NORTH;
 
 	return d;
+}
+
+Direction Map::getOpositeDirection(Direction d)
+{
+	Direction dd = Direction::NONE;
+	switch (d)
+	{
+	case Direction::NONE:
+		dd = d;
+		break;
+	case Direction::NORTH:
+		dd = Direction::SOUTH;
+		break;
+	case Direction::EAST:
+		dd = Direction::WEST;
+		break;
+	case Direction::SOUTH:
+		dd = Direction::NORTH;
+		break;
+	case Direction::WEST:
+		dd = Direction::EAST;
+		break;
+	default:
+		dd = Direction::NONE;
+		break;
+	}
+	return dd;
 }

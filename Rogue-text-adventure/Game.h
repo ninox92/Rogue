@@ -10,28 +10,35 @@
 class Game
 {
 private:
-	Map* map;
-	Hero* hero;
+	std::vector<Map*> maps;
+	int level = 0;
+	Map* currentMap = nullptr;
+	Hero* hero = nullptr;
 	InputController inputController;
 
 	GameState gameState = GameState::INIT;
 	RenderState renderState = RenderState::WAIT;
 	
-	
+
+	void start();
+	void clear();
+	void nextLevel();
+	void nextTurn();
+	void createMap();
+	void getUserInput();
+
 public:
 	Game();
 	~Game();
 	
-	void start();
 	void render();
-	void clear();
-	void nextTurn();
-
-	void getUserInput();
+	void createHero();
+	
+	GameState const getGameState();
+	RenderState const getRenderState();
 
 	void setGameState(GameState state);
-	GameState getGameState();
 	void setRenderState(RenderState state);
-	RenderState getRenderState();
+	
 };
 
