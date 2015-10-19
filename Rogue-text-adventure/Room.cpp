@@ -4,7 +4,7 @@
 
 
 Room::Room() : GameObject(){}// Default constructor
-Room::Room( int x, int y) : col(x), row(y), GameObject()
+Room::Room(int x, int y) : col(x), row(y), GameObject()
 {
 }
 

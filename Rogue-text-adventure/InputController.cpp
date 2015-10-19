@@ -13,6 +13,11 @@ InputController::~InputController()
 {
 }
 
+void InputController::printMessage(std::string s)
+{
+	cout << s << endl << endl;
+}
+
 string InputController::WaitAndGetInput()
 {
 	cin >> input;

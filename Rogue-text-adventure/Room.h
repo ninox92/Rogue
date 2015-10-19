@@ -26,6 +26,7 @@ private:
 	Passage* west = nullptr;
 
 	std::string getToken();
+	std::string roomDesc;
 public:
 	Room();
 	Room(int x, int y);
@@ -50,6 +51,7 @@ public:
 	void setPassage(Direction dir, Passage* p);
 	std::map<std::string, Direction> getAllPossibleMoveDirections();
 
-
+	std::string getRoomDesc() { return this->roomDesc; }
+	void setRoomDesc(std::string r) { this->roomDesc = r; }
 };
 

@@ -20,6 +20,7 @@ public:
 	InputController();
 	~InputController();
 
+	void printMessage(std::string s);
 	std::string WaitAndGetInput();
 	Direction getDirectionFromInput(std::map<std::string, Direction> possibleDirections);
 

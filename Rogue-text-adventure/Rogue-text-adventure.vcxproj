@@ -157,6 +157,7 @@
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Passage.h" />
     <ClInclude Include="Room.h" />
+    <ClInclude Include="RoomFactory.h" />
     <ClInclude Include="RoomObject.h" />
     <ClInclude Include="Trap.h" />
   </ItemGroup>
@@ -174,6 +175,8 @@
     <ClCompile Include="Passage.cpp" />
     <ClCompile Include="RenderState.cpp" />
     <ClCompile Include="Room.cpp" />
+    <ClCompile Include="RoomDescription.cpp" />
+    <ClCompile Include="RoomFactory.cpp" />
     <ClCompile Include="RoomObject.cpp" />
     <ClCompile Include="RoomType.cpp" />
     <ClCompile Include="Trap.cpp" />

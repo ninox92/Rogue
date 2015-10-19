@@ -56,6 +56,7 @@ void Game::nextLevel()
 void Game::askQuestion()
 {
 	//this->clear();
+	inputController.printMessage(hero->getCurrentRoom()->getRoomDesc()); // Print Room Desc
 	std::map<std::string, Direction> posDirs = hero->getCurrentRoom()->getAllPossibleMoveDirections();
 	Direction d = inputController.getDirectionFromInput(posDirs);
 	if (hero->lookForPassage(d)) {

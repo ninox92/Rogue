@@ -1,8 +1,7 @@
 #include <stack>
 #include <iostream>
 #include "Map.h"
-
-
+#include "RoomFactory.h"
 
 Map::Map()
 {
@@ -131,7 +130,7 @@ std::string Map::show() {
 }
 
 Room* Map::createRoom(int x, int y) {
-	return new Room(x, y);
+	return RoomFactory::Instance()->createRoom(x, y);
 }
 
 
@@ -174,7 +173,7 @@ std::vector<Room*> Map::getNeighbours(int x, int y)
 		//rooms[east]->setType(RoomType::END);
 		tmp.push_back(rooms[east]);
 	}
-	if (south >= 0 && south <= rooms.size()-1 && y <= (height - 1) && !rooms[south]->isVisited()) {
+	if (south >= 0 && south <= (int)rooms.size()-1 && y <= (height - 1) && !rooms[south]->isVisited()) {
 		std::cout << "SOUTH found" << std::endl;
 		//rooms[south]->setType(RoomType::END);
 		tmp.push_back(rooms[south]);

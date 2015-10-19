@@ -34,6 +34,12 @@
     <Filter Include="Header Files\Controllers">
       <UniqueIdentifier>{07474f39-ed17-4235-8dd5-8b8f88bd01f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Factories">
+      <UniqueIdentifier>{030c76c0-d1e9-4f82-9092-62bd55bef832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Factories">
+      <UniqueIdentifier>{c19bc58c-d55d-412f-af3d-e5b68168e5b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h">
@@ -74,6 +80,9 @@
     </ClInclude>
     <ClInclude Include="ConsoleColor.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomFactory.h">
+      <Filter>Header Files\Factories</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +132,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RoomType.cpp">
+      <Filter>Source Files\Enums</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomFactory.cpp">
+      <Filter>Source Files\Factories</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomDescription.cpp">
       <Filter>Source Files\Enums</Filter>
     </ClCompile>
   </ItemGroup>
