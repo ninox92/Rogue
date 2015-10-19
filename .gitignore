@@ -76,3 +76,5 @@ $RECYCLE.BIN/
 
 Rogue-text-adventure/Debug
 Debug/
+*.sdf
+*.suo
