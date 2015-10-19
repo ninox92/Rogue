@@ -31,7 +31,7 @@ void Game::start()
 void Game::render()
 {
 	this->setRenderState(RenderState::WAIT);//Reset the render state to wait
-	cout << green <<currentMap->show();
+	currentMap->show();
 }
 
 void Game::createHero()

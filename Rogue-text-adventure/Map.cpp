@@ -1,5 +1,6 @@
 #include <stack>
 #include <iostream>
+#include "ConsoleColor.h"
 #include "Map.h"
 
 
@@ -89,7 +90,6 @@ void Map::build() {
 			stack.push(r);
 
 			r->visit();
-			//std::cout << show();
 			current = r;
 		}
 		else if (stack.size() > 1) {
@@ -105,9 +105,7 @@ void Map::build() {
 
 }
 
-
-
-std::string Map::show() {
+void Map::show() {
 	std::string s = "";
 	std::string rowS = "";
 	int row = 1;
@@ -115,19 +113,23 @@ std::string Map::show() {
 		
 		for (int x = 0; x < width; x++)
 		{
-			
+			Room* r = this->rooms[y*width + x];
 			if (row == (width+1)) {
-				s += "\n"+rowS+"\n";
+				std::cout << "\n" + rowS + "\n";
 				row = 1;
 				rowS = "";
 			}
-			s += this->rooms[y*width + x]->displayHorizontal();
-			rowS += this->rooms[y*width + x]->displayVertical();
+			if (r->isShortest()) {
+				std::cout << green;
+			}
+			std::cout << r->displayHorizontal();
+			std::cout << white;//reset color
+			rowS += r->displayVertical();
 			row++;
 		}
 		
 	}
-	return s + "\n\n";
+	std::cout << "\n\n";
 }
 
 Room* Map::createRoom(int x, int y) {
@@ -151,7 +153,6 @@ void Map::setPassages(Room* p1, Room* p2)
 
 std::vector<Room*> Map::getNeighbours(int x, int y)
 {
-	std::cout << "x{" << x << "} Y{" << y << "}" << std::endl;
 	std::vector<Room*> tmp; 
 	int maxX = y  * width + (width - 1);
 	int minX = y  * width;
@@ -165,22 +166,18 @@ std::vector<Room*> Map::getNeighbours(int x, int y)
 
 	if (north >= 0 && y >= 0 && y <= (height-1) && !rooms[north]->isVisited()) 
 	{
-		std::cout << "NORTH found" << std::endl;
 		//rooms[north]->setType(RoomType::END);
 		tmp.push_back(rooms[north]);
 	}
 	if(east >= minX && east <= maxX && !rooms[east]->isVisited()) {
-		std::cout << "EAST found" << std::endl;
 		//rooms[east]->setType(RoomType::END);
 		tmp.push_back(rooms[east]);
 	}
 	if (south >= 0 && south <= rooms.size()-1 && y <= (height - 1) && !rooms[south]->isVisited()) {
-		std::cout << "SOUTH found" << std::endl;
 		//rooms[south]->setType(RoomType::END);
 		tmp.push_back(rooms[south]);
 	}
 	if (west >= minX && west <= maxX && !rooms[west]->isVisited()){
-		std::cout << "WEST found" << std::endl;
 		//rooms[west]->setType(RoomType::END);
 		tmp.push_back(rooms[west]);
 	}

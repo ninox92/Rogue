@@ -16,33 +16,24 @@ Room::~Room()
 
 Passage * const Room::getPassage(Direction d)
 {
-	switch (d)
-	{
-	case Direction::NORTH:
-		return north;
-		break;
-	case Direction::EAST:
-		return east;
-		break;
-	case Direction::SOUTH:
-		return south;
-		break;
-	case Direction::WEST:
-		return west;
-		break;
-	case Direction::NONE:
-	default:
-		return nullptr;
-		break;
+	if (hasPassage(d)) {
+		return passages[d];
 	}
+	return nullptr;
+}
+
+bool const Room::hasPassage(Direction d)
+{
+	return (passages.find(d) != passages.end());
+	return nullptr;
 }
 
 void Room::visit() {
 	this->_isVisited = true;
 }
 std::string Room::displayHorizontal() {
-	std::string right = (east == nullptr ? " " : "-");
-	std::string left = (west == nullptr ? " " : "-");
+	std::string right = (hasPassage(Direction::EAST) ? " " : "-");
+	std::string left = (hasPassage(Direction::WEST) ? " " : "-");
 	if (type == RoomType::START || type == RoomType::END || type == RoomType::LATTER_UP || type == RoomType::LATTER_DOWN)
 		return  left + getToken() + right;
 	if (!this->_isVisited) return left + "." + right;
@@ -52,48 +43,31 @@ std::string Room::displayHorizontal() {
 
 std::string Room::displayVertical()
 {
-	std::string bot = (south == nullptr ? "   " : " | ");
+	std::string bot = (hasPassage(Direction::SOUTH) ? "   " : " | ");
 	return bot;
 }
 
 void Room::setPassage(Direction dir, Passage* p)
 {
 	std::cout << "Create passage :";
-	switch (dir)
-	{
-	case Direction::NORTH:
-		north = p;
-		std::cout << "NORTH" << std::endl;
-		break;
-	case Direction::EAST:
-		east = p;
-		std::cout << "EAST" << std::endl;
-		break;
-	case Direction::SOUTH:
-		south = p;
-		std::cout << "SOUTH" << std::endl;
-		break;
-	case Direction::WEST:
-		west = p;
-		std::cout << "WEST" << std::endl;
-		break;
-	case Direction::NONE:
-	default:
-		std::cout << "ERROR" << std::endl;
-		break;
+	if (!hasPassage(dir)) {
+		passages[dir] = p;
+	}
+	else {
+		//exception
 	}
 }
 
 std::map<std::string, Direction> Room::getAllPossibleMoveDirections()
 {
 	std::map<std::string, Direction> smap;
-	if (north != nullptr)
+	if (hasPassage(Direction::NORTH))
 		smap.insert( { "north", Direction::NORTH } );
-	if (east != nullptr)
+	if (hasPassage(Direction::EAST))
 		smap.insert({ "east", Direction::EAST });
-	if (south != nullptr)
+	if (hasPassage(Direction::SOUTH))
 		smap.insert({ "south", Direction::SOUTH });
-	if (west != nullptr)
+	if (hasPassage(Direction::WEST))
 		smap.insert({ "west", Direction::WEST });
 
 	return smap;

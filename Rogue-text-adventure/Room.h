@@ -19,11 +19,9 @@ private:
 	bool _hasHero;
 	bool _isClean;
 	bool _isVisited;
+	bool _isShortest;
 
-	Passage* north = nullptr;
-	Passage* east = nullptr;
-	Passage* south = nullptr;
-	Passage* west = nullptr;
+	std::map<Direction, Passage*> passages;
 
 	std::string getToken();
 public:
@@ -41,12 +39,15 @@ public:
 	bool const hasHero() { return this->_hasHero; }
 	bool const isClean() { return this->_isClean; }// Is the room clean
 	bool const isVisited() { return this->_isVisited; } // is the room explored
+	bool const isShortest() { return this->_isShortest; }
+	bool const hasPassage(Direction d);
 	void visit(); // visit the room
 
 	std::string displayHorizontal();
 	std::string displayVertical();
 
 	void setHero(bool h) { this->_hasHero = h; }
+	void setShortest(bool s) { this->_isShortest = s; }
 	void setPassage(Direction dir, Passage* p);
 	std::map<std::string, Direction> getAllPossibleMoveDirections();
 

@@ -45,6 +45,6 @@ public:
 	void setEndRoom(Room* e) { this->end = e; }
 
 
-	std::string show();
+	void show();
 };
 
