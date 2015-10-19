@@ -2,15 +2,16 @@
 #include <iostream>
 #include "ConsoleColor.h"
 #include "Map.h"
-
+#include <queue>
 
 
 Map::Map()
 {
 }
 
-Map::Map(int width, int height, std::default_random_engine dre) : dre(dre), width(width), height(height), rooms(width*height)
+Map::Map(int width, int height, Game* game) : game(game), width(width), height(height), rooms(width*height)
 {
+	this->dre = game->getDRE();
 }
 
 
@@ -61,7 +62,7 @@ void Map::init()
 	}
 }
 
-
+///Depth first search
 void Map::build() {
 
 	std::stack<Room*> stack;
@@ -73,7 +74,6 @@ void Map::build() {
 		
 		
 		if (neighbours.size() > 0) {
-			std::cout << "Neighbours : " << neighbours.size() << std::endl;
 			Room* r;
 			if (neighbours.size() > 1) {
 				//search for random
@@ -93,7 +93,6 @@ void Map::build() {
 			current = r;
 		}
 		else if (stack.size() > 1) {
-			std::cout << "Is already found" << ", stack size: "<<stack.size()<<std::endl;
 			stack.pop();
 			current = stack.top();
 		}
@@ -105,8 +104,30 @@ void Map::build() {
 
 }
 
+///Breadth First Search
+void Map::BFS()
+{
+	Room* current = game->getHero()->getCurrentRoom();
+	std::queue<Room*> queue;
+	queue.push(current);
+	
+	while (!queue.empty())
+	{
+		current = queue.front();
+		current->setBFS(true);
+		queue.pop();
+
+		for (const auto& p : current->getAllPossiblePassages()) {
+			Room* next = p.second->GetRoom(p.first);
+			if (!next->isBFS()) {
+				next->setBFS(true);
+				queue.push(next);
+			}
+		}
+	}
+}
+
 void Map::show() {
-	std::string s = "";
 	std::string rowS = "";
 	int row = 1;
 	for (int y = 0; y < height; y++) {
@@ -119,7 +140,7 @@ void Map::show() {
 				row = 1;
 				rowS = "";
 			}
-			if (r->isShortest()) {
+			if (r->isBFS()) {
 				std::cout << green;
 			}
 			std::cout << r->displayHorizontal();
@@ -228,3 +249,5 @@ Direction Map::getOpositeDirection(Direction d)
 	}
 	return dd;
 }
+
+

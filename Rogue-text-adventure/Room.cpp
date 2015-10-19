@@ -24,16 +24,16 @@ Passage * const Room::getPassage(Direction d)
 
 bool const Room::hasPassage(Direction d)
 {
-	return (passages.find(d) != passages.end());
-	return nullptr;
+	bool exists = (passages.find(d) != passages.end());
+	return exists;
 }
 
 void Room::visit() {
 	this->_isVisited = true;
 }
 std::string Room::displayHorizontal() {
-	std::string right = (hasPassage(Direction::EAST) ? " " : "-");
-	std::string left = (hasPassage(Direction::WEST) ? " " : "-");
+	std::string right = (hasPassage(Direction::EAST) ? "-" : " ");
+	std::string left = (hasPassage(Direction::WEST) ? "-" : " ");
 	if (type == RoomType::START || type == RoomType::END || type == RoomType::LATTER_UP || type == RoomType::LATTER_DOWN)
 		return  left + getToken() + right;
 	if (!this->_isVisited) return left + "." + right;
@@ -43,13 +43,12 @@ std::string Room::displayHorizontal() {
 
 std::string Room::displayVertical()
 {
-	std::string bot = (hasPassage(Direction::SOUTH) ? "   " : " | ");
+	std::string bot = (hasPassage(Direction::SOUTH) ? " | " : "   ");
 	return bot;
 }
 
 void Room::setPassage(Direction dir, Passage* p)
 {
-	std::cout << "Create passage :";
 	if (!hasPassage(dir)) {
 		passages[dir] = p;
 	}
@@ -71,6 +70,21 @@ std::map<std::string, Direction> Room::getAllPossibleMoveDirections()
 		smap.insert({ "west", Direction::WEST });
 
 	return smap;
+}
+
+std::map<Direction, Passage*> Room::getAllPossiblePassages()
+{
+	std::map<Direction, Passage*> pmap;
+	if (hasPassage(Direction::NORTH))
+		pmap.insert({Direction::NORTH, getPassage(Direction::NORTH) });
+	if (hasPassage(Direction::EAST))
+		pmap.insert({Direction::EAST, getPassage(Direction::EAST) });
+	if (hasPassage(Direction::SOUTH))
+		pmap.insert({Direction::SOUTH, getPassage(Direction::SOUTH) });
+	if (hasPassage(Direction::WEST))
+		pmap.insert({Direction::WEST, getPassage(Direction::WEST) });
+
+	return pmap;
 }
 
 

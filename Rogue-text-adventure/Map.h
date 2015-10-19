@@ -2,10 +2,13 @@
 #include "Room.h"
 #include <random>
 #include <vector>
+#include "Game.h"
+
 
 class Map
 {
 private:
+	Game* game = nullptr;
 	std::default_random_engine dre;
 	std::uniform_int_distribution<int> dirDist{ 1,4 };
 	
@@ -30,7 +33,7 @@ private:
 	void build();
 public:
 	Map();//Default constructor
-	Map(int width, int height, std::default_random_engine dre);// Preferred Constructor
+	Map(int width, int height, Game* game);// Preferred Constructor
 	~Map();
 
 	void create();
@@ -43,6 +46,7 @@ public:
 	void setLevel(int l) { this->level = l; }
 	void setStartRoom(Room* s) { this->start = s; }
 	void setEndRoom(Room* e) { this->end = e; }
+	void BFS();
 
 
 	void show();
