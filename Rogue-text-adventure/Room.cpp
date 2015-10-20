@@ -1,11 +1,20 @@
-#include "Room.h"
-
+#pragma once
 #include <iostream>
+#include <math.h>
+#include "Room.h"
+#include "Map.h"
 
 
 Room::Room() : GameObject(){}// Default constructor
-Room::Room( int x, int y) : col(x), row(y), GameObject()
+Room::Room( int x, int y, Map* map) : map(map), col(x), row(y), GameObject()
 {
+	int cLevel = map->getLevel();
+	double f1 = std::fmod(map->getMaxLevel(), 2);
+	double f2 = std::fmod(map->getLevel(), 10);
+	float equalizer = map->getLevel() >= f1 ? f2 : 1;
+	this->spawnChange = ceil((cLevel * 10) * ceil(equalizer));
+	eDist = std::uniform_int_distribution<int>( 0, maxEnemies );
+	this->createEnemies();
 }
 
 
@@ -31,6 +40,7 @@ bool const Room::hasPassage(Direction d)
 void Room::visit() {
 	this->_isVisited = true;
 }
+
 std::string Room::displayHorizontal() {
 	std::string right = (hasPassage(Direction::EAST) ? "-" : " ");
 	std::string left = (hasPassage(Direction::WEST) ? "-" : " ");
@@ -92,6 +102,7 @@ std::string Room::getToken()
 {
 	std::string s;
 	if (hasHero()) return "&";
+	if (enemiesCount != 0) return std::to_string(enemiesCount);
 	switch (type)
 	{
 	case RoomType::INIT:
@@ -119,4 +130,13 @@ std::string Room::getToken()
 		break;
 	}
 	return s;
+}
+
+void Room::createEnemies()
+{
+	//check if this room even gets some enemies
+	int chance = dist(dre);
+	if (chance > spawnChange) return;
+	//if so, create some
+	enemiesCount = eDist(dre);
 }

@@ -12,13 +12,10 @@ class Hero;
 class Game
 {
 private:
-	std::random_device dev;
-	std::default_random_engine dre{ dev() };
-
 	Map* currentMap = nullptr;
 	std::vector<Map*> maps;
 	int level = 0;
-
+	int maxLevel = 10;
 	Hero* hero = nullptr;
 	
 	InputController inputController;
@@ -40,9 +37,9 @@ public:
 	void askQuestion();
 	
 	Hero* getHero() { return this->hero; }
-	std::default_random_engine getDRE() { return this->dre; }
 	GameState const getGameState();
 	RenderState const getRenderState();
+	int const getMaxLevel() { return this->maxLevel; }
 
 	void setGameState(GameState state);
 	void setRenderState(RenderState state);

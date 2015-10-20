@@ -11,7 +11,6 @@ Map::Map()
 
 Map::Map(int width, int height, Game* game) : game(game), width(width), height(height), rooms(width*height)
 {
-	this->dre = game->getDRE();
 }
 
 
@@ -104,10 +103,16 @@ void Map::build() {
 
 }
 
+void Map::traverseBSF(std::stack<Room*> s)
+{
+}
+
 ///Breadth First Search
 void Map::BFS()
 {
 	Room* current = game->getHero()->getCurrentRoom();
+	Room* begin = current;
+	Room* end = getEndRoom();
 	std::queue<Room*> queue;
 	queue.push(current);
 	
@@ -116,15 +121,48 @@ void Map::BFS()
 		current = queue.front();
 		current->setBFS(true);
 		queue.pop();
+		if (current == end)
+			break;//base case
 
 		for (const auto& p : current->getAllPossiblePassages()) {
 			Room* next = p.second->GetRoom(p.first);
 			if (!next->isBFS()) {
-				next->setBFS(true);
 				queue.push(next);
+				show();
 			}
 		}
 	}
+
+	std::stack<Room*> path;
+	end->setShortest(true);
+	path.push(end);
+	end = begin;
+	begin = current;
+
+	
+	current = path.top();
+	while (path.size() > 0) {
+		for (const auto& p : current->getAllPossiblePassages()) {
+			Room* next = p.second->GetRoom(p.first);
+			int sPassages = next->getAllPossiblePassages().size();
+			if (next->isBFS() && !next->isShortest() && sPassages > 0) {
+				
+				next->setShortest(true);
+				show();
+				path.push(next);
+				current = next;
+			}
+			else if (path.size() > 1) {
+				path.pop();
+				current = path.top();
+			}
+			//next->setBFS(false);
+		}
+		
+	}
+	
+	show();
+
 }
 
 void Map::show() {
@@ -140,8 +178,11 @@ void Map::show() {
 				row = 1;
 				rowS = "";
 			}
-			if (r->isBFS()) {
+			if (r->isBFS() && ! r->isShortest()) {
 				std::cout << green;
+			}
+			else if (r->isShortest()) {
+				std::cout << red;
 			}
 			std::cout << r->displayHorizontal();
 			std::cout << white;//reset color
@@ -154,7 +195,8 @@ void Map::show() {
 }
 
 Room* Map::createRoom(int x, int y) {
-	return new Room(x, y);
+	std::default_random_engine dre;
+	return new Room(x, y, this);
 }
 
 

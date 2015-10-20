@@ -14,6 +14,8 @@ Game::Game()
 	this->nextLevel();
 	this->setGameState(GameState::RUNNING);
 	start();
+	currentMap->BFS();
+	this->setRenderState(RenderState::RENDER);//Render for one cycle
 }
 
 

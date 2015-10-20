@@ -1,18 +1,33 @@
 #pragma once
 #include <map>
+#include <random>
 #include "GameObject.h"
 #include "Hero.h"
 #include "Passage.h"
-
 #include "RoomType.cpp"
 
+class Map;
 
 class Room : public GameObject
 {
 private:
+	Map* map = nullptr;
+	
+
+	int spawnChange = 0;// % chance that enemies will spawn in this room
+	int maxEnemies = 3;//maximum
 	int row = 0;
 	int col = 0;
 	
+	int enemiesCount = 0;
+	std::random_device rd;
+
+	// Choose a random mean between 1 and 6
+	std::default_random_engine dre { rd() };
+	std::uniform_int_distribution<int> dist{ 0, 100 };// 0 - 100% spawn chance
+	std::uniform_int_distribution<int> eDist;//{ 0, maxEnemies };// amount of enemies that may spawn in one room
+	
+
 	RoomType type = RoomType::INIT;
 	std::string size;
 	
@@ -25,9 +40,13 @@ private:
 	std::map<Direction, Passage*> passages;
 
 	std::string getToken();
+
+	void createEnemies();
+
 public:
 	Room();
-	Room(int x, int y);
+	//Room(int x, int y, Map* map);
+	Room(int x, int y, Map* map);
 	virtual ~Room();
 	
 	void setType(RoomType type) { this->type = type; }
@@ -38,7 +57,6 @@ public:
 	std::map<std::string, Direction> getAllPossibleMoveDirections();
 	std::map<Direction, Passage*> getAllPossiblePassages();
 	Passage* const getPassage(Direction d);
-	
 
 	bool const hasHero() { return this->_hasHero; }
 	bool const isClean() { return this->_isClean; }// Is the room clean

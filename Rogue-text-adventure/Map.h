@@ -2,6 +2,7 @@
 #include "Room.h"
 #include <random>
 #include <vector>
+#include <stack>
 #include "Game.h"
 
 
@@ -9,7 +10,9 @@ class Map
 {
 private:
 	Game* game = nullptr;
-	std::default_random_engine dre;
+
+	std::random_device dev;
+	std::default_random_engine dre{ dev() };
 	std::uniform_int_distribution<int> dirDist{ 1,4 };
 	
 	int level = 0;
@@ -31,24 +34,26 @@ private:
 
 	void init();
 	void build();
+	void traverseBSF(std::stack<Room*> s);
 public:
 	Map();//Default constructor
 	Map(int width, int height, Game* game);// Preferred Constructor
 	~Map();
 
+	void BFS();
 	void create();
+	void show();
 
 	int size() const { return width * height; }
 	int getLevel() const { return this->level; }
+	int getMaxLevel() const { return this->game->getMaxLevel(); }
 	Room* const getStartRoom() { return this->start; }
 	Room* const getEndRoom() { return this->end; }
 
 	void setLevel(int l) { this->level = l; }
 	void setStartRoom(Room* s) { this->start = s; }
 	void setEndRoom(Room* e) { this->end = e; }
-	void BFS();
+	
 
-
-	void show();
 };
 
