@@ -2,10 +2,10 @@
 #include "Hero.h"
 #include "GameState.cpp"
 #include "RenderState.cpp"
+#include "GameController.h"
 #include "InputController.h"
 #include <stdlib.h>
 #pragma once
-
 
 class Game
 {
@@ -14,6 +14,7 @@ private:
 	int level = 0;
 	Map* currentMap = nullptr;
 	Hero* hero = nullptr;
+	GameController gameController;
 	InputController inputController;
 
 	GameState gameState = GameState::INIT;

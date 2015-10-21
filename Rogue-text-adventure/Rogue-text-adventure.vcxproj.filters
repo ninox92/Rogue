@@ -84,6 +84,9 @@
     <ClInclude Include="RoomFactory.h">
       <Filter>Header Files\Factories</Filter>
     </ClInclude>
+    <ClInclude Include="GameController.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -139,6 +142,12 @@
     </ClCompile>
     <ClCompile Include="RoomDescription.cpp">
       <Filter>Source Files\Enums</Filter>
+    </ClCompile>
+    <ClCompile Include="Actions.cpp">
+      <Filter>Source Files\Enums</Filter>
+    </ClCompile>
+    <ClCompile Include="GameController.cpp">
+      <Filter>Source Files\Controllers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

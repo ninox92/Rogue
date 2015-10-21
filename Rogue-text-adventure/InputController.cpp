@@ -27,10 +27,12 @@ string InputController::WaitAndGetInput()
 
 Direction InputController::getDirectionFromInput(std::map<std::string, Direction> dirMap)
 {
-	std::string dirs = "";
+	std::string dirs = "[";
 	for (const auto& kv : dirMap) {
-		dirs += kv.first + ";";
+		dirs += kv.first + ":";
 	}
+	dirs = dirs.substr(0, dirs.size() - 1);
+	dirs += "]";
 	
 	cout << "Wich way should we explore?" << endl;
 	cout << dirs << endl;

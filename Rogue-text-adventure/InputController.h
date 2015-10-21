@@ -10,10 +10,10 @@ class InputController
 private:
 	std::string input;
 	std::map<std::string, Direction> stringDirMap = {
-		{ "north", Direction::NORTH },
-		{ "east", Direction::EAST },
-		{ "south", Direction::SOUTH },
-		{ "west", Direction::WEST }
+		{ "North", Direction::NORTH },
+		{ "East", Direction::EAST },
+		{ "South", Direction::SOUTH },
+		{ "West", Direction::WEST }
 	};
 
 public:

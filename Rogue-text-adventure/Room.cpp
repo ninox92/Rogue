@@ -88,13 +88,13 @@ std::map<std::string, Direction> Room::getAllPossibleMoveDirections()
 {
 	std::map<std::string, Direction> smap;
 	if (north != nullptr)
-		smap.insert( { "north", Direction::NORTH } );
+		smap.insert( { "North", Direction::NORTH } );
 	if (east != nullptr)
-		smap.insert({ "east", Direction::EAST });
+		smap.insert({ "East", Direction::EAST });
 	if (south != nullptr)
-		smap.insert({ "south", Direction::SOUTH });
+		smap.insert({ "South", Direction::SOUTH });
 	if (west != nullptr)
-		smap.insert({ "west", Direction::WEST });
+		smap.insert({ "West", Direction::WEST });
 
 	return smap;
 }

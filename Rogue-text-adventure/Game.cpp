@@ -31,15 +31,23 @@ void Game::start()
 void Game::render()
 {
 	this->setRenderState(RenderState::WAIT);//Reset the render state to wait
-	cout << green <<currentMap->show();
+	cout << green << currentMap->show();
+
+	inputController.printMessage(hero->getCurrentRoom()->getRoomDesc()); // Print Room Desc
+	inputController.printMessage("Exits: ");
+	inputController.printMessage("Enemy NPC: ");
+	inputController.printMessage("What would you like to do?");
+	inputController.printMessage("[Fight:Flee:Search:Rest:Invertory:Map]"); // Response wanted
+	// Action: Flee
+	// -- Seprate function with switch
 }
 
 void Game::createHero()
 {
-	/*string name;
+	string name;
 	cout << "Name your awesome hero! ";
-	cin >> name;*/
-	hero = new Hero("henk");
+	cin >> name;
+	hero = new Hero(name);
 }
 
 void Game::clear()
@@ -56,7 +64,6 @@ void Game::nextLevel()
 void Game::askQuestion()
 {
 	//this->clear();
-	inputController.printMessage(hero->getCurrentRoom()->getRoomDesc()); // Print Room Desc
 	std::map<std::string, Direction> posDirs = hero->getCurrentRoom()->getAllPossibleMoveDirections();
 	Direction d = inputController.getDirectionFromInput(posDirs);
 	if (hero->lookForPassage(d)) {
@@ -79,8 +86,6 @@ void Game::createMap()
 	//set the hero on the map
 	hero->move(currentMap->getStartRoom());
 }
-
-
 
 void Game::setGameState(GameState state)
 {
