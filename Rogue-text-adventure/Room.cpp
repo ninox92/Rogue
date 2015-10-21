@@ -6,7 +6,7 @@
 
 
 Room::Room() : GameObject(){}// Default constructor
-Room::Room( int x, int y, Map* map) : map(map), col(x), row(y), GameObject()
+Room::Room(int id, int x, int y, Map* map) : ID(id), map(map), col(x), row(y), GameObject()
 {
 	int cLevel = map->getLevel();
 	double f1 = std::fmod(map->getMaxLevel(), 2);

@@ -1,9 +1,17 @@
-#include <stack>
+#pragma once
+#include <queue>
 #include <iostream>
+#include <map>
 #include "ConsoleColor.h"
 #include "Map.h"
-#include <queue>
 
+
+using std::queue;
+using std::stack;
+using std::list;
+using std::map;
+using std::string;
+using std::vector;
 
 Map::Map()
 {
@@ -34,11 +42,11 @@ void Map::init()
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++)
 		{
-			this->rooms[y*width + x] = createRoom((x + 1), (y + 1));
+			this->rooms[y*width + x] = createRoom(y*width + x, (x + 1), (y + 1));
 		}
 	}
 	//Set Begin
-	setStartRoom(rooms[97]);//rooms[ptY*width + ptX];
+	setStartRoom(rooms[ptY*width + ptX]);
 	if (this->level == 1) {
 		//Begin level needs Start point
 		getStartRoom()->setType(RoomType::START);
@@ -64,12 +72,12 @@ void Map::init()
 ///Depth first search
 void Map::build() {
 
-	std::stack<Room*> stack;
+	stack<Room*> stack;
 	stack.push(getStartRoom());
 
 	Room* current = stack.top();
 	while (stack.size() > 0) {
-		std::vector<Room*> neighbours = getNeighbours(current->getX()-1, current->getY()-1);
+		vector<Room*> neighbours = getNeighbours(current->getX()-1, current->getY()-1);
 		
 		
 		if (neighbours.size() > 0) {
@@ -103,70 +111,46 @@ void Map::build() {
 
 }
 
-void Map::traverseBSF(std::stack<Room*> s)
+void Map::traverseBSF(stack<Room*> s)
 {
 }
 
 ///Breadth First Search
-void Map::BFS()
+list<int> Map::BFS(Room* begin, Room* end)
 {
-	Room* current = game->getHero()->getCurrentRoom();
-	Room* begin = current;
-	Room* end = getEndRoom();
-	std::queue<Room*> queue;
-	queue.push(current);
+	queue<Room*> q; // Queue for BFS
+	map<int, list<int>> path;
 	
-	while (!queue.empty())
+	q.push(begin);
+	path[begin->getID()].push_back(begin->getID());
+	
+	while (!q.empty())
 	{
-		current = queue.front();
-		current->setBFS(true);
-		queue.pop();
-		if (current == end)
-			break;//base case
+		begin = q.front();
+		begin->setBFS(true);
+		q.pop();
 
-		for (const auto& p : current->getAllPossiblePassages()) {
+
+		for (const auto& p : begin->getAllPossiblePassages()) {
 			Room* next = p.second->GetRoom(p.first);
+			
 			if (!next->isBFS()) {
-				queue.push(next);
-				show();
+				//if not already has been found
+				next->setBFS(true);
+				path[next->getID()] = path[begin->getID()];
+				path[next->getID()].push_back(next->getID());
+				q.push(next);
+			}
+			if (end == next) {
+				return path[end->getID()];
 			}
 		}
 	}
-
-	std::stack<Room*> path;
-	end->setShortest(true);
-	path.push(end);
-	end = begin;
-	begin = current;
-
-	
-	current = path.top();
-	while (path.size() > 0) {
-		for (const auto& p : current->getAllPossiblePassages()) {
-			Room* next = p.second->GetRoom(p.first);
-			int sPassages = next->getAllPossiblePassages().size();
-			if (next->isBFS() && !next->isShortest() && sPassages > 0) {
-				
-				next->setShortest(true);
-				show();
-				path.push(next);
-				current = next;
-			}
-			else if (path.size() > 1) {
-				path.pop();
-				current = path.top();
-			}
-			//next->setBFS(false);
-		}
-		
-	}
-	
-	show();
-
+	return path[end->getID()];
 }
 
 void Map::show() {
-	std::string rowS = "";
+	string rowS = "";
 	int row = 1;
 	for (int y = 0; y < height; y++) {
 		
@@ -194,9 +178,9 @@ void Map::show() {
 	std::cout << "\n\n";
 }
 
-Room* Map::createRoom(int x, int y) {
+Room* Map::createRoom(int id, int x, int y) {
 	std::default_random_engine dre;
-	return new Room(x, y, this);
+	return new Room(id, x, y, this);
 }
 
 
@@ -214,9 +198,9 @@ void Map::setPassages(Room* p1, Room* p2)
 	passages.push_back(p);
 }
 
-std::vector<Room*> Map::getNeighbours(int x, int y)
+vector<Room*> Map::getNeighbours(int x, int y)
 {
-	std::vector<Room*> tmp; 
+	vector<Room*> tmp; 
 	int maxX = y  * width + (width - 1);
 	int minX = y  * width;
 

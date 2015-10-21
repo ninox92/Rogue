@@ -11,6 +11,7 @@ class Map;
 class Room : public GameObject
 {
 private:
+	int ID = -1;
 	Map* map = nullptr;
 	
 
@@ -46,12 +47,13 @@ private:
 public:
 	Room();
 	//Room(int x, int y, Map* map);
-	Room(int x, int y, Map* map);
+	Room(int id, int x, int y, Map* map);
 	virtual ~Room();
 	
 	void setType(RoomType type) { this->type = type; }
 	RoomType const getType() { return this->type; }
 
+	int const getID() { return this->ID; }
 	int const getX() { return this->col; }
 	int const getY() { return this->row; }
 	std::map<std::string, Direction> getAllPossibleMoveDirections();

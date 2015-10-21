@@ -2,11 +2,11 @@ using namespace std;
 #include "Game.h"
 #include "Map.h"
 #include "Hero.h"
-
+#include <list>
 #include <iostream>
 #include "ConsoleColor.h"
 
-
+using std::list;
 
 Game::Game()
 {
@@ -14,7 +14,12 @@ Game::Game()
 	this->nextLevel();
 	this->setGameState(GameState::RUNNING);
 	start();
-	currentMap->BFS();
+	list<int> path = currentMap->BFS(getHero()->getCurrentRoom(), currentMap->getEndRoom());
+	list<int>::iterator it;
+	std::vector<Room*> rooms = currentMap->getRooms();
+	for (it = path.begin(); it != path.end(); ++it)
+		rooms[(*it)]->setShortest(true);
+	
 	this->setRenderState(RenderState::RENDER);//Render for one cycle
 }
 
@@ -73,7 +78,7 @@ void Game::askQuestion()
 
 void Game::createMap()
 {
-	Map* map = new Map(10, 10, this);
+	Map* map = new Map(lxSize, lySize, this);
 	map->setLevel(this->level);
 	map->create();
 	maps.push_back(map);

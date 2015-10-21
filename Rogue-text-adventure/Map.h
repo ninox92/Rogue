@@ -1,10 +1,10 @@
 #pragma once
-#include "Room.h"
+#include <list>
 #include <random>
 #include <vector>
 #include <stack>
 #include "Game.h"
-
+#include "Room.h"
 
 class Map
 {
@@ -26,7 +26,7 @@ private:
 	Room* start = nullptr;
 	Room* end = nullptr;
 
-	Room* createRoom(int x, int y);
+	Room* createRoom(int id, int x, int y);
 	void setPassages(Room* p1, Room* p2);
 	std::vector<Room*> getNeighbours(int x, int y);
 	Direction getDirection(Room& cur, Room& next);
@@ -40,15 +40,18 @@ public:
 	Map(int width, int height, Game* game);// Preferred Constructor
 	~Map();
 
-	void BFS();
+	std::list<int> BFS(Room* begin, Room* end);
 	void create();
 	void show();
 
+	int getWidth() const { return this->width; }
+	int getHeight() const { return this->height; }
 	int size() const { return width * height; }
 	int getLevel() const { return this->level; }
 	int getMaxLevel() const { return this->game->getMaxLevel(); }
 	Room* const getStartRoom() { return this->start; }
 	Room* const getEndRoom() { return this->end; }
+	std::vector<Room*> const getRooms() { return this->rooms; }
 
 	void setLevel(int l) { this->level = l; }
 	void setStartRoom(Room* s) { this->start = s; }
