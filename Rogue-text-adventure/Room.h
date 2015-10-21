@@ -34,7 +34,7 @@ private:
 	
 	bool _hasHero = false;
 	bool _isClean = false;
-	bool _isBFS = false;
+	bool _isReached = false;
 	bool _isVisited = false;
 	bool _isShortest = false;
 
@@ -56,6 +56,8 @@ public:
 	int const getID() { return this->ID; }
 	int const getX() { return this->col; }
 	int const getY() { return this->row; }
+	int const getMapLevel();
+	int const getEnemiesCount() { return this->enemiesCount; }
 	std::map<std::string, Direction> getAllPossibleMoveDirections();
 	std::map<Direction, Passage*> getAllPossiblePassages();
 	Passage* const getPassage(Direction d);
@@ -64,19 +66,24 @@ public:
 	bool const isClean() { return this->_isClean; }// Is the room clean
 	bool const isVisited() { return this->_isVisited; } // is the room explored
 	bool const isShortest() { return this->_isShortest; }
-	bool const isBFS() { return this->_isBFS; }
+	bool const isReached() { return this->_isReached; }
 	bool const hasPassage(Direction d);
 	void visit(); // visit the room
 
 	std::string displayHorizontal();
 	std::string displayVertical();
 
-	void setBFS(bool b) { this->_isBFS = b; }
+	void setReached(bool b) { this->_isReached = b; }
 	void setHero(bool h) { this->_hasHero = h; }
 	void setShortest(bool s) { this->_isShortest = s; }
 	void setPassage(Direction dir, Passage* p);
-	
 
+	
+	
+	void reset() {
+		setReached(false);
+		setShortest(false);
+	}
 
 };
 

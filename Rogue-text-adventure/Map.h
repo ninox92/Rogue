@@ -34,13 +34,18 @@ private:
 
 	void init();
 	void build();
-	void traverseBSF(std::stack<Room*> s);
+	std::list<int> BFS(Room* begin, Room* end);
+	void kruskals();
+	int findset(int x, int * parent);
+	void printKruskals();
+	int minKey(Room* c);
+	void resetRooms();
 public:
 	Map();//Default constructor
 	Map(int width, int height, Game* game);// Preferred Constructor
 	~Map();
 
-	std::list<int> BFS(Room* begin, Room* end);
+	
 	void create();
 	void show();
 
@@ -57,6 +62,6 @@ public:
 	void setStartRoom(Room* s) { this->start = s; }
 	void setEndRoom(Room* e) { this->end = e; }
 	
-
+	int talisman();
 };
 

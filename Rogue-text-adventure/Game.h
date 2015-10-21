@@ -16,8 +16,8 @@ private:
 	std::vector<Map*> maps;
 	int level = 0;
 	int maxLevel = 10;
-	int lxSize = 10;//level X size
-	int lySize = 10;//Level Y size
+	int lxSize = 3;//level X size
+	int lySize = 3;//Level Y size
 	Hero* hero = nullptr;
 	
 	InputController inputController;

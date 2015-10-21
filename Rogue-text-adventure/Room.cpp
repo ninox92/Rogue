@@ -67,6 +67,12 @@ void Room::setPassage(Direction dir, Passage* p)
 	}
 }
 
+int const Room::getMapLevel()
+{
+	if (map == nullptr) return -1;
+	return map->getLevel();
+}
+
 std::map<std::string, Direction> Room::getAllPossibleMoveDirections()
 {
 	std::map<std::string, Direction> smap;

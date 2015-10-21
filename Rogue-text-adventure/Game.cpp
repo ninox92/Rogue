@@ -13,12 +13,10 @@ Game::Game()
 	this->createHero();
 	this->nextLevel();
 	this->setGameState(GameState::RUNNING);
+	
+	//this->currentMap->talisman(); 
 	start();
-	list<int> path = currentMap->BFS(getHero()->getCurrentRoom(), currentMap->getEndRoom());
-	list<int>::iterator it;
-	std::vector<Room*> rooms = currentMap->getRooms();
-	for (it = path.begin(); it != path.end(); ++it)
-		rooms[(*it)]->setShortest(true);
+	
 	
 	this->setRenderState(RenderState::RENDER);//Render for one cycle
 }
@@ -78,6 +76,7 @@ void Game::askQuestion()
 
 void Game::createMap()
 {
+	
 	Map* map = new Map(lxSize, lySize, this);
 	map->setLevel(this->level);
 	map->create();
@@ -86,6 +85,7 @@ void Game::createMap()
 
 	//set the hero on the map
 	hero->move(currentMap->getStartRoom());
+	level++;
 }
 
 
