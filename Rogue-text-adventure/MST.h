@@ -4,6 +4,7 @@
 #define edge std::pair< int, int >
 
 class Room;
+class Map;
 
 class MST
 {
@@ -17,6 +18,7 @@ private:
 	//u=src
 	//v=dest
 	// ( w (u, v) ) format
+	std::vector< edge > EDGES;
 	std::vector< std::pair< int, edge > > GRAPH, _MST;
 
 
@@ -26,10 +28,10 @@ public:
 	MST();
 	~MST();
 
-	void Kruskals(std::vector<Room*> rooms);
-
+	void Kruskals(Map& map);
+	std::vector< edge > GetNonMSTEdges(Map& map);
 	void Print();
-	void Display(std::vector<Room*> rooms);
+	void Display(Map& map);
 	std::vector< std::pair< int, edge > > const GetMST() { return _MST; }
 	int const Size() { return this->total; }
 

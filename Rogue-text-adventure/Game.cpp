@@ -13,7 +13,7 @@ Game::Game()
 	this->nextLevel();
 	this->setGameState(GameState::RUNNING);
 	
-	//this->currentMap->talisman(); 
+	this->currentMap->talisman(); 
 	start();
 	
 	

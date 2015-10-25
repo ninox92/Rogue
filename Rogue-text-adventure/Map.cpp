@@ -95,9 +95,7 @@ void Map::build() {
 			for (int i = 0; i < size; i++) {
 				r = neighbours.at(i);
 				setPassages(current, r);
-				show();
-				
-				
+				//show();
 			}
 			if (r != nullptr) {
 				r->setReached(true);
@@ -184,17 +182,19 @@ list<int> Map::BFS(Room* begin, Room* end)
 
 
 		for (const auto& p : begin->getAllPossiblePassages()) {
-			Room* next = p.second->GetRoom(p.first);
-			
-			if (!next->isReached()) {
-				//if not already has been found
-				next->setReached(true);
-				path[next->getID()] = path[begin->getID()];
-				path[next->getID()].push_back(next->getID());
-				q.push(next);
-			}
-			if (end == next) {
-				return path[end->getID()];
+			if (p.second->IsCollapsed() == false) {
+				Room* next = p.second->GetRoom(p.first);
+
+				if (!next->isReached()) {
+					//if not already has been found
+					next->setReached(true);
+					path[next->getID()] = path[begin->getID()];
+					path[next->getID()].push_back(next->getID());
+					q.push(next);
+				}
+				if (end == next) {
+					return path[end->getID()];
+				}
 			}
 		}
 	}
@@ -233,10 +233,34 @@ void Map::show() {
 
 void Map::collapseByExplosion()
 {
-	this->resetRooms();
-	this->mst.Kruskals(this->rooms);
+	this->mst.Kruskals(*this);
 	this->mst.Print();
+	//this->mst.Display(*this);
+
+	std::vector<edge> nonMST = this->mst.GetNonMSTEdges(*this);
+
+	int max = rooms.size() < 15 ? rooms.size()/2 : 15;
+	int min = rooms.size() < 10 ? 1 : 10;
+	std::uniform_int_distribution<int> d{ min, max };
+	std::uniform_int_distribution<int> dd{ 0, (int)nonMST.size()-1 };
+	int size = d(dre), count=0;
+	int u, v;
+
 	//Destroy 10-15 Passages
+	while (count < size) {
+		edge pair = nonMST[dd(dre)];
+		u = pair.first;
+		v = pair.second;
+
+		Room* ur = rooms.at(u);
+		Room* uv = rooms.at(v);
+
+		Direction d = getDirection(*ur, *uv);
+		ur->collapsePassage(d);
+		count++;
+		show();
+	}
+	
 }
 
 //Find shortest path in the maze
