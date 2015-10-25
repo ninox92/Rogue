@@ -7,7 +7,8 @@ enum class Actions
 	SEARCH,
 	REST,
 	INVERTORY,
-	MAP
+	MAP,
+	STATS
 };
 
 #endif

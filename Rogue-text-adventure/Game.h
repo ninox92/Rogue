@@ -37,7 +37,6 @@ public:
 	~Game();
 	
 	void render();
-	void askQuestion();
 	
 	Hero* getHero() { return this->hero; }
 	GameState const getGameState();

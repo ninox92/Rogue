@@ -1,5 +1,6 @@
 #include "InputController.h"
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -14,7 +15,7 @@ InputController::~InputController()
 {
 }
 
-void InputController::printMessage(std::string s)
+void InputController::printMessage(string s)
 {
 	cout << s << endl << endl;
 }
@@ -35,8 +36,9 @@ Direction InputController::getDirectionFromInput(std::map<std::string, Direction
 	dirs = dirs.substr(0, dirs.size() - 1);
 	dirs += "]";
 	
-	cout << "Which way should we explore?" << endl;
-	cout << dirs << endl;
+	cout << "Which way should we explore?" << endl << endl;
+	cout << dirs << endl << endl;
+	cout << "Direction: ";
 	string s_dir = WaitAndGetInput();
 	bool exists = stringDirMap.find(s_dir) != stringDirMap.end();
 	if (!exists) getDirectionFromInput(dirMap);//recursive call if not found
