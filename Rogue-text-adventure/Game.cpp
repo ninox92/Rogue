@@ -1,17 +1,23 @@
 using namespace std;
 #include "Game.h"
+#include <list>
 #include <iostream>
 #include "ConsoleColor.h"
+#include "Hero.h"
+#include "Map.h"
+using std::list;
 
-
-std::random_device dev;
-std::default_random_engine dre{ dev() };
 Game::Game()
 {
 	this->createHero();
 	this->nextLevel();
 	this->setGameState(GameState::RUNNING);
+	
+	//this->currentMap->talisman(); 
 	start();
+	
+	
+	this->setRenderState(RenderState::RENDER);//Render for one cycle
 }
 
 
@@ -23,7 +29,7 @@ Game::~Game()
 void Game::start()
 {
 	cout << "Are you ready for an adventure " + hero->getName() + "?" << endl;
-	cout << "You have landed inside a dungeon!" << endl;
+	cout << "We have landed inside a dungeon!" << endl;
 	cout << "We must find our way out alive." << endl;
 	this->setRenderState(RenderState::RENDER);
 }
@@ -31,7 +37,7 @@ void Game::start()
 void Game::render()
 {
 	this->setRenderState(RenderState::WAIT);//Reset the render state to wait
-	cout << green <<currentMap->show();
+	currentMap->show();
 }
 
 void Game::createHero()
@@ -56,7 +62,7 @@ void Game::nextLevel()
 void Game::askQuestion()
 {
 	//this->clear();
-	std::map<std::string, Direction> posDirs = hero->getCurrentRoom()->getAllPossibleMoveDirections();
+	map<string, Direction> posDirs = hero->getCurrentRoom()->getAllPossibleMoveDirections();
 	Direction d = inputController.getDirectionFromInput(posDirs);
 	if (hero->lookForPassage(d)) {
 		hero->move(d);
@@ -69,7 +75,8 @@ void Game::askQuestion()
 
 void Game::createMap()
 {
-	Map* map = new Map(10, 10, dre);
+	
+	Map* map = new Map(lxSize, lySize, this);
 	map->setLevel(this->level);
 	map->create();
 	maps.push_back(map);
@@ -77,6 +84,7 @@ void Game::createMap()
 
 	//set the hero on the map
 	hero->move(currentMap->getStartRoom());
+	level++;
 }
 
 

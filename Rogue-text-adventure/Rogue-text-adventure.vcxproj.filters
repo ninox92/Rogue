@@ -34,11 +34,14 @@
     <Filter Include="Header Files\Controllers">
       <UniqueIdentifier>{07474f39-ed17-4235-8dd5-8b8f88bd01f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{bc8dc111-957d-4848-88a5-42c6d1f2f4bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{400e1c67-eb58-4207-b583-5608d0939afa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -72,7 +75,13 @@
     <ClInclude Include="Passage.h">
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="ConsoleColor.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="MST.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -124,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="RoomType.cpp">
       <Filter>Source Files\Enums</Filter>
+    </ClCompile>
+    <ClCompile Include="MST.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
