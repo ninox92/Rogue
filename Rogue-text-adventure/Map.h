@@ -6,6 +6,8 @@
 #include "Game.h"
 #include "Room.h"
 #include "MST.h"
+#include "Dijkstras.h"
+
 
 class Map
 {
@@ -24,6 +26,7 @@ private:
 	std::vector<Passage*> passages;
 	std::vector<Room*> rooms;
 	MST mst;
+	Dijkstras dijkstras;
 
 	Room* start = nullptr;
 	Room* end = nullptr;
@@ -55,6 +58,8 @@ public:
 
 	Room* const getStartRoom() { return this->start; }
 	Room* const getEndRoom() { return this->end; }
+	Room* const getRoom(int x, int y);
+	Room* const getRoom(int ID);
 
 	std::vector<Room*> const getRooms() { return this->rooms; }
 	Direction getDirection(Room& cur, Room& next);

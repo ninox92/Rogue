@@ -30,7 +30,10 @@ Map::~Map()
 void Map::create() {
 	this->init();
 	this->build();
-	this->collapseByExplosion();
+	
+	dijkstras.Compute(*this, getStartRoom()->getID(), getEndRoom()->getID());
+	
+	//this->collapseByExplosion();
 	//this->prims(getStartRoom(), getEndRoom());
 }
 
@@ -209,7 +212,7 @@ void Map::show() {
 		
 		for (int x = 0; x < width; x++)
 		{
-			Room* r = this->rooms[y*width + x];
+			Room* r = getRoom(x, y);
 			if (row == (width+1)) {
 				std::cout << "\n" + rowS + "\n";
 				row = 1;
@@ -345,6 +348,16 @@ vector<Room*> Map::getNeighbours(int x, int y)
 	return tmp;
 }
 
+
+Room* const Map::getRoom(int x, int y)
+{
+	return this->rooms[y*width + x];
+}
+
+Room * const Map::getRoom(int ID)
+{
+	return this->rooms[ID];
+}
 
 Direction Map::getDirection(Room& cur, Room& next) {
 	Direction d = Direction::NONE;
