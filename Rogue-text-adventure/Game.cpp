@@ -1,11 +1,11 @@
-using namespace std;
 #include "Game.h"
 #include <iostream>
 #include "ConsoleColor.h"
 
+using namespace std;
 
-std::random_device dev;
-std::default_random_engine dre{ dev() };
+random_device dev;
+default_random_engine dre{ dev() };
 Game::Game()
 {
 	this->createHero();
@@ -64,7 +64,7 @@ void Game::nextLevel()
 void Game::askQuestion()
 {
 	//this->clear();
-	std::map<std::string, Direction> posDirs = hero->getCurrentRoom()->getAllPossibleMoveDirections();
+	map<string, Direction> posDirs = hero->getCurrentRoom()->getAllPossibleMoveDirections();
 	Direction d = inputController.getDirectionFromInput(posDirs);
 	if (hero->lookForPassage(d)) {
 		hero->move(d);

@@ -15,7 +15,7 @@ class RoomDescription {
 	}
 
 	static std::string getRoomSize() {
-		RoomSize s = RoomSize(rand() % RoomSize::xLarge);
+		RoomSize s = RoomSize(rand() % xLarge);
 		switch (s) {
 			case xSmall:	return "really small";
 			case Small:		return "small";
@@ -27,7 +27,7 @@ class RoomDescription {
 	}
 
 	static std::string getRoomClean() {
-		RoomClean s = RoomClean(rand() % RoomClean::Dirty);
+		RoomClean s = RoomClean(rand() % Dirty);
 		switch (s) {
 			case Clean:		return "clean";
 			case sDirty:	return "semi-dirty";
@@ -37,7 +37,7 @@ class RoomDescription {
 	}
 
 	static std::string getRoomLayout() {
-		RoomLayout s = RoomLayout(rand() % RoomLayout::Empty);
+		RoomLayout s = RoomLayout(rand() % Empty);
 		switch (s) {
 			case Table:		return "room with a table and four chairs in it.";
 			case Bed:		return "room with a bed in the corner.";
@@ -47,7 +47,7 @@ class RoomDescription {
 	}
 
 	static std::string getRoomLight() {
-		RoomLight s = RoomLight(rand() % RoomLight::FirePlace);
+		RoomLight s = RoomLight(rand() % FirePlace);
 		switch (s) {
 			case Candle:	return "candle";
 			case Torch:		return "torch";
