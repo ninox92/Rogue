@@ -1,18 +1,24 @@
-#include "Map.h"
-#include "Hero.h"
+#pragma once
+#include <vector>
 #include "GameState.cpp"
 #include "RenderState.cpp"
 #include "GameController.h"
 #include "InputController.h"
+#include <random>
 #include <stdlib.h>
-#pragma once
+
+class Map;
+class Hero;
 
 class Game
 {
 private:
+	Map* currentMap = nullptr;
 	std::vector<Map*> maps;
 	int level = 0;
-	Map* currentMap = nullptr;
+	int maxLevel = 10;
+	int lxSize = 10;//level X size
+	int lySize = 10;//Level Y size
 	Hero* hero = nullptr;
 	GameController gameController;
 	InputController inputController;
@@ -20,7 +26,6 @@ private:
 	GameState gameState = GameState::INIT;
 	RenderState renderState = RenderState::WAIT;
 	
-
 	void start();
 	void clear();
 	void nextLevel();
@@ -34,11 +39,12 @@ public:
 	void render();
 	void askQuestion();
 	
+	Hero* getHero() { return this->hero; }
 	GameState const getGameState();
 	RenderState const getRenderState();
+	int const getMaxLevel() { return this->maxLevel; }
 
 	void setGameState(GameState state);
 	void setRenderState(RenderState state);
-	
 };
 

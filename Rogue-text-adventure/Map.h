@@ -1,12 +1,19 @@
 #pragma once
-#include "Room.h"
+#include <list>
 #include <random>
 #include <vector>
+#include <stack>
+#include "Game.h"
+#include "Room.h"
+#include "MST.h"
 
 class Map
 {
 private:
-	std::default_random_engine dre;
+	Game* game = nullptr;
+
+	std::random_device dev;
+	std::default_random_engine dre{ dev() };
 	std::uniform_int_distribution<int> dirDist{ 1,4 };
 	
 	int level = 0;
@@ -16,11 +23,12 @@ private:
 
 	std::vector<Passage*> passages;
 	std::vector<Room*> rooms;
+	MST mst;
 
 	Room* start = nullptr;
 	Room* end = nullptr;
 
-	Room* createRoom(int x, int y);
+	Room* createRoom(int id, int x, int y);
 	void setPassages(Room* p1, Room* p2);
 	std::vector<Room*> getNeighbours(int x, int y);
 	Direction getDirection(Room& cur, Room& next);
@@ -28,23 +36,33 @@ private:
 
 	void init();
 	void build();
+	std::list<int> BFS(Room* begin, Room* end);
+	
+	int minKey(Room* c);
+	void resetRooms();
 public:
 	Map();//Default constructor
-	Map(int width, int height, std::default_random_engine dre);// Preferred Constructor
+	Map(int width, int height, Game* game);// Preferred Constructor
 	~Map();
 
+	
 	void create();
+	void show();
 
+	int getWidth() const { return this->width; }
+	int getHeight() const { return this->height; }
 	int size() const { return width * height; }
 	int getLevel() const { return this->level; }
+	int getMaxLevel() const { return this->game->getMaxLevel(); }
 	Room* const getStartRoom() { return this->start; }
 	Room* const getEndRoom() { return this->end; }
+	std::vector<Room*> const getRooms() { return this->rooms; }
 
 	void setLevel(int l) { this->level = l; }
 	void setStartRoom(Room* s) { this->start = s; }
 	void setEndRoom(Room* e) { this->end = e; }
-
-
-	std::string show();
+	
+	void collapseByExplosion();
+	int talisman();
 };
 

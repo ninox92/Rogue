@@ -155,6 +155,7 @@
     <ClInclude Include="InputController.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MST.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Passage.h" />
     <ClInclude Include="Room.h" />
@@ -174,6 +175,7 @@
     <ClCompile Include="InputController.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MST.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Passage.cpp" />
     <ClCompile Include="RenderState.cpp" />

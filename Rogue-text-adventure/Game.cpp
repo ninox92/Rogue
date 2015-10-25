@@ -1,17 +1,27 @@
 #include "Game.h"
+#include <list>
 #include <iostream>
 #include "ConsoleColor.h"
+#include "Hero.h"
+#include "Map.h"
 
+using std::list;
 using namespace std;
 
 random_device dev;
 default_random_engine dre{ dev() };
+
 Game::Game()
 {
 	this->createHero();
 	this->nextLevel();
 	this->setGameState(GameState::RUNNING);
+	
+	//this->currentMap->talisman(); 
 	start();
+	
+	
+	this->setRenderState(RenderState::RENDER);//Render for one cycle
 }
 
 
@@ -22,16 +32,19 @@ Game::~Game()
 
 void Game::start()
 {
+	clear();
 	cout << "Are you ready for an adventure " + hero->getName() + "?" << endl;
-	cout << "You have landed inside a dungeon!" << endl;
+	cout << "We have landed inside a dungeon!" << endl;
 	cout << "We must find our way out alive." << endl;
+	cout << "" << endl;
 	this->setRenderState(RenderState::RENDER);
 }
 
 void Game::render()
 {
 	this->setRenderState(RenderState::WAIT);//Reset the render state to wait
-	cout << green << currentMap->show();
+	//cout << green << currentMap->show();
+	currentMap->show();
 
 	inputController.printMessage(hero->getCurrentRoom()->getRoomDesc()); // Print Room Desc
 	inputController.printMessage("Exits: ");
@@ -77,7 +90,8 @@ void Game::askQuestion()
 
 void Game::createMap()
 {
-	Map* map = new Map(10, 10, dre);
+	
+	Map* map = new Map(lxSize, lySize, this);
 	map->setLevel(this->level);
 	map->create();
 	maps.push_back(map);
@@ -85,6 +99,7 @@ void Game::createMap()
 
 	//set the hero on the map
 	hero->move(currentMap->getStartRoom());
+	level++;
 }
 
 void Game::setGameState(GameState state)

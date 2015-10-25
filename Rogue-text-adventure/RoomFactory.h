@@ -11,5 +11,5 @@ class RoomFactory
 			static RoomFactory r;
 			return &r;
 		}
-		static Room* createRoom(int x, int y);
+		static Room* createRoom(int id, int x, int y, Map* m);
 };

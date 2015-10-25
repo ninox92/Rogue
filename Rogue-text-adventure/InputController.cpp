@@ -35,7 +35,7 @@ Direction InputController::getDirectionFromInput(std::map<std::string, Direction
 	dirs = dirs.substr(0, dirs.size() - 1);
 	dirs += "]";
 	
-	cout << "Wich way should we explore?" << endl;
+	cout << "Which way should we explore?" << endl;
 	cout << dirs << endl;
 	string s_dir = WaitAndGetInput();
 	bool exists = stringDirMap.find(s_dir) != stringDirMap.end();
