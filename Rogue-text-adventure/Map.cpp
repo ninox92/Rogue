@@ -1,10 +1,10 @@
 #pragma once
 #include <queue>
 #include <iostream>
-#include <algorithm>
 #include <map>
 #include "ConsoleColor.h"
 #include "Map.h"
+#include "Room.h"
 
 
 using std::queue;
@@ -13,7 +13,6 @@ using std::list;
 using std::map;
 using std::string;
 using std::vector;
-using std::printf;
 
 Map::Map()
 {
@@ -31,8 +30,7 @@ Map::~Map()
 void Map::create() {
 	this->init();
 	this->build();
-	this->kruskals();
-	this->printKruskals();
+	this->collapseByExplosion();
 	//this->prims(getStartRoom(), getEndRoom());
 }
 
@@ -79,16 +77,43 @@ void Map::init()
 ///Depth first search
 void Map::build() {
 	// link all the rooms togehter
-	/*for (auto& r : rooms) {
-		vector<Room*> neighbours = getNeighbours(r->getX() - 1, r->getY() - 1);
-		for (auto& n : neighbours) {
-			setPassages(r, n);
-			//stack.push(r);
-			//n->setReached(true);
-			n->visit();
-		}
-	}*/
 	
+	stack<Room*> stack;
+	stack.push(getStartRoom());
+	Room* current = stack.top();
+	while (stack.size() > 0) {
+		vector<Room*> neighbours = getNeighbours(current->getX() - 1, current->getY() - 1);
+
+		if (neighbours.size() > 0) {
+			Room* r = nullptr;
+
+			std::uniform_int_distribution<int> neighDist{ 0, (int)neighbours.size() };
+			int size = neighDist(dre);
+			
+			if (size == 0) { size = 1; }
+			//create a passage between the neighbour and current room
+			for (int i = 0; i < size; i++) {
+				r = neighbours.at(i);
+				setPassages(current, r);
+				show();
+				
+				
+			}
+			if (r != nullptr) {
+				r->setReached(true);
+				r->visit();
+				stack.push(r);
+				current = r;
+			}			
+		}
+		else if (stack.size() > 0) {
+			stack.pop();
+			if(stack.size() != 0)
+				current = stack.top();
+		}
+	}
+
+	/*
 	stack<Room*> stack;
 	stack.push(getStartRoom());
 	Room* current = stack.top();
@@ -122,7 +147,7 @@ void Map::build() {
 			return;
 		}
 		
-	}
+	}*/
 	show();
 }
 
@@ -140,34 +165,6 @@ int Map::minKey(Room* c)
 	return min_index;
 }
 
-/*
-void Map::prims(Room* begin, Room* end)
-{//https://www.youtube.com/watch?v=YyLaRffCdk4
-	resetRooms();
-	
-	list<int> spanningTree;
-	map<int, map<int, int>> reached;//<RoomID, map<RoomIDto, weight>>
-	rooms[0]->setReached(true);
-	spanningTree.push_back(rooms[0]->getID());
-
-	for (int k = 0; k < rooms.size() -1; k++)
-	{
-		
-		Room* current = rooms[k];
-		int swID = this->minKey(current);//Smalles weight Room id
-		
-		if (swID != -1) {
-			spanningTree.push_back(swID);
-			rooms[swID]->setReached(true);
-			//rooms[swID]->setShortest(true);
-			show();
-		}
-		
-	}
-
-	show();
-}
-*/
 
 ///Breadth First Search
 list<int> Map::BFS(Room* begin, Room* end)
@@ -203,74 +200,7 @@ list<int> Map::BFS(Room* begin, Room* end)
 	}
 	return path[end->getID()];
 }
-#define edge std::pair< int, int >
-// ( w (u, v) ) format
-//w=weight
-//u=src
-//v=dest
-vector< std::pair< int, edge > > GRAPH, MST;
-int parent[1000], total, N, E;
-//N = Nodes
-//E = Edges
-void Map::kruskals()
-{//http://zobayer.blogspot.nl/2010/01/kruskals-algorithm-in-c.html
-	resetRooms();
-	int w, u, v;
-	N = rooms.size();
-	
-	for (auto& r : rooms) {
-		u = r->getID();
-		parent[u] = u;
-		for (const auto& p : r->getAllPossiblePassages())
-		{
-			Room* next = p.second->GetRoom(p.first);
-			w = next->getEnemiesCount() + 1;
-			v = next->getID();
-			E++;
-			if (next->isReached() == false) {
-				GRAPH.push_back(std::pair< int, edge >(w, edge(u, v)));
-				next->setReached(true);
-			}
-		}
-	}
 
-
-	int i, pu, pv;
-	sort(GRAPH.begin(), GRAPH.end()); // increasing weight
-	for (i = total = 0; i<N; i++)
-	{
-		pu = findset(GRAPH[i].second.first, parent);
-		pv = findset(GRAPH[i].second.second, parent);
-		if (pu != pv)
-		{
-			MST.push_back(GRAPH[i]); // add to tree
-			total += GRAPH[i].first; // add edge cost
-			rooms[pv]->setShortest(true);
-			parent[pu] = parent[pv]; // link
-			show();
-		}
-
-	}
-}
-int Map::findset(int x, int *parent)
-{
-	if (x != parent[x])
-		parent[x] = findset(parent[x], parent);
-	return parent[x];
-}
-void Map::printKruskals()
-{
-	int i, sz;
-	// this is just style...
-	sz = MST.size();
-	for (i = 0; i<sz; i++)
-	{
-		printf("( %d", MST[i].second.first);
-		printf(", %d )", MST[i].second.second);
-		printf(": %d\n", MST[i].first);
-	}
-	printf("Minimum cost: %d\n", total);
-}
 
 void Map::show() {
 	string rowS = "";
@@ -300,12 +230,23 @@ void Map::show() {
 	std::cout << "\n\n";
 }
 
+
+void Map::collapseByExplosion()
+{
+	this->resetRooms();
+	this->mst.Kruskals(this->rooms);
+	this->mst.Print();
+	//Destroy 10-15 Passages
+}
+
 //Find shortest path in the maze
 //returns amount of steps hero needs to make until the stairs down
 int Map::talisman()
 {
 	int steps = 0;
 	Hero* h = game->getHero();
+	if (h == nullptr) return -1;
+	resetRooms();
 	if (h->getCurrentRoom()->getMapLevel() != level) return -1;
 
 	list<int> path = BFS(h->getCurrentRoom(), getEndRoom());

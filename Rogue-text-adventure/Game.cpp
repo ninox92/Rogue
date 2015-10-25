@@ -1,11 +1,10 @@
 using namespace std;
 #include "Game.h"
-#include "Map.h"
-#include "Hero.h"
 #include <list>
 #include <iostream>
 #include "ConsoleColor.h"
-
+#include "Hero.h"
+#include "Map.h"
 using std::list;
 
 Game::Game()
@@ -30,7 +29,7 @@ Game::~Game()
 void Game::start()
 {
 	cout << "Are you ready for an adventure " + hero->getName() + "?" << endl;
-	cout << "You have landed inside a dungeon!" << endl;
+	cout << "We have landed inside a dungeon!" << endl;
 	cout << "We must find our way out alive." << endl;
 	this->setRenderState(RenderState::RENDER);
 }

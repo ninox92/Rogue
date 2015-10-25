@@ -42,8 +42,8 @@ void Room::visit() {
 }
 
 std::string Room::displayHorizontal() {
-	std::string right = (hasPassage(Direction::EAST) ? "-" : " ");
-	std::string left = (hasPassage(Direction::WEST) ? "-" : " ");
+	std::string right = (hasPassage(Direction::EAST) ? getPassage(Direction::EAST)->Display() : " ");
+	std::string left = (hasPassage(Direction::WEST) ? getPassage(Direction::WEST)->Display() : " ");
 	if (type == RoomType::START || type == RoomType::END || type == RoomType::LATTER_UP || type == RoomType::LATTER_DOWN)
 		return  left + getToken() + right;
 	if (!this->_isVisited) return left + "." + right;
@@ -53,8 +53,7 @@ std::string Room::displayHorizontal() {
 
 std::string Room::displayVertical()
 {
-	std::string bot = (hasPassage(Direction::SOUTH) ? " | " : "   ");
-	return bot;
+	return (hasPassage(Direction::SOUTH) ? " "+getPassage(Direction::SOUTH)->Display()+" " : "   ");
 }
 
 void Room::setPassage(Direction dir, Passage* p)

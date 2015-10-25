@@ -5,6 +5,7 @@
 #include <stack>
 #include "Game.h"
 #include "Room.h"
+#include "MST.h"
 
 class Map
 {
@@ -22,6 +23,7 @@ private:
 
 	std::vector<Passage*> passages;
 	std::vector<Room*> rooms;
+	MST mst;
 
 	Room* start = nullptr;
 	Room* end = nullptr;
@@ -35,9 +37,7 @@ private:
 	void init();
 	void build();
 	std::list<int> BFS(Room* begin, Room* end);
-	void kruskals();
-	int findset(int x, int * parent);
-	void printKruskals();
+	
 	int minKey(Room* c);
 	void resetRooms();
 public:
@@ -62,6 +62,7 @@ public:
 	void setStartRoom(Room* s) { this->start = s; }
 	void setEndRoom(Room* e) { this->end = e; }
 	
+	void collapseByExplosion();
 	int talisman();
 };
 

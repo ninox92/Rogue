@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <string>
 #include "Direction.cpp"
 
 class Room;
@@ -8,6 +9,8 @@ class Passage
 {
 private:
 	std::map<Direction, Room*> map;
+	bool collapsed = false;
+
 public:
 	Passage();//Default Constructor
 	~Passage();
@@ -20,5 +23,10 @@ public:
 	void Add(Room* r, Direction d);
 	bool Exists(Direction d);
 	Room* GetRoom(Direction d);
+
+	bool const IsCollapsed() { return this->collapsed; }
+	void Collapse() { this->collapsed = true; }
+
+	std::string Display();
 };
 
