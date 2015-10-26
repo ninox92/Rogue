@@ -18,42 +18,28 @@ FileController::~FileController()
 void FileController::readFile()
 {
 	ifstream input_file{ textfile };
-	string line;
-	string nextLine;
+	string line, nextLine;
 
 	while (getline(input_file, line)) {
-		
-		// Room Description
-		if(line == "#roomSize" || line == "#roomClean" || line == "#roomLayout" || line == "#roomLight")
+		if(line[0] == '#')
 		{
 			string id = line.erase(0, 1);
 			getline(input_file, nextLine);
-			vector<string> v = split(nextLine, ';');
-			roomDescription[id] = v;
+			descriptions[id] = split(nextLine, ';');;
 		}
 	}
 }
 
-string FileController::roomDescriptionToString()
+string FileController::getRandomDesc(string id)
 {
-	string roomSize, roomClean, roomLayout, roomLight;
-	
-	for (map<string, vector<string>>::iterator i = roomDescription.begin(); i != roomDescription.end(); ++i)
-	{
-		string id = i->first;
-		int randomIndex = rand() % i->second.size();
+	int i = rand() % descriptions.find(id)->second.size();
+	return descriptions.find(id)->second[i];
+}
 
-		if(id == "roomSize") 
-			roomSize = i->second[randomIndex];
-		if (id == "roomClean")
-			roomClean = i->second[randomIndex];
-		if (id == "roomLayout")
-			roomLayout = i->second[randomIndex];
-		if (id == "roomLight")
-			roomLight = i->second[randomIndex];
-	}
-	
-	return "Room Description: It is a " + roomSize + " " + roomClean + " " + roomLayout + " The room is lit by a " + roomLight + ".";
+string FileController::roomDescriptionToString()
+{	
+	return "Room Description: It is a " + getRandomDesc("roomSize") + " " + getRandomDesc("roomClean") 
+			+ " " + getRandomDesc("roomLayout") + " The room is lit by a " + getRandomDesc("roomLight") + ".";
 }
 
 vector<string>& FileController::split(const string &s, char delim, vector<string> &elems) {

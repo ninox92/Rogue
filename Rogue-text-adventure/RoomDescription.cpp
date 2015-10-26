@@ -31,7 +31,7 @@ class RoomDescription {
 		switch (s) {
 			case Clean:		return "clean";
 			case sDirty:	return "semi-dirty";
-			case Dirty:		return "medium";
+			case Dirty:		return "dirty";
 			default:		return "";
 		}
 	}

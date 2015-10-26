@@ -3,19 +3,23 @@
 #include <map>
 #include <vector>
 
-using namespace std;
-
+using std::string;
+using std::map;
+using std::vector;
 
 class FileController
 {
 	private:
 		const string textfile { "file.txt" };
-		map<string, vector<string>> roomDescription;
+		map<string, vector<string>> descriptions;
 	public:
 		FileController();
 		~FileController();
 
 		void readFile();
+
+		string getRandomDesc(string id);
+
 
 		string roomDescriptionToString();
 
