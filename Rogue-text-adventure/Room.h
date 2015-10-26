@@ -79,7 +79,8 @@ public:
 	void setPassage(Direction dir, Passage* p);
 
 	std::string getRoomDesc() { return this->roomDesc; }
-	void setRoomDesc(std::string r) { this->roomDesc = r; }	
+	void setRoomDesc(std::string r) { this->roomDesc = r; }
+	std::string getPassageDesc();
 	
 	void reset() {
 		setReached(false);

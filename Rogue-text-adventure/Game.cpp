@@ -46,8 +46,8 @@ void Game::render()
 	//cout << green << currentMap->show();
 	//currentMap->show();
 
-	inputController.printMessage(hero->getCurrentRoom()->getRoomDesc()); // Print Room Desc
-	inputController.printMessage("Exits: ");
+	inputController.printMessage(hero->getCurrentRoom()->getRoomDesc());
+	inputController.printMessage(hero->getCurrentRoom()->getPassageDesc());
 	inputController.printMessage("Enemy NPC: ");
 	inputController.printMessage("What would you like to do?");
 	inputController.printMessage(gameController.getGameActionString());

@@ -34,7 +34,7 @@ void GameController::askGameAction(Map* map, Hero* hero)
 			Fight();
 			break;
 		case Actions::FLEE:
-			Flee();
+			Flee(true);
 			break;
 		case Actions::SEARCH:
 			Search();
@@ -66,16 +66,18 @@ void GameController::Fight()
 		// Gebruik één van je spullen(bijvoorbeeld de heilige handgranaat)
 }
 
-void GameController::Flee()
+void GameController::Flee(bool b)
 {
-	map<string, Direction> posDirs = cHero->getCurrentRoom()->getAllPossibleMoveDirections();
-	Direction d = inputController.getDirectionFromInput(posDirs);
-	if (cHero->lookForPassage(d)) {
+	if (b) { // Repeat question, dont need to print this below
+		map<string, Direction> posDirs = cHero->getCurrentRoom()->getAllPossibleMoveDirections();
+		inputController.printDirections(posDirs);
+	}
+
+	Direction d = inputController.getDirectionFromInput();
+	if (cHero->lookForPassage(d))
 		cHero->move(d);
-	}
-	else {
-		Flee();
-	}
+	else 
+		Flee(false);
 }
 
 void GameController::Search()

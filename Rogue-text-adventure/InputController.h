@@ -21,5 +21,6 @@ public:
 	void printMsg(std::string s);
 	void printMessage(std::string s);
 	std::string WaitAndGetInput();
-	Direction getDirectionFromInput(std::map<std::string, Direction> possibleDirections);
+	void printDirections(std::map<std::string, Direction> dirMap);
+	Direction getDirectionFromInput();
 };

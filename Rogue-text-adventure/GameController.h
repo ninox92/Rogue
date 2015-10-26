@@ -29,7 +29,7 @@ class GameController {
 		void askGameAction(Map* map, Hero* hero);
 
 		void Fight();
-		void Flee();
+		void Flee(bool b);
 		void Search();
 		void Rest();
 		void showInvertory();

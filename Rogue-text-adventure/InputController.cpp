@@ -27,7 +27,7 @@ string InputController::WaitAndGetInput()
 	return input;
 }
 
-Direction InputController::getDirectionFromInput(std::map<std::string, Direction> dirMap)
+void InputController::printDirections(std::map<std::string, Direction> dirMap)
 {
 	std::string dirs = "[";
 	for (const auto& kv : dirMap) {
@@ -35,13 +35,17 @@ Direction InputController::getDirectionFromInput(std::map<std::string, Direction
 	}
 	dirs = dirs.substr(0, dirs.size() - 1);
 	dirs += "]";
-	
+
 	cout << "Which way should we explore?" << endl << endl;
 	cout << dirs << endl << endl;
+}
+
+Direction InputController::getDirectionFromInput()
+{
 	cout << "Direction: ";
 	string s_dir = WaitAndGetInput();
 	bool exists = stringDirMap.find(s_dir) != stringDirMap.end();
-	if (!exists) getDirectionFromInput(dirMap);//recursive call if not found
+	if (!exists) getDirectionFromInput();//recursive call if not found
 
 	return this->stringDirMap[s_dir];
 }

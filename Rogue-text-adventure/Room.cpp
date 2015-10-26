@@ -66,6 +66,21 @@ void Room::setPassage(Direction dir, Passage* p)
 	}
 }
 
+std::string Room::getPassageDesc()
+{
+	std::string s = "Exits: ";
+	if (hasPassage(Direction::EAST))
+		s += "East is a passage. ";
+	if (hasPassage(Direction::NORTH))
+		s += "North is a passage. ";
+	if (hasPassage(Direction::SOUTH))
+		s += "South is a passage. ";
+	if (hasPassage(Direction::WEST))
+		s += "West is a passage. ";
+
+	return s;
+}
+
 int const Room::getMapLevel()
 {
 	if (map == nullptr) return -1;
