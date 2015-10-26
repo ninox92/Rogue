@@ -56,7 +56,15 @@ void GameController::askGameAction(Map* map, Hero* hero)
 	}
 }
 
-void GameController::Fight() {}
+void GameController::Fight()
+{
+	// Als er NPC's in de kamer zitten
+	// Vechten:
+		// Val één van je tegenstanders aan
+		// Vlucht in een bepaalde richting weg van je tegenstander(s)
+		// Drink een drankje(om bijvoorbeeld te genezen)
+		// Gebruik één van je spullen(bijvoorbeeld de heilige handgranaat)
+}
 
 void GameController::Flee()
 {
@@ -70,9 +78,23 @@ void GameController::Flee()
 	}
 }
 
-void GameController::Search() {}
-void GameController::Rest() {}
-void GameController::showInvertory() {}
+void GameController::Search()
+{
+	// Zoek in de kamer naar een val of spullen
+	// Hero: kansberekening aan de hand van mindfulness
+}
+void GameController::Rest()
+{
+	// Hero: health = maxHealth
+	// Random: kans op nieuwe NPC's in de kamer
+
+}
+void GameController::showInvertory()
+{
+	// Hero: print lijst met spullen
+	// Optie: Spullen uit de lijst te gebruiken
+	// Of: Niet gebruiken
+}
 
 void GameController::showMap()
 {
@@ -80,7 +102,18 @@ void GameController::showMap()
 	askGameAction(cMap, cHero);
 }
 
-void GameController::showHeroStats() {}
+void GameController::showHeroStats()
+{
+	cout << "Name:        " << cHero->getName() << endl;
+	cout << "Level:       " << cHero->getLevel() << endl;
+	cout << "Health:      " << cHero->getHealth() << "/" << cHero->getMaxHealth() << endl;
+	cout << "Experience:  " << cHero->getExp() << "/" << cHero->getMaxExp() << endl;
+	cout << "Attack:      " << cHero->getAttack() << endl;
+	cout << "Defense:     " << cHero->getDefense() << endl;
+	cout << "Mindfulness: " << cHero->getMindfulness() << endl << endl;
+
+	askGameAction(cMap, cHero);
+}
 
 std::string GameController::getGameActionString()
 {

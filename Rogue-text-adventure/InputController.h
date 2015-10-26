@@ -18,10 +18,8 @@ private:
 public:
 	InputController();
 	~InputController();
-
+	void printMsg(std::string s);
 	void printMessage(std::string s);
 	std::string WaitAndGetInput();
 	Direction getDirectionFromInput(std::map<std::string, Direction> possibleDirections);
-
 };
-
