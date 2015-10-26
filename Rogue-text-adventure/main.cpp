@@ -1,5 +1,3 @@
-using namespace std;
-
 #include <iostream>
 #include "Game.h"
 #include <windows.h>

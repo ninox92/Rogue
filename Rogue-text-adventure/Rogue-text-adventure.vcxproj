@@ -167,6 +167,7 @@
   <ItemGroup>
     <ClCompile Include="AbstractAction.cpp" />
     <ClCompile Include="Actions.cpp" />
+    <ClCompile Include="Dijkstras.cpp" />
     <ClCompile Include="Direction.cpp" />
     <ClCompile Include="FileController.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -182,7 +183,6 @@
     <ClCompile Include="Passage.cpp" />
     <ClCompile Include="RenderState.cpp" />
     <ClCompile Include="Room.cpp" />
-    <ClCompile Include="RoomDescription.cpp" />
     <ClCompile Include="RoomObject.cpp" />
     <ClCompile Include="RoomType.cpp" />
     <ClCompile Include="Trap.cpp" />

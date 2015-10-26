@@ -14,7 +14,6 @@ private:
 	int ID = -1;
 	Map* map = nullptr;
 	
-
 	int spawnChange = 0;// % chance that enemies will spawn in this room
 	int maxEnemies = 3;//maximum
 	int row = 0;
