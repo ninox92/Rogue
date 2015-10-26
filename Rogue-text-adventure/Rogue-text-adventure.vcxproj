@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="AbstractAction.h" />
     <ClInclude Include="ConsoleColor.h" />
+    <ClInclude Include="Dijkstras.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Hero.h" />
@@ -163,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractAction.cpp" />
+    <ClCompile Include="Dijkstras.cpp" />
     <ClCompile Include="Direction.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
