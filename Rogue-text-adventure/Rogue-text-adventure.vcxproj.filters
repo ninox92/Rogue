@@ -34,12 +34,6 @@
     <Filter Include="Header Files\Controllers">
       <UniqueIdentifier>{07474f39-ed17-4235-8dd5-8b8f88bd01f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Factories">
-      <UniqueIdentifier>{030c76c0-d1e9-4f82-9092-62bd55bef832}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Factories">
-      <UniqueIdentifier>{c19bc58c-d55d-412f-af3d-e5b68168e5b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Utils">
       <UniqueIdentifier>{81e152b2-add0-4375-adb0-ed20af87f3a9}</UniqueIdentifier>
     </Filter>
@@ -81,9 +75,6 @@
     <ClInclude Include="Passage.h">
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="RoomFactory.h">
-      <Filter>Header Files\Factories</Filter>
-    </ClInclude>
     <ClInclude Include="GameController.h">
       <Filter>Header Files\Controllers</Filter>
     </ClInclude>
@@ -95,6 +86,9 @@
     </ClInclude>
     <ClInclude Include="MST.h">
       <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="FileController.h">
+      <Filter>Header Files\Controllers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -143,9 +137,6 @@
     <ClCompile Include="RoomType.cpp">
       <Filter>Source Files\Enums</Filter>
     </ClCompile>
-    <ClCompile Include="RoomFactory.cpp">
-      <Filter>Source Files\Factories</Filter>
-    </ClCompile>
     <ClCompile Include="RoomDescription.cpp">
       <Filter>Source Files\Enums</Filter>
     </ClCompile>
@@ -161,5 +152,13 @@
     <ClCompile Include="MST.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="FileController.cpp">
+      <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="file.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

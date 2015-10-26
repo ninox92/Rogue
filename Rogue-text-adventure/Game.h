@@ -4,8 +4,7 @@
 #include "RenderState.cpp"
 #include "GameController.h"
 #include "InputController.h"
-#include <random>
-#include <stdlib.h>
+#include "FileController.h"
 
 class Map;
 class Hero;
@@ -20,6 +19,7 @@ private:
 	int lxSize = 10;//level X size
 	int lySize = 10;//Level Y size
 	Hero* hero = nullptr;
+	FileController* fileController = new FileController();
 	GameController gameController;
 	InputController inputController;
 

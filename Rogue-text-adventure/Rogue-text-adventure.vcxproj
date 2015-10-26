@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="AbstractAction.h" />
     <ClInclude Include="ConsoleColor.h" />
+    <ClInclude Include="FileController.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameController.h" />
     <ClInclude Include="GameObject.h" />
@@ -159,7 +160,6 @@
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Passage.h" />
     <ClInclude Include="Room.h" />
-    <ClInclude Include="RoomFactory.h" />
     <ClInclude Include="RoomObject.h" />
     <ClInclude Include="Trap.h" />
   </ItemGroup>
@@ -167,6 +167,7 @@
     <ClCompile Include="AbstractAction.cpp" />
     <ClCompile Include="Actions.cpp" />
     <ClCompile Include="Direction.cpp" />
+    <ClCompile Include="FileController.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -181,10 +182,12 @@
     <ClCompile Include="RenderState.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomDescription.cpp" />
-    <ClCompile Include="RoomFactory.cpp" />
     <ClCompile Include="RoomObject.cpp" />
     <ClCompile Include="RoomType.cpp" />
     <ClCompile Include="Trap.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="file.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

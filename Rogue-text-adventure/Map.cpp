@@ -5,7 +5,6 @@
 #include "ConsoleColor.h"
 #include "Map.h"
 #include "Room.h"
-#include "RoomFactory.h"
 
 using std::queue;
 using std::stack;
@@ -267,7 +266,13 @@ void Map::resetRooms()
 
 Room* Map::createRoom(int id, int x, int y) {
 	std::default_random_engine dre;
-	return RoomFactory::Instance()->createRoom(id, x, y, this);
+	Room* r = new Room(id, x, y, this);
+
+	// Generate Room Desc, set it in the room
+	string s = fileController->roomDescriptionToString();
+	r->setRoomDesc(s);
+
+	return r;
 }
 
 

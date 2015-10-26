@@ -1,0 +1,11 @@
+#roomSize
+really small;small;medium;large;really large
+
+#roomClean
+clean;semi-dirty;medium
+
+#roomLayout
+room with a table and four chairs in it.;room with a bed in the corner.;empty room.
+
+#roomLight
+candle;torch;fireplace

@@ -80,6 +80,7 @@ void Game::nextLevel()
 void Game::createMap()
 {
 	Map* map = new Map(lxSize, lySize, this);
+	map->setFileController(fileController);
 	map->setLevel(this->level);
 	map->create();
 	maps.push_back(map);

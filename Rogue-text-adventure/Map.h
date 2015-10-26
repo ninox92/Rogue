@@ -11,6 +11,7 @@ class Map
 {
 private:
 	Game* game = nullptr;
+	FileController* fileController = nullptr;
 
 	std::random_device dev;
 	std::default_random_engine dre{ dev() };
@@ -64,5 +65,7 @@ public:
 	
 	void collapseByExplosion();
 	int talisman();
+
+	void setFileController(FileController* f) { this->fileController = f; }
 };
 
