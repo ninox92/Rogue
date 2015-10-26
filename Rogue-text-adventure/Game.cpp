@@ -1,11 +1,15 @@
-using namespace std;
 #include "Game.h"
 #include <list>
 #include <iostream>
 #include "ConsoleColor.h"
 #include "Hero.h"
 #include "Map.h"
+
 using std::list;
+using namespace std;
+
+random_device dev;
+default_random_engine dre{ dev() };
 
 Game::Game()
 {
@@ -29,24 +33,38 @@ Game::~Game()
 
 void Game::start()
 {
+	clear();
 	cout << "Are you ready for an adventure " + hero->getName() + "?" << endl;
 	cout << "We have landed inside a dungeon!" << endl;
 	cout << "We must find our way out alive." << endl;
+	cout << "" << endl;
 	this->setRenderState(RenderState::RENDER);
 }
 
 void Game::render()
 {
 	this->setRenderState(RenderState::WAIT);//Reset the render state to wait
-	currentMap->show();
+	//cout << green << currentMap->show();
+	//currentMap->show();
+
+	inputController.printMessage(hero->getCurrentRoom()->getRoomDesc());
+	inputController.printMessage(hero->getCurrentRoom()->getPassageDesc());
+	inputController.printMessage("Enemy NPC: ");
+	inputController.printMessage("What would you like to do?");
+	inputController.printMessage(gameController.getGameActionString());
+	gameController.askGameAction(currentMap, hero);
+	clear();
+
+	this->setRenderState(RenderState::RENDER);//Render for one cycle
 }
 
 void Game::createHero()
 {
-	/*string name;
-	cout << "Name your awesome hero! ";
-	cin >> name;*/
-	hero = new Hero("henk");
+	string name;
+	cout << "Name your awesome hero! " << endl;
+	cout << "Name: ";
+	cin >> name;
+	hero = new Hero(name);
 }
 
 void Game::clear()
@@ -60,24 +78,10 @@ void Game::nextLevel()
 	this->createMap();
 }
 
-void Game::askQuestion()
-{
-	//this->clear();
-	map<string, Direction> posDirs = hero->getCurrentRoom()->getAllPossibleMoveDirections();
-	Direction d = inputController.getDirectionFromInput(posDirs);
-	if (hero->lookForPassage(d)) {
-		hero->move(d);
-	}
-	else {
-		askQuestion();
-	}
-	this->setRenderState(RenderState::RENDER);//Render for one cycle
-}
-
 void Game::createMap()
 {
-	
 	Map* map = new Map(lxSize, lySize, this);
+	map->setFileController(fileController);
 	map->setLevel(this->level);
 	map->create();
 	maps.push_back(map);
@@ -88,12 +92,11 @@ void Game::createMap()
 	level++;
 }
 
-
-
 void Game::setGameState(GameState state)
 {
 	this->gameState = state;
 }
+
 void Game::setRenderState(RenderState state)
 {
 	this->renderState = state;
@@ -103,9 +106,8 @@ GameState const Game::getGameState()
 {
 	return this->gameState;
 }
+
 RenderState const Game::getRenderState()
 {
 	return this->renderState;
 }
-
-
