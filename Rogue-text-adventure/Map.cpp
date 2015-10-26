@@ -31,9 +31,6 @@ void Map::create() {
 	this->init();
 	this->build();
 	
-	dijkstras.Compute(*this, getStartRoom()->getID(), getEndRoom()->getID());
-	
-	//this->collapseByExplosion();
 	//this->prims(getStartRoom(), getEndRoom());
 }
 
@@ -149,7 +146,7 @@ void Map::build() {
 		}
 		
 	}*/
-	show();
+	resetRooms();
 }
 
 int Map::minKey(Room* c)
@@ -236,8 +233,9 @@ void Map::show() {
 
 void Map::collapseByExplosion()
 {
+	
 	this->mst.Kruskals(*this);
-	this->mst.Print();
+	//this->mst.Print();
 	//this->mst.Display(*this);
 
 	std::vector<edge> nonMST = this->mst.GetNonMSTEdges(*this);
@@ -248,7 +246,7 @@ void Map::collapseByExplosion()
 	std::uniform_int_distribution<int> dd{ 0, (int)nonMST.size()-1 };
 	int size = d(dre), count=0;
 	int u, v;
-
+	resetRooms();
 	//Destroy 10-15 Passages
 	while (count < size) {
 		edge pair = nonMST[dd(dre)];
@@ -260,10 +258,12 @@ void Map::collapseByExplosion()
 
 		Direction d = getDirection(*ur, *uv);
 		ur->collapsePassage(d);
-		count++;
-		show();
+		int result = dijkstras.Compute(this, game->getHero()->getCurrentRoom()->getID(), getEndRoom()->getID());
+		if (result == INT_MAX) {
+			ur->getPassage(d)->SetCollapsed(false);
+		}
+		else count++;
 	}
-	
 }
 
 //Find shortest path in the maze
@@ -326,8 +326,7 @@ vector<Room*> Map::getNeighbours(int x, int y)
 	int southH = y*width + (x + 1) - width - 1;
 	
 	//if (north >= 0 && y >= 0 && y <= (height - 1))
-	if (north >= 0 && y >= 0 && y <= (height-1) && !rooms[north]->isVisited() )
-	{
+	if (north >= 0 && y >= 0 && y <= (height-1) && !rooms[north]->isVisited() ) {
 		tmp.push_back(rooms[north]);
 	}
 	//if (east >= minX && east <= maxX) {

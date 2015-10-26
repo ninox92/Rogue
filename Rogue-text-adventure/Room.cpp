@@ -85,7 +85,8 @@ void Room::setPassage(Direction dir, Passage* p)
 
 void Room::collapsePassage(Direction dir)
 {
-	passages[dir]->Collapse();
+	if (hasPassage(dir))
+		passages[dir]->SetCollapsed(true);
 }
 
 int const Room::getMapLevel()

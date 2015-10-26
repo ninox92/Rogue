@@ -2,13 +2,12 @@
 #include <limits>  
 #include <vector>
 #include <queue>
+#include <list>
+#include <map>
 
 class Map;
 class Room;
 typedef std::pair< int, int > pii;
-
-const int MAX = 1024;
-const int INF = 0x3f3f3f3f;
 
 class Dijkstras
 {
@@ -19,14 +18,19 @@ private:
 	holds the shortest path from the source. It contains INF if not
 	reachable from the source.
 	*/
-	std::vector< pii > G[MAX];
-	int d[MAX];
+	std::map<int, int> parents;
+	std::vector<int> d;
+	std::list<int> PATH;
+	
 
 public:
 	Dijkstras();
 	~Dijkstras();
 
-	void Compute(Map& map, int start, int end);
-	void Display(Map& map, int end);
+	int Compute(Map* map, int start, int end);
+	std::list<int> GetPath(int start, int end);
+	bool IsValid(int start, int end);
+	void Display(Map* map, int start, int end);
+
 };
 
