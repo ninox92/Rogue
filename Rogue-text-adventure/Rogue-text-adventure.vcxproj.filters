@@ -35,10 +35,10 @@
       <UniqueIdentifier>{07474f39-ed17-4235-8dd5-8b8f88bd01f8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Utils">
-      <UniqueIdentifier>{81e152b2-add0-4375-adb0-ed20af87f3a9}</UniqueIdentifier>
+      <UniqueIdentifier>{bc8dc111-957d-4848-88a5-42c6d1f2f4bf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utils">
-      <UniqueIdentifier>{8a8346a3-f7bf-43ea-9dd3-a19906671edc}</UniqueIdentifier>
+      <UniqueIdentifier>{400e1c67-eb58-4207-b583-5608d0939afa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -75,20 +75,17 @@
     <ClInclude Include="Passage.h">
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="GameController.h">
-      <Filter>Header Files\Controllers</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="ConsoleColor.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="MST.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="FileController.h">
-      <Filter>Header Files\Controllers</Filter>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Dijkstras.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,28 +134,14 @@
     <ClCompile Include="RoomType.cpp">
       <Filter>Source Files\Enums</Filter>
     </ClCompile>
-    <ClCompile Include="RoomDescription.cpp">
-      <Filter>Source Files\Enums</Filter>
-    </ClCompile>
-    <ClCompile Include="Actions.cpp">
-      <Filter>Source Files\Enums</Filter>
-    </ClCompile>
-    <ClCompile Include="GameController.cpp">
-      <Filter>Source Files\Controllers</Filter>
+    <ClCompile Include="MST.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Passage.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="MST.cpp">
+    <ClCompile Include="Dijkstras.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="FileController.cpp">
-      <Filter>Source Files\Controllers</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="file.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
   </ItemGroup>
 </Project>

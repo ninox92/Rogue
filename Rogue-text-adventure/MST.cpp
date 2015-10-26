@@ -1,7 +1,7 @@
 #pragma once
 #include "MST.h"
 #include "Room.h"
-
+#include "Map.h"
 
 
 MST::MST()
@@ -21,9 +21,12 @@ int MST::findset(int x, std::vector<int> parent)
 	return parent[x];
 }
 
-void MST::Kruskals(std::vector<Room*> rooms)
+void MST::Kruskals(Map& map)
 {
+	std::vector<Room*> rooms = map.getRooms();
 	if (rooms.size() == 0) return;
+	map.resetRooms();
+
 	int w, u, v;
 	Nodes = rooms.size();
 	this->parent.reserve(Nodes);
@@ -39,7 +42,9 @@ void MST::Kruskals(std::vector<Room*> rooms)
 			v = next->getID();
 			Edges++;
 			if (next->isReached() == false) {
-				GRAPH.push_back(std::pair< int, edge >(w, edge(u, v)));
+				edge e{ u, v };
+				EDGES.push_back(e);
+				GRAPH.push_back(std::pair< int, edge >(w, e));
 				next->setReached(true);
 			}
 		}
@@ -56,10 +61,37 @@ void MST::Kruskals(std::vector<Room*> rooms)
 		{
 			_MST.push_back(GRAPH[i]); // add to tree
 			total += GRAPH[i].first; // add edge cost
-			rooms[pv]->setShortest(true);
 			parent[pu] = parent[pv]; // link
 		}
 	}
+	map.resetRooms();
+}
+
+std::vector<edge> MST::GetNonMSTEdges(Map& map)
+{
+	std::vector<Room*> rooms = map.getRooms();
+	if (rooms.size() == 0) return std::vector<edge>();
+	map.resetRooms();
+	std::vector<edge> tmp;
+	int u, v;
+
+	for (auto& r : rooms) {
+		u = r->getID();
+		parent.push_back(u);
+		for (const auto& p : r->getAllPossiblePassages()){
+			Room* next = p.second->GetRoom(p.first);
+			v = next->getID();
+			if (next->isReached() == false) {
+				edge e{ u, v };
+				if (std::find(EDGES.begin(), EDGES.end(), e) == EDGES.end()) {
+					tmp.push_back(e);
+					next->setReached(true);
+				}
+			}
+		}
+	}
+	map.resetRooms();
+	return tmp;
 }
 
 
@@ -82,7 +114,24 @@ void MST::Print()
 	printf("Minimum cost: %d\n", total);
 }
 
-void MST::Display(std::vector<Room*> rooms)
+void MST::Display(Map& map)
 {
+	std::vector<Room*> rooms = map.getRooms();
+	if (rooms.size() == 0) return;
 
+	int i, u, v, sz;
+	// this is just style...
+	sz = _MST.size();
+	for (i = 0; i < sz; i++)
+	{
+		u = _MST[i].second.first;
+		v = _MST[i].second.second;
+
+		Room* ur = rooms.at(u);
+		Room* uv = rooms.at(v);
+
+		Direction d = map.getDirection(*ur, *uv);
+		ur->collapsePassage(d);
+		map.show();
+	}
 }

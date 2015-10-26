@@ -24,7 +24,7 @@ public:
 	Room* GetRoom(Direction d);
 
 	bool const IsCollapsed() { return this->collapsed; }
-	void Collapse() { this->collapsed = true; }
+	void SetCollapsed(bool c) { this->collapsed = c; }
 
 	std::string Display();
 };

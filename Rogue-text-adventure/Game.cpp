@@ -18,6 +18,7 @@ Game::Game()
 	this->setGameState(GameState::RUNNING);
 	
 	//this->currentMap->talisman(); 
+	this->currentMap->collapseByExplosion();
 	start();
 	
 	

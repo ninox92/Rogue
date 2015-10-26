@@ -29,7 +29,7 @@ Map::~Map()
 void Map::create() {
 	this->init();
 	this->build();
-	this->collapseByExplosion();
+	
 	//this->prims(getStartRoom(), getEndRoom());
 }
 
@@ -94,9 +94,7 @@ void Map::build() {
 			for (int i = 0; i < size; i++) {
 				r = neighbours.at(i);
 				setPassages(current, r);
-				show();
-				
-				
+				//show();
 			}
 			if (r != nullptr) {
 				r->setReached(true);
@@ -147,7 +145,7 @@ void Map::build() {
 		}
 		
 	}*/
-	show();
+	resetRooms();
 }
 
 int Map::minKey(Room* c)
@@ -183,17 +181,19 @@ list<int> Map::BFS(Room* begin, Room* end)
 
 
 		for (const auto& p : begin->getAllPossiblePassages()) {
-			Room* next = p.second->GetRoom(p.first);
-			
-			if (!next->isReached()) {
-				//if not already has been found
-				next->setReached(true);
-				path[next->getID()] = path[begin->getID()];
-				path[next->getID()].push_back(next->getID());
-				q.push(next);
-			}
-			if (end == next) {
-				return path[end->getID()];
+			if (p.second->IsCollapsed() == false) {
+				Room* next = p.second->GetRoom(p.first);
+
+				if (!next->isReached()) {
+					//if not already has been found
+					next->setReached(true);
+					path[next->getID()] = path[begin->getID()];
+					path[next->getID()].push_back(next->getID());
+					q.push(next);
+				}
+				if (end == next) {
+					return path[end->getID()];
+				}
 			}
 		}
 	}
@@ -208,7 +208,7 @@ void Map::show() {
 		
 		for (int x = 0; x < width; x++)
 		{
-			Room* r = this->rooms[y*width + x];
+			Room* r = getRoom(x, y);
 			if (row == (width+1)) {
 				std::cout << "\n" + rowS + "\n";
 				row = 1;
@@ -232,10 +232,37 @@ void Map::show() {
 
 void Map::collapseByExplosion()
 {
-	this->resetRooms();
-	this->mst.Kruskals(this->rooms);
-	this->mst.Print();
+	
+	this->mst.Kruskals(*this);
+	//this->mst.Print();
+	//this->mst.Display(*this);
+
+	std::vector<edge> nonMST = this->mst.GetNonMSTEdges(*this);
+
+	int max = rooms.size() < 15 ? rooms.size()/2 : 15;
+	int min = rooms.size() < 10 ? 1 : 10;
+	std::uniform_int_distribution<int> d{ min, max };
+	std::uniform_int_distribution<int> dd{ 0, (int)nonMST.size()-1 };
+	int size = d(dre), count=0;
+	int u, v;
+	resetRooms();
 	//Destroy 10-15 Passages
+	while (count < size) {
+		edge pair = nonMST[dd(dre)];
+		u = pair.first;
+		v = pair.second;
+
+		Room* ur = rooms.at(u);
+		Room* uv = rooms.at(v);
+
+		Direction d = getDirection(*ur, *uv);
+		ur->collapsePassage(d);
+		int result = dijkstras.Compute(this, game->getHero()->getCurrentRoom()->getID(), getEndRoom()->getID());
+		if (result == INT_MAX) {
+			ur->getPassage(d)->SetCollapsed(false);
+		}
+		else count++;
+	}
 }
 
 //Find shortest path in the maze
@@ -304,8 +331,7 @@ vector<Room*> Map::getNeighbours(int x, int y)
 	int southH = y*width + (x + 1) - width - 1;
 	
 	//if (north >= 0 && y >= 0 && y <= (height - 1))
-	if (north >= 0 && y >= 0 && y <= (height-1) && !rooms[north]->isVisited() )
-	{
+	if (north >= 0 && y >= 0 && y <= (height-1) && !rooms[north]->isVisited() ) {
 		tmp.push_back(rooms[north]);
 	}
 	//if (east >= minX && east <= maxX) {
@@ -326,6 +352,16 @@ vector<Room*> Map::getNeighbours(int x, int y)
 	return tmp;
 }
 
+
+Room* const Map::getRoom(int x, int y)
+{
+	return this->rooms[y*width + x];
+}
+
+Room * const Map::getRoom(int ID)
+{
+	return this->rooms[ID];
+}
 
 Direction Map::getDirection(Room& cur, Room& next) {
 	Direction d = Direction::NONE;

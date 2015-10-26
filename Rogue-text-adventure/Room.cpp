@@ -31,6 +31,23 @@ Passage * const Room::getPassage(Direction d)
 	return nullptr;
 }
 
+Passage * const Room::getPassage(int nX, int nY)
+{
+	Direction d = Direction::NONE;
+	int cX = getX();
+	int cY = getY();
+
+	if (nX < cX) d = Direction::WEST;
+	if (nX > cX) d = Direction::EAST;
+	if (nY > cY) d = Direction::SOUTH;
+	if (nY < cY) d = Direction::NORTH;
+
+	if (hasPassage(d)) {
+		return passages[d];
+	}
+	return nullptr;
+}
+
 bool const Room::hasPassage(Direction d)
 {
 	bool exists = (passages.find(d) != passages.end());
@@ -79,6 +96,12 @@ std::string Room::getPassageDesc()
 		s += "West is a passage. ";
 
 	return s;
+}
+
+void Room::collapsePassage(Direction dir)
+{
+	if (hasPassage(dir))
+		passages[dir]->SetCollapsed(true);
 }
 
 int const Room::getMapLevel()

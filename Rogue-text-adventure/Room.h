@@ -61,6 +61,7 @@ public:
 	std::map<std::string, Direction> getAllPossibleMoveDirections();
 	std::map<Direction, Passage*> getAllPossiblePassages();
 	Passage* const getPassage(Direction d);
+	Passage* const getPassage(int x, int y);
 
 	bool const hasHero() { return this->_hasHero; }
 	bool const isClean() { return this->_isClean; }// Is the room clean
@@ -81,6 +82,8 @@ public:
 	std::string getRoomDesc() { return this->roomDesc; }
 	void setRoomDesc(std::string r) { this->roomDesc = r; }
 	std::string getPassageDesc();
+	
+	void collapsePassage(Direction dir);
 	
 	void reset() {
 		setReached(false);
