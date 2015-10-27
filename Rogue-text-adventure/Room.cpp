@@ -9,11 +9,11 @@ Room::Room() : GameObject(){}// Default constructor
 Room::Room(int id, int x, int y, Map* map) : ID(id), map(map), col(x), row(y), GameObject()
 {
 	int cLevel = map->getLevel();
-	double f1 = std::fmod(map->getMaxLevel(), 2);
-	double f2 = std::fmod(map->getLevel(), 10);
+	double f1 = std::fmod(map->getMaxLevel(), 2);// maxlevel / 2
+	double f2 = std::fmod(map->getLevel(), 10);// level / 10
 	float equalizer = map->getLevel() >= f1 ? f2 : 1;
 	this->spawnChange = ceil((cLevel * 10) * ceil(equalizer));
-	eDist = std::uniform_int_distribution<int>( 0, maxEnemies );
+	eDist = std::uniform_int_distribution<int>( 1, maxEnemies );
 	this->createEnemies();
 }
 
