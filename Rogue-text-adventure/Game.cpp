@@ -4,12 +4,11 @@
 #include "ConsoleColor.h"
 #include "Hero.h"
 #include "Map.h"
+#include "GameController.h"
 
 using std::list;
-using namespace std;
-
-random_device dev;
-default_random_engine dre{ dev() };
+using std::cout;
+using std::endl;
 
 Game::Game()
 {
@@ -44,19 +43,22 @@ void Game::start()
 void Game::render()
 {
 	this->setRenderState(RenderState::WAIT);//Reset the render state to wait
+	/*
+	//==== Quick testing purposes
 	this->currentMap->show();
 	cout << "C Level: " << this->level << endl;
-
 	gameController->Flee(true);
-	/*
+	*/
+
+	
 	inputController.printMessage(hero->getCurrentRoom()->getRoomDesc());
 	inputController.printMessage(hero->getCurrentRoom()->getPassageDesc());
 	inputController.printMessage("Enemy NPC: ");
 	inputController.printMessage("What would you like to do?");
-	inputController.printMessage(gameController.getGameActionString());
-	gameController.askGameAction(currentMap, hero);
-	*/
-	//clear();
+	inputController.printMessage(gameController->getGameActionString());
+	gameController->askGameAction();
+	
+	clear();
 
 	this->setRenderState(RenderState::RENDER);//Render for one cycle
 }

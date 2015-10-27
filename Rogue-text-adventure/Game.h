@@ -15,9 +15,9 @@ private:
 	Map* currentMap = nullptr;
 	std::vector<Map*> maps;
 	int level = 0;
-	int maxLevel = 2;
-	int lxSize = 3;//level X size
-	int lySize = 3;//Level Y size
+	int maxLevel = 10;
+	int lxSize = 10;//level X size
+	int lySize = 10;//Level Y size
 	Hero* hero = nullptr;
 	FileController* fileController = new FileController();
 	GameController* gameController = nullptr;

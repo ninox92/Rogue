@@ -7,6 +7,27 @@
 
 using namespace std;
 
+void GameController::MST()
+{
+	this->cMap->revealAllRooms();
+	this->cMap->revealMST();
+	showMap();
+}
+
+void GameController::Dijkstra()
+{
+	this->cMap->revealAllRooms();
+	this->cMap->revealDijkstra();
+	showMap();
+}
+
+void GameController::BSF()
+{
+	this->cMap->revealAllRooms();
+	this->cMap->revealBFS();
+	showMap();
+}
+
 GameController::GameController(Game* game) : game(game)
 {
 	
@@ -52,6 +73,25 @@ void GameController::askGameAction()
 			break;
 		case Actions::STATS:
 			showHeroStats();
+			break;
+
+		//Hidden actions
+		case Actions::MST:
+			MST();
+			break;
+		case Actions::DIJKSTRA:
+			Dijkstra();
+			break;
+		case Actions::BFS:
+			BSF();
+			break;
+		case Actions::LVLUP:
+			break;
+		case Actions::HPUP:
+
+			break;
+		case Actions::REVEAL:
+
 			break;
 		default:
 			break;
@@ -106,6 +146,11 @@ void GameController::showInvertory()
 void GameController::showMap()
 {
 	cMap->show();
+	for (const auto& i : legenda) {
+		cout << i.first << ": " << i.second << endl;
+	}
+	
+
 	askGameAction();
 }
 

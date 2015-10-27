@@ -30,7 +30,6 @@ void Map::create() {
 	this->init();
 	this->build();
 	
-	//this->prims(getStartRoom(), getEndRoom());
 }
 
 void Map::init()
@@ -98,7 +97,7 @@ void Map::build() {
 			}
 			if (r != nullptr) {
 				r->setReached(true);
-				r->visit();
+				//r->visit();
 				stack.push(r);
 				current = r;
 			}			
@@ -162,7 +161,7 @@ int Map::minKey(Room* c)
 	return min_index;
 }
 
-
+/*
 ///Breadth First Search
 list<int> Map::BFS(Room* begin, Room* end)
 {
@@ -198,7 +197,7 @@ list<int> Map::BFS(Room* begin, Room* end)
 		}
 	}
 	return path[end->getID()];
-}
+}*/
 
 
 void Map::show() {
@@ -234,8 +233,6 @@ void Map::collapseByExplosion()
 {
 	
 	this->mst.Kruskals(*this);
-	//this->mst.Print();
-	//this->mst.Display(*this);
 
 	std::vector<edge> nonMST = this->mst.GetNonMSTEdges(*this);
 
@@ -269,19 +266,41 @@ void Map::collapseByExplosion()
 //returns amount of steps hero needs to make until the stairs down
 int Map::talisman()
 {
-	int steps = 0;
 	Hero* h = game->getHero();
 	if (h == nullptr) return -1;
-	resetRooms();
-	if (h->getCurrentRoom()->getMapLevel() != level) return -1;
+	
+	return bfs.ComputeSteps(this, h->getCurrentRoom()->getID(), getEndRoom()->getID());
+}
 
-	list<int> path = BFS(h->getCurrentRoom(), getEndRoom());
-	list<int>::iterator it;
-	for (it = path.begin(); it != path.end(); ++it) {
-		rooms[(*it)]->setShortest(true);
-		steps++;
+void Map::revealAllRooms()
+{
+	for (auto& r : rooms) {
+		r->visit();
 	}
-	return steps;
+}
+
+void Map::revealMST()
+{
+	mst.Kruskals(*this);
+	mst.Print();
+	mst.Display(*this);
+}
+
+void Map::revealDijkstra()
+{
+	dijkstras.Compute(this, game->getHero()->getCurrentRoom()->getID(), getEndRoom()->getID());
+	dijkstras.Display(this, game->getHero()->getCurrentRoom()->getID(), getEndRoom()->getID());
+}
+
+void Map::revealBFS()
+{
+
+	Hero* h = game->getHero();
+	if (h == nullptr) return;
+
+	int steps = bfs.ComputeStepsAndDisplay(this, h->getCurrentRoom()->getID(), getEndRoom()->getID());
+	std::cout << "Steps : " << steps;
+
 }
 
 void Map::resetRooms()
@@ -331,20 +350,20 @@ vector<Room*> Map::getNeighbours(int x, int y)
 	int southH = y*width + (x + 1) - width - 1;
 	
 	//if (north >= 0 && y >= 0 && y <= (height - 1))
-	if (north >= 0 && y >= 0 && y <= (height-1) && !rooms[north]->isVisited() ) {
+	if (north >= 0 && y >= 0 && y <= (height-1) && !rooms[north]->isReached() ) {
 		tmp.push_back(rooms[north]);
 	}
 	//if (east >= minX && east <= maxX) {
-	if(east >= minX && east <= maxX && !rooms[east]->isVisited()) {
+	if(east >= minX && east <= maxX && !rooms[east]->isReached()) {
 		tmp.push_back(rooms[east]);
 	}
 	
 	//if (south >= 0 && south <= rooms.size() - 1 && y <= (height - 1)) {
-	if (south >= 0 && south <= rooms.size()-1 && y <= (height - 1) && !rooms[south]->isVisited()) {
+	if (south >= 0 && south <= rooms.size()-1 && y <= (height - 1) && !rooms[south]->isReached()) {
 		tmp.push_back(rooms[south]);
 	}
 
-	if (west >= minX && west <= maxX && !rooms[west]->isVisited()) {
+	if (west >= minX && west <= maxX && !rooms[west]->isReached()) {
 	//if (west >= minX && west <= maxX){
 		tmp.push_back(rooms[west]);
 	}

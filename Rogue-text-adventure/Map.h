@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "Room.h"
 #include "MST.h"
+#include "BFS.h"
 #include "Dijkstras.h"
 
 
@@ -26,6 +27,8 @@ private:
 
 	std::vector<Passage*> passages;
 	std::vector<Room*> rooms;
+
+	BFS bfs;
 	MST mst;
 	Dijkstras dijkstras;
 
@@ -39,7 +42,6 @@ private:
 
 	void init();
 	void build();
-	std::list<int> BFS(Room* begin, Room* end);
 	
 	int minKey(Room* c);
 public:
@@ -73,6 +75,11 @@ public:
 	void resetRooms();
 	void collapseByExplosion();
 	int talisman();
+
+	void revealAllRooms();
+	void revealMST();
+	void revealDijkstra();
+	void revealBFS();
 
 	void setFileController(FileController* f) { this->fileController = f; }
 };

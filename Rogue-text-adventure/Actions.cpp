@@ -8,7 +8,15 @@ enum class Actions
 	REST,
 	INVERTORY,
 	MAP,
-	STATS
+	STATS,
+
+	//Hidden actions
+	MST, //minimum spanning tree
+	DIJKSTRA, //Find shortest route in MST
+	BFS,//Find shortest route
+	LVLUP,// Lvl up hero
+	HPUP, // restore health
+	REVEAL // Reveal the whole map
 };
 
 #endif

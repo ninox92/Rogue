@@ -35,6 +35,7 @@ void Hero::setCurrentRoom(Room * c)
 	*/
 	if (currentRoom != nullptr)currentRoom->setHero(nullptr);
 	currentRoom = c;
+	currentRoom->visit();
 	currentRoom->setHero(this);
 }
 

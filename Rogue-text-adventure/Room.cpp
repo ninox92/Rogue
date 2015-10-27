@@ -55,6 +55,9 @@ bool const Room::hasPassage(Direction d)
 }
 
 void Room::visit() {
+	for (const auto& p : getAllPossiblePassages()) {
+		p.second->Explore();
+	}
 	this->_isVisited = true;
 }
 

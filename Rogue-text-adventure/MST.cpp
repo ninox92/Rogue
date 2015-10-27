@@ -90,7 +90,6 @@ std::vector<edge> MST::GetNonMSTEdges(Map& map)
 			}
 		}
 	}
-	map.resetRooms();
 	return tmp;
 }
 
@@ -131,7 +130,22 @@ void MST::Display(Map& map)
 		Room* uv = rooms.at(v);
 
 		Direction d = map.getDirection(*ur, *uv);
-		ur->collapsePassage(d);
-		map.show();
+		ur->getPassage(d)->SetShortest(true);
+
+
+	}
+	map.show();
+
+	//Reset
+	for (i = 0; i < sz; i++)
+	{
+		u = _MST[i].second.first;
+		v = _MST[i].second.second;
+
+		Room* ur = rooms.at(u);
+		Room* uv = rooms.at(v);
+
+		Direction d = map.getDirection(*ur, *uv);
+		ur->getPassage(d)->SetShortest(false);
 	}
 }

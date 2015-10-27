@@ -22,8 +22,35 @@ class GameController {
 			{ "rest", Actions::REST },
 			{ "invertory", Actions::INVERTORY },
 			{ "map", Actions::MAP },
-			{ "stats", Actions::STATS }
+			{ "stats", Actions::STATS },
+			///Hidden actions :)
+			{ "mst", Actions::MST },
+			{ "dijkstra", Actions::DIJKSTRA },
+			{ "bfs", Actions::BFS },
+			{ "lvlup", Actions::LVLUP },
+			{ "hpup", Actions::HPUP },
+			{ "reveal", Actions::REVEAL }
 		};
+
+		std::map<std::string, std::string> legenda = {
+			{ "|-", "Passage way" },
+			{ ".", "Unexplored room" },
+			{ "N", "Explored room" },
+			{ "S", "Start room" },
+			{ "F", "Finish room" },
+			{ "H", "Latter up" },
+			{ "L", "Latter down" },
+			{ "~", "Collaped passage way" }
+		};
+
+		void MST();
+		void Dijkstra();
+		void BSF();
+		void LVLUP();
+		void HPUP();
+		void Reveal();
+
+
 	public:
 		GameController(Game* game);
 		~GameController();

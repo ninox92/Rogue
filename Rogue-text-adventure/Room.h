@@ -45,7 +45,6 @@ private:
 	void createEnemies();
 public:
 	Room();
-	//Room(int x, int y, Map* map);
 	Room(int id, int x, int y, Map* map);
 	virtual ~Room();
 	

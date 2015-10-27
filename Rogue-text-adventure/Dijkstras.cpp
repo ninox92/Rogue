@@ -81,14 +81,10 @@ int Dijkstras::Compute(Map* map, int start, int end)
 					parents[v] = u;
 				}
 			}
-			else {
-				//parents[v] = INT_MAX;
-			}
 		}
 	}
 
 	bool valid = this->IsValid(start, end);
-	//Display(map, start, end);
 	return valid ? d[end] : INT_MAX;
 }
 
@@ -133,4 +129,6 @@ void Dijkstras::Display(Map* map, int start, int end)
 	}
 
 	printf("\n\n");
+	map->show();
+	map->resetRooms();
 }
