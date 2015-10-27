@@ -15,12 +15,11 @@ public:
 	Passage();//Default Constructor
 	~Passage();
 
-
 	//virtual std::string Identify() = 0;//PURE abstract function
 	//To override use:
-	// virtual std::string Identify() override { return "";//new content here }
-
+	//virtual std::string Identify() override { return ""; /*new content here*/ }
 	void Add(Room* r, Direction d);
+
 	bool Exists(Direction d);
 	Room* GetRoom(Direction d);
 

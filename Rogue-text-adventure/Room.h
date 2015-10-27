@@ -14,7 +14,6 @@ private:
 	int ID = -1;
 	Map* map = nullptr;
 	
-
 	int spawnChange = 0;// % chance that enemies will spawn in this room
 	int maxEnemies = 3;//maximum
 	int row = 0;
@@ -41,9 +40,9 @@ private:
 	std::map<Direction, Passage*> passages;
 
 	std::string getToken();
+	std::string roomDesc;
 
 	void createEnemies();
-
 public:
 	Room();
 	//Room(int x, int y, Map* map);
@@ -79,14 +78,14 @@ public:
 	void setShortest(bool s) { this->_isShortest = s; }
 	void setPassage(Direction dir, Passage* p);
 
-	void collapsePassage(Direction dir);
-
+	std::string getRoomDesc() { return this->roomDesc; }
+	void setRoomDesc(std::string r) { this->roomDesc = r; }
+	std::string getPassageDesc();
 	
+	void collapsePassage(Direction dir);
 	
 	void reset() {
 		setReached(false);
 		setShortest(false);
 	}
-
 };
-
