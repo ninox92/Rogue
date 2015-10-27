@@ -5,13 +5,15 @@
 #include "Actions.cpp"
 #include "InputController.h"
 
+class Game;
 class Map;
 class Hero;
 
 class GameController {
 	private:
-		Map* cMap;
-		Hero* cHero;
+		Game* game = nullptr;
+		Map* cMap = nullptr;
+		Hero* cHero = nullptr;
 		InputController inputController;
 		std::map<std::string, Actions> actionMap = {
 			{ "fight", Actions::FIGHT },
@@ -23,10 +25,10 @@ class GameController {
 			{ "stats", Actions::STATS }
 		};
 	public:
-		GameController();
+		GameController(Game* game);
 		~GameController();
 
-		void askGameAction(Map* map, Hero* hero);
+		void askGameAction();
 
 		void Fight();
 		void Flee(bool b);

@@ -31,7 +31,7 @@ private:
 	RoomType type = RoomType::INIT;
 	std::string size;
 	
-	bool _hasHero = false;
+	Hero* hero = nullptr;
 	bool _isClean = false;
 	bool _isReached = false;
 	bool _isVisited = false;
@@ -62,7 +62,7 @@ public:
 	Passage* const getPassage(Direction d);
 	Passage* const getPassage(int x, int y);
 
-	bool const hasHero() { return this->_hasHero; }
+	bool const hasHero() { return hero == nullptr ? false : true; }
 	bool const isClean() { return this->_isClean; }// Is the room clean
 	bool const isVisited() { return this->_isVisited; } // is the room explored
 	bool const isShortest() { return this->_isShortest; }
@@ -74,7 +74,7 @@ public:
 	std::string displayVertical();
 
 	void setReached(bool b) { this->_isReached = b; }
-	void setHero(bool h) { this->_hasHero = h; }
+	void setHero(Hero* h) { this->hero = h; }
 	void setShortest(bool s) { this->_isShortest = s; }
 	void setPassage(Direction dir, Passage* p);
 

@@ -1,28 +1,30 @@
 #include "Map.h"
 #include "Hero.h"
+#include "Game.h"
 #include "Room.h"
 #include "GameController.h"
 #include <iostream>
 
 using namespace std;
 
-GameController::GameController()
+GameController::GameController(Game* game) : game(game)
 {
+	
 }
 
 GameController::~GameController()
 {
 }
 
-void GameController::askGameAction(Map* map, Hero* hero)
+void GameController::askGameAction()
 {
-	cMap = map;
-	cHero = hero;
+	this->cHero = game->getHero();
+	this->cMap = game->getCurrentMap();
 	
 	cout << "Action: ";
 	string output = inputController.WaitAndGetInput();
 	bool exists = this->actionMap.find(output) != this->actionMap.end();
-	if (!exists) askGameAction(cMap, cHero);
+	if (!exists) askGameAction();
 
 	// find function by action
 	Actions a = this->actionMap[output];
@@ -68,6 +70,9 @@ void GameController::Fight()
 
 void GameController::Flee(bool b)
 {
+	/* THIS IS TEMPORARY remove this two lines */
+	this->cHero = game->getHero();
+	this->cMap = game->getCurrentMap();
 	if (b) { // Repeat question, dont need to print this below
 		map<string, Direction> posDirs = cHero->getCurrentRoom()->getAllPossibleMoveDirections();
 		inputController.printDirections(posDirs);
@@ -101,7 +106,7 @@ void GameController::showInvertory()
 void GameController::showMap()
 {
 	cMap->show();
-	askGameAction(cMap, cHero);
+	askGameAction();
 }
 
 void GameController::showHeroStats()
@@ -114,7 +119,7 @@ void GameController::showHeroStats()
 	cout << "Defense:     " << cHero->getDefense() << endl;
 	cout << "Mindfulness: " << cHero->getMindfulness() << endl << endl;
 
-	askGameAction(cMap, cHero);
+	askGameAction();
 }
 
 std::string GameController::getGameActionString()

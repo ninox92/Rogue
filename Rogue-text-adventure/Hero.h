@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Direction.cpp"
-
+#include "Game.h"
 class Room;
 
 class Hero : public GameObject
@@ -24,12 +24,13 @@ private:
 	int mindfulness = 1;
 
 	int backpack;// Items[] 
-
+	Game* game = nullptr;
 public:
-	Hero(std::string name);
+	Hero(std::string name, Game* game);
 	~Hero();
 
 	void move(Room* next);
+	void setCurrentRoom(Room* c);
 	bool lookForPassage(Direction dir);
 	void move(Direction dir);
 
