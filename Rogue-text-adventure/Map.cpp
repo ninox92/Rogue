@@ -61,7 +61,7 @@ void Map::init()
 	ptX = xDist(dre);//Set Begin X
 	ptY = 0;// Set Begin Y
 	//Set End
-	if (this->level == 10)//Max level
+	if (this->level == game->getMaxLevel())//Max level
 	{
 		setEndRoom(rooms[ptY*width + ptX]);
 		getEndRoom()->setType(RoomType::END);
