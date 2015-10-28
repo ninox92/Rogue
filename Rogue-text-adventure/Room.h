@@ -16,10 +16,11 @@ private:
 	
 	int spawnChange = 0;// % chance that enemies will spawn in this room
 	int maxEnemies = 3;//maximum
+	int enemiesCount = 0;
 	int row = 0;
 	int col = 0;
 	
-	int enemiesCount = 0;
+	int weight = 0;
 	std::random_device rd;
 
 	// Choose a random mean between 1 and 6
@@ -55,7 +56,7 @@ public:
 	int const getX() { return this->col; }
 	int const getY() { return this->row; }
 	int const getMapLevel();
-	int const getEnemiesCount() { return this->enemiesCount; }
+	int const getWeight() { return this->weight; }// == <<--------------------------------------------------------
 	std::map<std::string, Direction> getAllPossibleMoveDirections();
 	std::map<Direction, Passage*> getAllPossiblePassages();
 	Passage* const getPassage(Direction d);
@@ -76,6 +77,7 @@ public:
 	void setHero(Hero* h) { this->hero = h; }
 	void setShortest(bool s) { this->_isShortest = s; }
 	void setPassage(Direction dir, Passage* p);
+	void setWeight(int w) { this->weight = w; }
 
 	std::string getRoomDesc() { return this->roomDesc; }
 	void setRoomDesc(std::string r) { this->roomDesc = r; }

@@ -154,51 +154,12 @@ int Map::minKey(Room* c)
 	for (const auto& p : c->getAllPossiblePassages())
 	{
 		Room* next = p.second->GetRoom(p.first);
-		if (next->isReached() == false && next->getEnemiesCount() < min)
-			min_index = next->getID(), min = next->getEnemiesCount();
+		if (next->isReached() == false && next->getWeight() < min)
+			min_index = next->getID(), min = next->getWeight();
 	}
 	std::cout << "minKey: " << min_index << ", weight " << min << std::endl;
 	return min_index;
 }
-
-/*
-///Breadth First Search
-list<int> Map::BFS(Room* begin, Room* end)
-{
-	queue<Room*> q; // Queue for BFS
-	map<int, list<int>> path;
-	
-	q.push(begin);
-	path[begin->getID()].push_back(begin->getID());
-	
-
-	while (!q.empty())
-	{
-		begin = q.front();
-		begin->setReached(true);
-		q.pop();
-
-
-		for (const auto& p : begin->getAllPossiblePassages()) {
-			if (p.second->IsCollapsed() == false) {
-				Room* next = p.second->GetRoom(p.first);
-
-				if (!next->isReached()) {
-					//if not already has been found
-					next->setReached(true);
-					path[next->getID()] = path[begin->getID()];
-					path[next->getID()].push_back(next->getID());
-					q.push(next);
-				}
-				if (end == next) {
-					return path[end->getID()];
-				}
-			}
-		}
-	}
-	return path[end->getID()];
-}*/
-
 
 void Map::show() {
 	string rowS = "";
@@ -290,6 +251,23 @@ void Map::revealDijkstra()
 {
 	dijkstras.Compute(this, game->getHero()->getCurrentRoom()->getID(), getEndRoom()->getID());
 	dijkstras.Display(this, game->getHero()->getCurrentRoom()->getID(), getEndRoom()->getID());
+}
+
+void Map::revealEDijkstra()
+{
+	int start, end;
+	start = game->getHero()->getCurrentRoom()->getID();
+	end = getEndRoom()->getID();
+	dijkstras.Compute(this, start, end);
+	dijkstras.Display(this, start, end);
+	std::vector<int> path = dijkstras.GetPath(start, end);
+	int second = path[1];
+	getRoom(second)->setWeight(100);
+
+	dijkstras.Compute(this, start, end);
+	dijkstras.Display(this, start, end);
+	path = dijkstras.GetPath(start, end);
+
 }
 
 void Map::revealBFS()

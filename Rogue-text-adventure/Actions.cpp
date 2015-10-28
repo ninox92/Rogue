@@ -13,6 +13,7 @@ enum class Actions
 	//Hidden actions
 	MST, //minimum spanning tree
 	DIJKSTRA, //Find shortest route in MST
+	EXTREME_DIJKSTRA, // Place a extreme weight in the first node of the dijkstra path
 	BFS,//Find shortest route
 	LVLUP,// Lvl up hero
 	HPUP, // restore health

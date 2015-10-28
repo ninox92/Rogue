@@ -79,6 +79,7 @@ public:
 	void revealAllRooms();
 	void revealMST();
 	void revealDijkstra();
+	void revealEDijkstra();
 	void revealBFS();
 
 	void setFileController(FileController* f) { this->fileController = f; }

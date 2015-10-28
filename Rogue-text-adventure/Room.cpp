@@ -148,7 +148,7 @@ std::string Room::getToken()
 {
 	std::string s;
 	if (hasHero()) return "&";
-	if (enemiesCount != 0) return std::to_string(enemiesCount);
+	if (getWeight() != 0) return std::to_string(getWeight());
 	switch (type)
 	{
 	case RoomType::INIT:

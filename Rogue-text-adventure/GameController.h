@@ -30,6 +30,7 @@ class GameController {
 			///Hidden actions :)
 			{ "mst",		Actions::MST },
 			{ "dijkstra",	Actions::DIJKSTRA },
+			{ "edijkstra",	Actions::EXTREME_DIJKSTRA },
 			{ "bfs",		Actions::BFS },
 			{ "lvlup",		Actions::LVLUP },
 			{ "hpup",		Actions::HPUP },
@@ -56,6 +57,7 @@ class GameController {
 
 		void MST();
 		void Dijkstra();
+		void EDijkstra();
 		void BSF();
 		void LVLUP();
 		void HPUP();

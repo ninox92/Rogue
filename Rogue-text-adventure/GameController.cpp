@@ -21,6 +21,13 @@ void GameController::Dijkstra()
 	showMap();
 }
 
+void GameController::EDijkstra()
+{
+	this->cMap->revealAllRooms();
+	this->cMap->revealEDijkstra();
+	showMap();
+}
+
 void GameController::BSF()
 {
 	this->cMap->revealAllRooms();
@@ -108,6 +115,9 @@ void GameController::askWhatToDo()
 			break;
 		case Actions::DIJKSTRA:
 			Dijkstra();
+			break;
+		case Actions::EXTREME_DIJKSTRA:
+			EDijkstra();
 			break;
 		case Actions::BFS:
 			BSF();

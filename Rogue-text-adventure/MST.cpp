@@ -38,7 +38,7 @@ void MST::Kruskals(Map& map)
 		for (const auto& p : r->getAllPossiblePassages())
 		{
 			Room* next = p.second->GetRoom(p.first);
-			w = next->getEnemiesCount() + 1;
+			w = next->getWeight() + 1;
 			v = next->getID();
 			Edges++;
 			if (next->isReached() == false) {
