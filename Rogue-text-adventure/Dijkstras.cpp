@@ -68,7 +68,7 @@ int Dijkstras::Compute(Map* map, int start, int end)
 		{
 			Room* next = p.second->GetRoom(p.first);
 			v = next->getID(); // node 
-			w = next->getEnemiesCount() + 1; // edge weight
+			w = next->getWeight() + 1; // edge weight
 
 			if (p.second->IsCollapsed() == false) 
 			{
@@ -81,27 +81,25 @@ int Dijkstras::Compute(Map* map, int start, int end)
 					parents[v] = u;
 				}
 			}
-			else {
-				//parents[v] = INT_MAX;
-			}
 		}
 	}
 
 	bool valid = this->IsValid(start, end);
-	//Display(map, start, end);
 	return valid ? d[end] : INT_MAX;
 }
 
-std::list<int> Dijkstras::GetPath(int start, int end)
+std::vector<int> Dijkstras::GetPath(int start, int end)
 {
-	if (!IsValid(start, end)) return std::list<int>();
+	if (!IsValid(start, end)) return std::vector<int>();
 	
-	std::list<int> tmp;
+	std::vector<int> tmp;
 	for (int v = end; v != start; v = parents[v])
 		if (v != INT_MAX)
-			tmp.emplace_front(v);
-	
-	tmp.emplace_front(start);
+			tmp.push_back(v);
+
+	tmp.push_back(start);
+
+	std::reverse(tmp.begin(), tmp.end());
 	PATH = tmp;// set copy
 	return PATH;
 }
@@ -133,4 +131,6 @@ void Dijkstras::Display(Map* map, int start, int end)
 	}
 
 	printf("\n\n");
+	map->show();
+	map->resetRooms();
 }

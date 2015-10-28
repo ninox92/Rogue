@@ -20,7 +20,7 @@ private:
 	*/
 	std::map<int, int> parents;
 	std::vector<int> d;
-	std::list<int> PATH;
+	std::vector<int> PATH;
 	
 
 public:
@@ -28,7 +28,7 @@ public:
 	~Dijkstras();
 
 	int Compute(Map* map, int start, int end);
-	std::list<int> GetPath(int start, int end);
+	std::vector<int> GetPath(int start, int end);
 	bool IsValid(int start, int end);
 	void Display(Map* map, int start, int end);
 

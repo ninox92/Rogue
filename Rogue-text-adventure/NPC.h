@@ -1,6 +1,7 @@
+#pragma once
 #include <string>
 #include "GameObject.h";
-#pragma once
+
 
 class NPC : public GameObject
 {
