@@ -26,6 +26,12 @@ class GameController {
 			{ "stats",		Actions::STATS }
 		};
 
+		std::map<std::string, Actions> inventoryMap = {
+			{ "talisman", Actions::TALISMAN },
+			{ "grenade", Actions::GRENADE },
+			{ "compass", Actions::COMPASS },
+		};
+
 		std::map<std::string, Actions> actionHiddenMap = {
 			///Hidden actions :)
 			{ "mst",		Actions::MST },
@@ -63,6 +69,9 @@ class GameController {
 		void HPUP();
 		void Reveal();
 
+		void UseCompass();
+		void UseGrenade();
+		void UseTalisman();
 
 	public:
 		GameController(Game* game);
@@ -75,9 +84,12 @@ class GameController {
 		void Flee(bool b);
 		void Search();
 		void Rest();
+
 		void showInvertory();
 		void showMap();
 		void showHeroStats();
+
+
 
 		std::string getGameActionString();
 		std::map<std::string, Actions> getGameActions();

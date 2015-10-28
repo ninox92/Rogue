@@ -54,6 +54,31 @@ void GameController::Reveal()
 	this->cMap->revealAllRooms();
 }
 
+void GameController::UseCompass()
+{
+}
+
+void GameController::UseGrenade()
+{
+	//if (!isUsedGrenade) {
+		cout << "De kerker schudt op zijn grondvesten, alle tegenstanders in de kamer zijn verslagen!" << endl;
+		cout << "Een donderend geluid maakt duidelijk dat gedeeltes van de kerker zijn ingestort..." << endl;
+		cMap->collapseByExplosion();
+		showMap();
+	//}
+	//else {
+		cout << "Je vreest dat een extra handgranaat een cruciale passage zal blokkeren." << endl;
+		cout << "Het is beter om deze niet meer te gebruiken op deze verdieping." << endl;
+	//}
+	
+}
+
+void GameController::UseTalisman()
+{
+	cout << "De talisman licht op en fluistert dat de trap omhoog " << std::to_string( cMap->talisman() ) << " kamers ver weg is" << endl;
+	showMap();
+}
+
 GameController::GameController(Game* game) : game(game)
 {
 	
@@ -74,7 +99,8 @@ void GameController::askWhatToDo()
 	bool nExists = this->actionMap.find(output) != this->actionMap.end();
 	bool hExists = this->actionHiddenMap.find(output) != this->actionHiddenMap.end();
 	bool sExists = this->actionStatsMap.find(output) != this->actionStatsMap.end();
-
+	bool iExists = this->inventoryMap.find(output) != this->inventoryMap.end();
+	
 	// find function by action
 	if (nExists)
 	{
@@ -151,7 +177,25 @@ void GameController::askWhatToDo()
 			break;
 		}
 	}
-	if (!nExists && !hExists && !sExists) askWhatToDo();
+
+	if (iExists) {
+		Actions iventoryAction = this->inventoryMap[output];
+		switch (iventoryAction)
+		{
+		case Actions::TALISMAN:
+			UseTalisman();
+			break;
+		case Actions::GRENADE:
+			UseGrenade();
+			break;
+		case Actions::COMPASS:
+			UseCompass();
+			break;
+		}
+		
+	}
+
+	if (!nExists && !hExists && !sExists && !iExists) askWhatToDo();
 }
 
 void GameController::askToUpdateStats()

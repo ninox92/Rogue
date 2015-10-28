@@ -22,7 +22,12 @@ enum class Actions
 	//Stats
 	UP_ATTACK,
 	UP_DEFENSE,
-	UP_MINDFULLNESS
+	UP_MINDFULLNESS,
+
+	//Inventory
+	TALISMAN,
+	GRENADE,
+	COMPASS,
 };
 
 #endif

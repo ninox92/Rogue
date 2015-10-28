@@ -16,8 +16,7 @@ Game::Game()
 	this->nextLevel();
 	this->setGameState(GameState::RUNNING);
 	
-	//this->currentMap->talisman(); 
-	//this->currentMap->collapseByExplosion();
+	
 	start();
 
 	this->setRenderState(RenderState::RENDER);//Render for one cycle

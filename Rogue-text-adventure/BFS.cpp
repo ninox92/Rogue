@@ -55,13 +55,15 @@ std::list<int> BFS::ComputePath(Map * map, int start, int end)
 int BFS::ComputeSteps(Map * map, int start, int end)
 {
 	int steps = 0;
-
+	
 	list<int> path = ComputePath(map, start, end);
 	list<int>::iterator it;
 	for (it = path.begin(); it != path.end(); ++it) {
 		steps++;
 	}
-	return steps;
+
+	map->resetRooms();
+	return steps -1;
 }
 
 int BFS::ComputeStepsAndDisplay(Map * map, int start, int end)
@@ -75,7 +77,8 @@ int BFS::ComputeStepsAndDisplay(Map * map, int start, int end)
 		map->getRoom((*it))->setShortest(true);
 		steps++;
 	}
+	map->getRoom(end)->setShortest(true);
 	map->show();
 	map->resetRooms();
-	return steps;
+	return steps -1;
 }
