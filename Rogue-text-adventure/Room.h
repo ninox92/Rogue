@@ -87,6 +87,8 @@ public:
 
 	vector<NPC*> getEnemies() { return this->enemies; }
 	bool allEnemiesDeath() { return this->enemiesDeath; }
+	void setAllEnemiesDeath(bool b) { this->enemiesDeath = b; }
+	bool checkAllEnemiesDeath(vector<NPC*> enemies);
 	std::string getRoomDesc() { return this->roomDesc; }
 	std::string getPassageDesc();
 	std::string getEnemiesDesc() { return "Enemy NPC : " + this->enemiesDesc; }

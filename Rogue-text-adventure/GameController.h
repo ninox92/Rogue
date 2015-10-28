@@ -55,8 +55,7 @@ class GameController {
 		std::map<std::string, FightActions> fightActionMap = {
 			{ "fight", FightActions::FIGHT },
 			{ "flee", FightActions::FLEE },
-			{ "object", FightActions::OBJECT },
-			{ "potion", FightActions::POTION }
+			{ "invertory", FightActions::INVERTORY }
 		};
 
 		std::map<std::string, std::string> legenda = {

@@ -43,6 +43,8 @@ public:
 	void upMindfulness() { mindfulness++; remainingStatsPoints--; }
 	void upLvl();
 
+	void loseHealth(int h);
+
 	Room* const getCurrentRoom() { return this->currentRoom; }
 
 	std::string const getName() { return this->name; }

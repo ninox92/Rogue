@@ -35,7 +35,7 @@ void Game::start()
 	clear();
 	cout << hero->getName() << ", Are you ready for an adventure!" << endl;
 	cout << "You're standing in front of the great Bazinga Dungeon." << endl;
-	cout << "This dungeon is full of treasures! But be carefull, you're not alone..." << endl;
+	cout << "This dungeon is full of treasures! But be carefull, you're not alone..." << endl << endl;
 	this->setRenderState(RenderState::RENDER);
 }
 

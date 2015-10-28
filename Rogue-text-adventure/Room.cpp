@@ -87,6 +87,17 @@ void Room::setPassage(Direction dir, Passage* p)
 	}
 }
 
+bool Room::checkAllEnemiesDeath(vector<NPC*> enemies)
+{
+	bool b = true;
+	for (auto &e : enemies)	{
+		if(e->getHealth() != 0)	{
+			b = false;
+		}
+	}
+	return b;
+}
+
 std::string Room::getPassageDesc()
 {
 	std::string s = "Exits: ";
@@ -198,9 +209,9 @@ void Room::createEnemies()
 
 		// Enemies roomDesc
 		if (enemiesCount == 1)
-			enemiesDesc = std::to_string(enemiesCount) + " " + enemies[0]->GetType() + " " + enemies[0]->getDesc();
+			enemiesDesc = std::to_string(enemiesCount) + " " + enemies[0]->getNpcCleanName() + " " + enemies[0]->getDesc();
 		else
-			enemiesDesc = std::to_string(enemiesCount) + " " + enemies[0]->GetType() + "s " + enemies[0]->getDesc();
+			enemiesDesc = std::to_string(enemiesCount) + " " + enemies[0]->getNpcCleanName() + "s " + enemies[0]->getDesc();
 
 		int mapLevel = map->getLevel();
 		int maxEnemiesLvl = mapLevel + 2;

@@ -4,8 +4,7 @@ enum class FightActions
 {
 	FIGHT,
 	FLEE,
-	OBJECT,
-	POTION
+	INVERTORY
 };
 
 #endif

@@ -93,8 +93,8 @@ void GameController::askWhatToDo()
 	this->cHero = game->getHero();
 	this->cMap = game->getCurrentMap();
 
+	cout << "Action: ";
 
-	cout << endl;
 	string output = inputController.WaitAndGetInput();
 	bool nExists = this->actionMap.find(output) != this->actionMap.end();
 	bool hExists = this->actionHiddenMap.find(output) != this->actionHiddenMap.end();
@@ -216,26 +216,26 @@ void GameController::Fight()
 {
 	if (cHero->getCurrentRoom()->allEnemiesDeath()) {
 		inputController.printMessage("There are no enemies to fight!"); 
-		askGameAction(cMap, cHero);
+		askWhatToDo();
 	} else {
-		vector<NPC*> enemies = cHero->getCurrentRoom()->getEnemies();
-
-		inputController.printMsg("You're fighting with: ");
-		for (auto &e : enemies)
+		while (cHero->getCurrentRoom()->allEnemiesDeath() != true)
 		{
-			inputController.printMsg(e->getNpcName() + ": " + e->getLvlAndHp());
-		}
-		inputController.printEmptyLine();
+			vector<NPC*> enemies = cHero->getCurrentRoom()->getEnemies();
 
-		inputController.printMsg("Enemy attacks: ");
-		for (auto &e : enemies)
-		{
-			inputController.printMsg(e->getNpcName() + ": ");
+			inputController.printMsg("You're fighting with: ");
+			for (auto &e : enemies)
+			{
+				inputController.printMsg(e->getNpcName() + ": " + e->getLvlAndHp());
+			}
+			inputController.printEmptyLine();
+			inputController.printMsg("Enemy attacks: ");
+			doNpcAttack(enemies);
+			inputController.printEmptyLine();
+			inputController.printMessage(cHero->getHealthString());
+			inputController.printMessage(getFightActionString());
+			askFightAction();
+			cHero->getCurrentRoom()->setAllEnemiesDeath(cHero->getCurrentRoom()->checkAllEnemiesDeath(enemies));
 		}
-		inputController.printEmptyLine();
-		inputController.printMessage(cHero->getHealthString());
-		inputController.printMessage(getFightActionString());
-		askFightAction();
 	}
 
 }
@@ -245,27 +245,25 @@ void GameController::askFightAction()
 	cout << "Action: ";
 	string output = inputController.WaitAndGetInput();
 	bool exists = this->fightActionMap.find(output) != this->fightActionMap.end();
-	if (!exists) askGameAction(cMap, cHero);
-
-	// find function by action
-	FightActions a = this->fightActionMap[output];
-	cout << endl;
-
-	switch (a)
-	{
-		case FightActions::FIGHT:
-			// aanval individuele enemie
-			break;
-		case FightActions::FLEE:
-			Flee(true);
-			break;
-		case FightActions::POTION:
-			break;
-		case FightActions::OBJECT:
-			break;
-		default:
-			break;
+	if (exists) {
+		FightActions a = this->fightActionMap[output];
+		inputController.printEmptyLine();
+		switch (a)
+		{
+			case FightActions::FIGHT:
+				doHeroAttack();
+				break;
+			case FightActions::FLEE:
+				Flee(true);
+				break;
+			case FightActions::INVERTORY:
+				break;
+			default:
+				break;
+		}
 	}
+
+	if (!exists) askFightAction();
 }
 
 void GameController::doHeroAttack()
@@ -274,11 +272,24 @@ void GameController::doHeroAttack()
 	// attack single enemy
 }
 
-void GameController::doNpcAttack(std::vector<NPC*> e)
+void GameController::doNpcAttack(std::vector<NPC*> enemies)
 {
-	// loop enemies
+	std::random_device rd;
+	std::default_random_engine dre{ rd() };
+	
+	for (auto &e : enemies)
+	{
 		// change to hit based on hero defense
-		// attack on hero
+
+		// if hit
+		std::uniform_int_distribution<int> dist{ 1, e->getMaxDamage() };
+		int dmg = dist(dre);
+		inputController.printMsg(e->getAttackDesc(true, dmg));
+		cHero->loseHealth(dmg);
+
+		// if not hit
+			// inputController.printMsg(e->getAttackDesc(false, 0));
+	}
 }
 
 void GameController::Flee(bool b)
@@ -321,6 +332,7 @@ void GameController::showMap()
 	for (const auto& i : legenda) {
 		cout << i.first << ": " << i.second << endl;
 	}
+	inputController.printEmptyLine();
 	askWhatToDo();
 }
 

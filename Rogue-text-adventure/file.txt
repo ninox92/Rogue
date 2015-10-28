@@ -17,4 +17,4 @@ rat;spider
 looking at you with its blood-red eyes!;looking at you in the dark corner of the room!
 
 #npcAttackDesc
-bite;bite
+bites;bites

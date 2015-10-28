@@ -76,3 +76,8 @@ void Hero::upLvl()
 	this->level++;
 	std::cout << getName() << ", Congratulations, you've reached level " << level << std::endl;
 }
+
+void Hero::loseHealth(int h)
+{
+	this->health = this->health - h;
+}

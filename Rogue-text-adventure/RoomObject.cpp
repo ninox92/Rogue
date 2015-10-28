@@ -1,5 +1,5 @@
 #pragma once
-#include "RoomObject.h";
+#include "RoomObject.h"
 
 RoomObject::RoomObject(std::string type) : GameObject() 
 {
