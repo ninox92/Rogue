@@ -56,11 +56,11 @@ GameController::~GameController()
 {
 }
 
-void GameController::askGameAction()
+void GameController::askWhatToDo()
 {
 	this->cHero = game->getHero();
 	this->cMap = game->getCurrentMap();
-	
+
 
 	cout << endl;
 	string output = inputController.WaitAndGetInput();
@@ -69,87 +69,93 @@ void GameController::askGameAction()
 	bool sExists = this->actionStatsMap.find(output) != this->actionStatsMap.end();
 
 	// find function by action
-	Actions normalActions = this->actionMap[output];
-	cout << endl;
-
-	switch (normalActions)
+	if (nExists)
 	{
-	case Actions::FIGHT:
-		Fight();
-		break;
-	case Actions::FLEE:
-		Flee(true);
-		break;
-	case Actions::SEARCH:
-		Search();
-		break;
-	case Actions::REST:
-		Rest();
-		break;
-	case Actions::INVERTORY:
-		showInvertory();
-		break;
-	case Actions::MAP:
-		showMap();
-		break;
-	case Actions::STATS:
-		showHeroStats();
-		break;
-	}
+		Actions normalActions = this->actionMap[output];
+		cout << endl;
 
-	Actions hiddenAction = this->actionHiddenMap[output];
-	switch (hiddenAction){
-		//Hidden actions
-	case Actions::MST:
-		MST();
-		break;
-	case Actions::DIJKSTRA:
-		Dijkstra();
-		break;
-	case Actions::BFS:
-		BSF();
-		break;
-	case Actions::LVLUP:
-		LVLUP();
-		break;
-	case Actions::HPUP:
-		HPUP();
-		break;
-	case Actions::REVEAL:
-		Reveal();
-		break;
+		switch (normalActions)
+		{
+		case Actions::FIGHT:
+			Fight();
+			break;
+		case Actions::FLEE:
+			Flee(true);
+			break;
+		case Actions::SEARCH:
+			Search();
+			break;
+		case Actions::REST:
+			Rest();
+			break;
+		case Actions::INVERTORY:
+			showInvertory();
+			break;
+		case Actions::MAP:
+			showMap();
+			break;
+		case Actions::STATS:
+			showHeroStats();
+			break;
+		}
 	}
-	Actions statsAction = this->actionStatsMap[output];
-	switch (statsAction)
-	{
-	case Actions::UP_ATTACK:
-		cHero->upAttack();
-		cout << "Attack increased by 1, attack now is: " << cHero->getAttack() << endl;
-		break;
-	case Actions::UP_DEFENSE:
-		cHero->upDefense();
-		cout << "Defense increased by 1, defense now is: " << cHero->getDefense() << endl;
-		break;
-	case Actions::UP_MINDFULLNESS:
-		cHero->upMindfulness();
-		cout << "Mindfullness increased by 1, mindfullness now is: " << cHero->getMindfulness() << endl;
-		break;
+	if(hExists){
+		Actions hiddenAction = this->actionHiddenMap[output];
+		switch (hiddenAction){
+			//Hidden actions
+		case Actions::MST:
+			MST();
+			break;
+		case Actions::DIJKSTRA:
+			Dijkstra();
+			break;
+		case Actions::BFS:
+			BSF();
+			break;
+		case Actions::LVLUP:
+			LVLUP();
+			break;
+		case Actions::HPUP:
+			HPUP();
+			break;
+		case Actions::REVEAL:
+			Reveal();
+			break;
+		}
 	}
-	if (!nExists && !hExists && !sExists) askGameAction();
+	if(sExists){
+		Actions statsAction = this->actionStatsMap[output];
+		switch (statsAction)
+		{
+		case Actions::UP_ATTACK:
+			cHero->upAttack();
+			cout << "Attack increased by 1, attack now is: " << cHero->getAttack() << endl;
+			break;
+		case Actions::UP_DEFENSE:
+			cHero->upDefense();
+			cout << "Defense increased by 1, defense now is: " << cHero->getDefense() << endl;
+			break;
+		case Actions::UP_MINDFULLNESS:
+			cHero->upMindfulness();
+			cout << "Mindfullness increased by 1, mindfullness now is: " << cHero->getMindfulness() << endl;
+			break;
+		}
+	}
+	if (!nExists && !hExists && !sExists) askWhatToDo();
 }
 
-void GameController::askForUpdateStats()
+void GameController::askToUpdateStats()
 {
+	if (game->getHero()->getRemainingStatPoints() == 0) return;
 	cout << "You have " << game->getHero()->getRemainingStatPoints() << " new points left" << endl;
 	cout << "To update your hero's stats choose one of these ability's: " << endl;
 	for (const auto& i : actionStatsMap) {
 		cout << i.first << ";";
 	}
 	cout << endl;
-	askGameAction();
-	if (game->getHero()->getRemainingStatPoints() > 0) {
-		askForUpdateStats();//recursive 
-	}
+	askWhatToDo();
+
+	askToUpdateStats();//recursive 
 }
 
 void GameController::Fight()
@@ -202,7 +208,7 @@ void GameController::showMap()
 	for (const auto& i : legenda) {
 		cout << i.first << ": " << i.second << endl;
 	}
-	askGameAction();
+	askWhatToDo();
 }
 
 void GameController::showHeroStats()
@@ -214,9 +220,8 @@ void GameController::showHeroStats()
 	cout << "Attack:      " << cHero->getAttack() << endl;
 	cout << "Defense:     " << cHero->getDefense() << endl;
 	cout << "Mindfulness: " << cHero->getMindfulness() << endl << endl;
-	askForUpdateStats();
+	askToUpdateStats();
 	
-	askGameAction();
 }
 
 std::string GameController::getGameActionString()

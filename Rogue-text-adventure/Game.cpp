@@ -56,7 +56,7 @@ void Game::render()
 	inputController.printMessage("Enemy NPC: ");
 	inputController.printMessage("What would you like to do?");
 	inputController.printMessage(gameController->getGameActionString());
-	gameController->askGameAction();
+	gameController->askWhatToDo();
 	
 	clear();
 

@@ -46,7 +46,7 @@ class GameController {
 		std::map<std::string, std::string> legenda = {
 			{ "|-", "Passage way" },
 			{ ".", "Unexplored room" },
-			{ "N", "Explored room" },
+			{ "*", "Explored room" },
 			{ "S", "Start room" },
 			{ "F", "Finish room" },
 			{ "H", "Latter up" },
@@ -66,8 +66,8 @@ class GameController {
 		GameController(Game* game);
 		~GameController();
 
-		void askGameAction();
-		void askForUpdateStats();
+		void askWhatToDo();
+		void askToUpdateStats();
 
 		void Fight();
 		void Flee(bool b);
