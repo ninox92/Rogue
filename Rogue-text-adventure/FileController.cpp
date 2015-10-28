@@ -42,6 +42,24 @@ string FileController::roomDescriptionToString()
 			+ " " + getRandomDesc("roomLayout") + " The room is lit by a " + getRandomDesc("roomLight") + ".";
 }
 
+vector<NPC*> FileController::getRandomEnemies(int nEnemies)
+{
+	int i = rand() % descriptions.find("npcName")->second.size();
+
+	vector<NPC*> enemies;
+	for (int a = 0; a < nEnemies; a++)
+	{
+		string npcName = descriptions.find("npcName")->second[i];
+		npcName += " " + std::to_string(a + 1);
+		string npcDesc = descriptions.find("npcDesc")->second[i];
+		string npcAttackDesc = descriptions.find("npcAttackDesc")->second[i];
+
+		enemies.push_back(new NPC(npcName, npcDesc, npcAttackDesc));
+	}
+
+	return enemies;
+}
+
 vector<string>& FileController::split(const string &s, char delim, vector<string> &elems) {
 	stringstream ss(s);
 	string item;

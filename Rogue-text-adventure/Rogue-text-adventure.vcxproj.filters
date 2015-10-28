@@ -158,6 +158,9 @@
     <ClCompile Include="Dijkstras.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="FightActions.cpp">
+      <Filter>Source Files\Enums</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="file.txt">

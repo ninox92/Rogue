@@ -6,7 +6,7 @@
 
 
 Room::Room() : GameObject(){}// Default constructor
-Room::Room(int id, int x, int y, Map* map) : ID(id), map(map), col(x), row(y), GameObject()
+Room::Room(int id, int x, int y, Map* map, FileController* f) : ID(id), map(map), col(x), row(y), GameObject()
 {
 	int cLevel = map->getLevel();
 	double f1 = std::fmod(map->getMaxLevel(), 2);
@@ -14,6 +14,7 @@ Room::Room(int id, int x, int y, Map* map) : ID(id), map(map), col(x), row(y), G
 	float equalizer = map->getLevel() >= f1 ? f2 : 1;
 	this->spawnChange = ceil((cLevel * 10) * ceil(equalizer));
 	eDist = std::uniform_int_distribution<int>( 0, maxEnemies );
+	setFileController(f);
 	this->createEnemies();
 }
 
@@ -180,6 +181,41 @@ void Room::createEnemies()
 	//check if this room even gets some enemies
 	int chance = dist(dre);
 	if (chance > spawnChange) return;
+
 	//if so, create some
 	enemiesCount = eDist(dre);
+
+	if (enemiesCount != 0) {
+
+		// Enemies in the room
+		enemies = fileController->getRandomEnemies(enemiesCount);
+
+		// Enemies not death
+		enemiesDeath = false;
+
+		// Enemies roomDesc
+		if (enemiesCount == 1)
+			enemiesDesc = std::to_string(enemiesCount) + " " + enemies[0]->GetType() + " " + enemies[0]->getDesc();
+		else
+			enemiesDesc = std::to_string(enemiesCount) + " " + enemies[0]->GetType() + "s " + enemies[0]->getDesc();
+
+		int mapLevel = map->getLevel();
+		int maxEnemiesLvl = mapLevel + 2;
+
+		// Max level of the enemies stays below 10
+		if(maxEnemiesLvl >= 10) {
+			maxEnemiesLvl = 10;
+			mapLevel = maxEnemiesLvl - 2;
+		}
+
+		std::random_device rd;
+		std::default_random_engine dre {rd()};
+		std::uniform_int_distribution<int> dist{ mapLevel, maxEnemiesLvl };
+		int lvlEnemy = dist(dre);
+
+		for (auto &e : enemies)
+		{
+			e->setLevel(lvlEnemy);
+		}
+	}
 }

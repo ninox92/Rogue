@@ -49,7 +49,7 @@ void Game::render()
 
 	inputController.printMessage(hero->getCurrentRoom()->getRoomDesc());
 	inputController.printMessage(hero->getCurrentRoom()->getPassageDesc());
-	inputController.printMessage("Enemy NPC: ");
+	inputController.printMessage(hero->getCurrentRoom()->getEnemiesDesc());
 	inputController.printMessage("What would you like to do?");
 	inputController.printMessage(gameController.getGameActionString());
 	gameController.askGameAction(currentMap, hero);

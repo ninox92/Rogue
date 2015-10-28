@@ -14,10 +14,11 @@ private:
 
 	int level = 1;
 	const int maxLevel = 10;
-	int health = 10;
-	int maxHealth = 10;
+	int maxDamage = 4;
+	int health = 20;
+	int maxHealth = 20;
 	int experience = 0;
-	int maxExperience = 20;
+	int maxExperience = 100;
 
 	int attack = 1;
 	int defense = 1;
@@ -50,5 +51,7 @@ public:
 	int getAttack() { return this->attack; }
 	int getDefense() { return this->defense; }
 	int getMindfulness() { return this->mindfulness; }
+
+	std::string getHealthString();
 };
 

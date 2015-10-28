@@ -3,7 +3,9 @@
 #include <map>
 
 #include "Actions.cpp"
+#include "FightActions.cpp"
 #include "InputController.h"
+#include "NPC.h"
 
 class Map;
 class Hero;
@@ -22,6 +24,12 @@ class GameController {
 			{ "map", Actions::MAP },
 			{ "stats", Actions::STATS }
 		};
+		std::map<std::string, FightActions> fightActionMap = {
+			{ "fight", FightActions::FIGHT },
+			{ "flee", FightActions::FLEE },
+			{ "object", FightActions::OBJECT },
+			{ "potion", FightActions::POTION }
+		};
 	public:
 		GameController();
 		~GameController();
@@ -29,6 +37,9 @@ class GameController {
 		void askGameAction(Map* map, Hero* hero);
 
 		void Fight();
+		void askFightAction();
+		void doHeroAttack();
+		void doNpcAttack(std::vector<NPC*> e);
 		void Flee(bool b);
 		void Search();
 		void Rest();
@@ -38,4 +49,6 @@ class GameController {
 
 		std::string getGameActionString();
 		std::map<std::string, Actions> getGameActions();
+		std::string getFightActionString();
+		std::map<std::string, FightActions> getFightActions();
 };

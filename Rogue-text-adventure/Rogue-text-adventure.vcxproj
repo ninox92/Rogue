@@ -169,6 +169,7 @@
     <ClCompile Include="Actions.cpp" />
     <ClCompile Include="Dijkstras.cpp" />
     <ClCompile Include="Direction.cpp" />
+    <ClCompile Include="FightActions.cpp" />
     <ClCompile Include="FileController.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameController.cpp" />

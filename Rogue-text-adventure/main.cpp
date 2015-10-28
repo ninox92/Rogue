@@ -8,7 +8,7 @@ int	main()
 	HWND console = GetConsoleWindow();
 	RECT r;
 	GetWindowRect(console, &r);
-	MoveWindow(console, r.left, r.top, 950, 500, TRUE);
+	MoveWindow(console, r.left, r.top, 1280, 640, TRUE);
 	
 	// Game
 	Game game;

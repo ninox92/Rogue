@@ -29,3 +29,8 @@ void Hero::move(Direction dir)
 	Passage* p = currentRoom->getPassage(dir);
 	this->move(p->GetRoom(dir));	
 }
+
+std::string Hero::getHealthString()
+{
+	return "You have " + std::to_string(health) + " of the " + std::to_string(maxHealth) + " vitality points left.";
+}

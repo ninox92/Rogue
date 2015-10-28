@@ -5,6 +5,7 @@
 #include "Hero.h"
 #include "Passage.h"
 #include "RoomType.cpp"
+#include "FileController.h"
 
 class Map;
 
@@ -13,6 +14,10 @@ class Room : public GameObject
 private:
 	int ID = -1;
 	Map* map = nullptr;
+	FileController* fileController = nullptr;
+	vector<NPC*> enemies;
+	string enemiesDesc = "There are no enemies in this room!";
+	bool enemiesDeath = true;
 	
 	int spawnChange = 0;// % chance that enemies will spawn in this room
 	int maxEnemies = 3;//maximum
@@ -46,7 +51,7 @@ private:
 public:
 	Room();
 	//Room(int x, int y, Map* map);
-	Room(int id, int x, int y, Map* map);
+	Room(int id, int x, int y, Map* map, FileController* f);
 	virtual ~Room();
 	
 	void setType(RoomType type) { this->type = type; }
@@ -78,9 +83,13 @@ public:
 	void setShortest(bool s) { this->_isShortest = s; }
 	void setPassage(Direction dir, Passage* p);
 
+	vector<NPC*> getEnemies() { return this->enemies; }
+	bool allEnemiesDeath() { return this->enemiesDeath; }
 	std::string getRoomDesc() { return this->roomDesc; }
-	void setRoomDesc(std::string r) { this->roomDesc = r; }
 	std::string getPassageDesc();
+	std::string getEnemiesDesc() { return "Enemy NPC : " + this->enemiesDesc; }
+	void setRoomDesc(std::string r) { this->roomDesc = r; }
+	void setFileController(FileController* f) { this->fileController = f; }
 	
 	void collapsePassage(Direction dir);
 	

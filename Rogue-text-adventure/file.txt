@@ -9,3 +9,12 @@ room with a table and four chairs in it.;room with a bed in the corner.;empty ro
 
 #roomLight
 candle;torch;fireplace
+
+#npcName
+rat;spider
+
+#npcDesc
+looking at you with its blood-red eyes!;looking at you in the dark corner of the room!
+
+#npcAttackDesc
+bite;bite

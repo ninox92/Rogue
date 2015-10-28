@@ -18,6 +18,7 @@ private:
 public:
 	InputController();
 	~InputController();
+	void printEmptyLine();
 	void printMsg(std::string s);
 	void printMessage(std::string s);
 	std::string WaitAndGetInput();

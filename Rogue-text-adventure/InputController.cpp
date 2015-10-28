@@ -15,6 +15,16 @@ InputController::~InputController()
 {
 }
 
+void InputController::printEmptyLine()
+{
+	cout << endl;
+}
+
+void InputController::printMsg(std::string s)
+{
+	cout << s << endl;
+}
+
 void InputController::printMessage(string s)
 {
 	cout << s << endl << endl;

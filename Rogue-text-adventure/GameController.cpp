@@ -58,12 +58,71 @@ void GameController::askGameAction(Map* map, Hero* hero)
 
 void GameController::Fight()
 {
-	// Als er NPC's in de kamer zitten
-	// Vechten:
-		// Val één van je tegenstanders aan
-		// Vlucht in een bepaalde richting weg van je tegenstander(s)
-		// Drink een drankje(om bijvoorbeeld te genezen)
-		// Gebruik één van je spullen(bijvoorbeeld de heilige handgranaat)
+	if (cHero->getCurrentRoom()->allEnemiesDeath()) {
+		inputController.printMessage("There are no enemies to fight!"); 
+		askGameAction(cMap, cHero);
+	} else {
+		vector<NPC*> enemies = cHero->getCurrentRoom()->getEnemies();
+
+		inputController.printMsg("You're fighting with: ");
+		for (auto &e : enemies)
+		{
+			inputController.printMsg(e->getNpcName() + ": " + e->getLvlAndHp());
+		}
+		inputController.printEmptyLine();
+
+		inputController.printMsg("Enemy attacks: ");
+		for (auto &e : enemies)
+		{
+			inputController.printMsg(e->getNpcName() + ": ");
+		}
+		inputController.printEmptyLine();
+		inputController.printMessage(cHero->getHealthString());
+		inputController.printMessage(getFightActionString());
+		askFightAction();
+	}
+
+}
+
+void GameController::askFightAction()
+{
+	cout << "Action: ";
+	string output = inputController.WaitAndGetInput();
+	bool exists = this->fightActionMap.find(output) != this->fightActionMap.end();
+	if (!exists) askGameAction(cMap, cHero);
+
+	// find function by action
+	FightActions a = this->fightActionMap[output];
+	cout << endl;
+
+	switch (a)
+	{
+		case FightActions::FIGHT:
+			// aanval individuele enemie
+			break;
+		case FightActions::FLEE:
+			Flee(true);
+			break;
+		case FightActions::POTION:
+			break;
+		case FightActions::OBJECT:
+			break;
+		default:
+			break;
+	}
+}
+
+void GameController::doHeroAttack()
+{
+	// change to hit based on hero attack
+	// attack single enemy
+}
+
+void GameController::doNpcAttack(std::vector<NPC*> e)
+{
+	// loop enemies
+		// change to hit based on hero defense
+		// attack on hero
 }
 
 void GameController::Flee(bool b)
@@ -132,4 +191,21 @@ std::string GameController::getGameActionString()
 std::map<std::string, Actions> GameController::getGameActions()
 {
 	return this->actionMap;
+}
+
+std::string GameController::getFightActionString()
+{
+	string s = "[";
+	for (auto& kv : this->fightActionMap) {
+		s += kv.first + ":";
+	}
+	s = s.substr(0, s.size() - 1);
+	s += "]";
+
+	return s;
+}
+
+std::map<std::string, FightActions> GameController::getFightActions()
+{
+	return this->fightActionMap;
 }
