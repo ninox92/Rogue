@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Room.h"
 #include "Map.h"
+#include <iostream>
 
 Hero::Hero(std::string name, Game* game) : name(name), game(game), GameObject()
 {
@@ -49,4 +50,24 @@ void Hero::move(Direction dir)
 {
 	Passage* p = currentRoom->getPassage(dir);
 	this->move(p->GetRoom(dir));	
+}
+
+void Hero::upExp(int exp)
+{
+	experience += exp;
+	if (exp >= maxExperience) {
+		int tmp = experience - maxExperience;
+		experience = tmp;
+		upLvl();
+	}
+		
+}
+
+void Hero::upLvl()
+{
+	remainingStatsPoints += 3;
+	upHealth();
+	ResetHealth();
+	this->level++;
+	std::cout << getName() << ", Congratulations, you've reached level " << level << std::endl;
 }

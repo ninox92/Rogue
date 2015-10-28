@@ -15,21 +15,32 @@ class GameController {
 		Map* cMap = nullptr;
 		Hero* cHero = nullptr;
 		InputController inputController;
+
 		std::map<std::string, Actions> actionMap = {
-			{ "fight", Actions::FIGHT },
-			{ "flee", Actions::FLEE },
-			{ "search", Actions::SEARCH },
-			{ "rest", Actions::REST },
-			{ "invertory", Actions::INVERTORY },
-			{ "map", Actions::MAP },
-			{ "stats", Actions::STATS },
+			{ "fight",		Actions::FIGHT },
+			{ "flee",		Actions::FLEE },
+			{ "search",		Actions::SEARCH },
+			{ "rest",		Actions::REST },
+			{ "invertory",	Actions::INVERTORY },
+			{ "map",		Actions::MAP },
+			{ "stats",		Actions::STATS }
+		};
+
+		std::map<std::string, Actions> actionHiddenMap = {
 			///Hidden actions :)
-			{ "mst", Actions::MST },
-			{ "dijkstra", Actions::DIJKSTRA },
-			{ "bfs", Actions::BFS },
-			{ "lvlup", Actions::LVLUP },
-			{ "hpup", Actions::HPUP },
-			{ "reveal", Actions::REVEAL }
+			{ "mst",		Actions::MST },
+			{ "dijkstra",	Actions::DIJKSTRA },
+			{ "bfs",		Actions::BFS },
+			{ "lvlup",		Actions::LVLUP },
+			{ "hpup",		Actions::HPUP },
+			{ "reveal",		Actions::REVEAL }
+		};
+
+		std::map<std::string, Actions> actionStatsMap = {
+			///Stats actions 
+			{ "up-attack",			Actions::UP_ATTACK },
+			{ "up-defense",			Actions::UP_DEFENSE },
+			{ "up-mindfullness",	Actions::UP_MINDFULLNESS },
 		};
 
 		std::map<std::string, std::string> legenda = {
@@ -56,6 +67,7 @@ class GameController {
 		~GameController();
 
 		void askGameAction();
+		void askForUpdateStats();
 
 		void Fight();
 		void Flee(bool b);

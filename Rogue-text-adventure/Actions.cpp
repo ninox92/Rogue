@@ -16,7 +16,12 @@ enum class Actions
 	BFS,//Find shortest route
 	LVLUP,// Lvl up hero
 	HPUP, // restore health
-	REVEAL // Reveal the whole map
+	REVEAL, // Reveal the whole map
+
+	//Stats
+	UP_ATTACK,
+	UP_DEFENSE,
+	UP_MINDFULLNESS
 };
 
 #endif

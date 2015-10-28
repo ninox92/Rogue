@@ -299,7 +299,7 @@ void Map::revealBFS()
 	if (h == nullptr) return;
 
 	int steps = bfs.ComputeStepsAndDisplay(this, h->getCurrentRoom()->getID(), getEndRoom()->getID());
-	std::cout << "Steps : " << steps;
+	std::cout << "Steps : " << steps << std::endl;
 
 }
 
