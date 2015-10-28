@@ -1,3 +1,4 @@
+#pragma once
 #include "RoomObject.h";
 
 RoomObject::RoomObject(std::string type) : GameObject() 

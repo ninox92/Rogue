@@ -21,10 +21,11 @@ private:
 	
 	int spawnChange = 0;// % chance that enemies will spawn in this room
 	int maxEnemies = 3;//maximum
+	int enemiesCount = 0;
 	int row = 0;
 	int col = 0;
 	
-	int enemiesCount = 0;
+	int weight = 0;
 	std::random_device rd;
 
 	// Choose a random mean between 1 and 6
@@ -36,7 +37,7 @@ private:
 	RoomType type = RoomType::INIT;
 	std::string size;
 	
-	bool _hasHero = false;
+	Hero* hero = nullptr;
 	bool _isClean = false;
 	bool _isReached = false;
 	bool _isVisited = false;
@@ -50,7 +51,7 @@ private:
 	void createEnemies();
 public:
 	Room();
-	//Room(int x, int y, Map* map);
+	// Room(int id, int x, int y, Map* map);
 	Room(int id, int x, int y, Map* map, FileController* f);
 	virtual ~Room();
 	
@@ -61,13 +62,13 @@ public:
 	int const getX() { return this->col; }
 	int const getY() { return this->row; }
 	int const getMapLevel();
-	int const getEnemiesCount() { return this->enemiesCount; }
+	int const getWeight() { return this->weight; }// == <<--------------------------------------------------------
 	std::map<std::string, Direction> getAllPossibleMoveDirections();
 	std::map<Direction, Passage*> getAllPossiblePassages();
 	Passage* const getPassage(Direction d);
 	Passage* const getPassage(int x, int y);
 
-	bool const hasHero() { return this->_hasHero; }
+	bool const hasHero() { return hero == nullptr ? false : true; }
 	bool const isClean() { return this->_isClean; }// Is the room clean
 	bool const isVisited() { return this->_isVisited; } // is the room explored
 	bool const isShortest() { return this->_isShortest; }
@@ -79,9 +80,10 @@ public:
 	std::string displayVertical();
 
 	void setReached(bool b) { this->_isReached = b; }
-	void setHero(bool h) { this->_hasHero = h; }
+	void setHero(Hero* h) { this->hero = h; }
 	void setShortest(bool s) { this->_isShortest = s; }
 	void setPassage(Direction dir, Passage* p);
+	void setWeight(int w) { this->weight = w; }
 
 	vector<NPC*> getEnemies() { return this->enemies; }
 	bool allEnemiesDeath() { return this->enemiesDeath; }

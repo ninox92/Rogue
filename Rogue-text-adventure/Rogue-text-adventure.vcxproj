@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AbstractAction.h" />
+    <ClInclude Include="BFS.h" />
     <ClInclude Include="ConsoleColor.h" />
     <ClInclude Include="FileController.h" />
     <ClInclude Include="Dijkstras.h" />
@@ -167,6 +168,7 @@
   <ItemGroup>
     <ClCompile Include="AbstractAction.cpp" />
     <ClCompile Include="Actions.cpp" />
+    <ClCompile Include="BFS.cpp" />
     <ClCompile Include="Dijkstras.cpp" />
     <ClCompile Include="Direction.cpp" />
     <ClCompile Include="FightActions.cpp" />

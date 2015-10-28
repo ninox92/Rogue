@@ -30,7 +30,6 @@ void Map::create() {
 	this->init();
 	this->build();
 	
-	//this->prims(getStartRoom(), getEndRoom());
 }
 
 void Map::init()
@@ -61,7 +60,7 @@ void Map::init()
 	ptX = xDist(dre);//Set Begin X
 	ptY = 0;// Set Begin Y
 	//Set End
-	if (this->level == 10)//Max level
+	if (this->level == game->getMaxLevel())//Max level
 	{
 		setEndRoom(rooms[ptY*width + ptX]);
 		getEndRoom()->setType(RoomType::END);
@@ -98,7 +97,7 @@ void Map::build() {
 			}
 			if (r != nullptr) {
 				r->setReached(true);
-				r->visit();
+				//r->visit();
 				stack.push(r);
 				current = r;
 			}			
@@ -155,51 +154,12 @@ int Map::minKey(Room* c)
 	for (const auto& p : c->getAllPossiblePassages())
 	{
 		Room* next = p.second->GetRoom(p.first);
-		if (next->isReached() == false && next->getEnemiesCount() < min)
-			min_index = next->getID(), min = next->getEnemiesCount();
+		if (next->isReached() == false && next->getWeight() < min)
+			min_index = next->getID(), min = next->getWeight();
 	}
 	std::cout << "minKey: " << min_index << ", weight " << min << std::endl;
 	return min_index;
 }
-
-
-///Breadth First Search
-list<int> Map::BFS(Room* begin, Room* end)
-{
-	queue<Room*> q; // Queue for BFS
-	map<int, list<int>> path;
-	
-	q.push(begin);
-	path[begin->getID()].push_back(begin->getID());
-	
-
-	while (!q.empty())
-	{
-		begin = q.front();
-		begin->setReached(true);
-		q.pop();
-
-
-		for (const auto& p : begin->getAllPossiblePassages()) {
-			if (p.second->IsCollapsed() == false) {
-				Room* next = p.second->GetRoom(p.first);
-
-				if (!next->isReached()) {
-					//if not already has been found
-					next->setReached(true);
-					path[next->getID()] = path[begin->getID()];
-					path[next->getID()].push_back(next->getID());
-					q.push(next);
-				}
-				if (end == next) {
-					return path[end->getID()];
-				}
-			}
-		}
-	}
-	return path[end->getID()];
-}
-
 
 void Map::show() {
 	string rowS = "";
@@ -234,8 +194,6 @@ void Map::collapseByExplosion()
 {
 	
 	this->mst.Kruskals(*this);
-	//this->mst.Print();
-	//this->mst.Display(*this);
 
 	std::vector<edge> nonMST = this->mst.GetNonMSTEdges(*this);
 
@@ -269,19 +227,58 @@ void Map::collapseByExplosion()
 //returns amount of steps hero needs to make until the stairs down
 int Map::talisman()
 {
-	int steps = 0;
 	Hero* h = game->getHero();
 	if (h == nullptr) return -1;
-	resetRooms();
-	if (h->getCurrentRoom()->getMapLevel() != level) return -1;
+	
+	return bfs.ComputeSteps(this, h->getCurrentRoom()->getID(), getEndRoom()->getID());
+}
 
-	list<int> path = BFS(h->getCurrentRoom(), getEndRoom());
-	list<int>::iterator it;
-	for (it = path.begin(); it != path.end(); ++it) {
-		rooms[(*it)]->setShortest(true);
-		steps++;
+void Map::revealAllRooms()
+{
+	for (auto& r : rooms) {
+		r->visit();
 	}
-	return steps;
+}
+
+void Map::revealMST()
+{
+	mst.Kruskals(*this);
+	mst.Print();
+	mst.Display(*this);
+}
+
+void Map::revealDijkstra()
+{
+	dijkstras.Compute(this, game->getHero()->getCurrentRoom()->getID(), getEndRoom()->getID());
+	dijkstras.Display(this, game->getHero()->getCurrentRoom()->getID(), getEndRoom()->getID());
+}
+
+void Map::revealEDijkstra()
+{
+	int start, end;
+	start = game->getHero()->getCurrentRoom()->getID();
+	end = getEndRoom()->getID();
+	dijkstras.Compute(this, start, end);
+	dijkstras.Display(this, start, end);
+	std::vector<int> path = dijkstras.GetPath(start, end);
+	int second = path[1];
+	getRoom(second)->setWeight(100);
+
+	dijkstras.Compute(this, start, end);
+	dijkstras.Display(this, start, end);
+	path = dijkstras.GetPath(start, end);
+
+}
+
+void Map::revealBFS()
+{
+
+	Hero* h = game->getHero();
+	if (h == nullptr) return;
+
+	int steps = bfs.ComputeStepsAndDisplay(this, h->getCurrentRoom()->getID(), getEndRoom()->getID());
+	std::cout << "Steps : " << steps << std::endl;
+
 }
 
 void Map::resetRooms()
@@ -331,20 +328,20 @@ vector<Room*> Map::getNeighbours(int x, int y)
 	int southH = y*width + (x + 1) - width - 1;
 	
 	//if (north >= 0 && y >= 0 && y <= (height - 1))
-	if (north >= 0 && y >= 0 && y <= (height-1) && !rooms[north]->isVisited() ) {
+	if (north >= 0 && y >= 0 && y <= (height-1) && !rooms[north]->isReached() ) {
 		tmp.push_back(rooms[north]);
 	}
 	//if (east >= minX && east <= maxX) {
-	if(east >= minX && east <= maxX && !rooms[east]->isVisited()) {
+	if(east >= minX && east <= maxX && !rooms[east]->isReached()) {
 		tmp.push_back(rooms[east]);
 	}
 	
 	//if (south >= 0 && south <= rooms.size() - 1 && y <= (height - 1)) {
-	if (south >= 0 && south <= rooms.size()-1 && y <= (height - 1) && !rooms[south]->isVisited()) {
+	if (south >= 0 && south <= rooms.size()-1 && y <= (height - 1) && !rooms[south]->isReached()) {
 		tmp.push_back(rooms[south]);
 	}
 
-	if (west >= minX && west <= maxX && !rooms[west]->isVisited()) {
+	if (west >= minX && west <= maxX && !rooms[west]->isReached()) {
 	//if (west >= minX && west <= maxX){
 		tmp.push_back(rooms[west]);
 	}

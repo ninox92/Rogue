@@ -1,35 +1,114 @@
 #include "Map.h"
 #include "Hero.h"
+#include "Game.h"
 #include "Room.h"
 #include "GameController.h"
 #include <iostream>
 
 using namespace std;
 
-GameController::GameController()
+void GameController::MST()
 {
+	this->cMap->revealAllRooms();
+	this->cMap->revealMST();
+	showMap();
+}
+
+void GameController::Dijkstra()
+{
+	this->cMap->revealAllRooms();
+	this->cMap->revealDijkstra();
+	showMap();
+}
+
+void GameController::EDijkstra()
+{
+	this->cMap->revealAllRooms();
+	this->cMap->revealEDijkstra();
+	showMap();
+}
+
+void GameController::BSF()
+{
+	this->cMap->revealAllRooms();
+	this->cMap->revealBFS();
+	showMap();
+}
+
+void GameController::LVLUP()
+{
+	game->getHero()->upExp(100);
+	showHeroStats();
+}
+
+void GameController::HPUP()
+{
+	Hero* h = game->getHero();
+	h->ResetHealth();
+	showHeroStats();
+
+}
+
+void GameController::Reveal()
+{
+	this->cMap->revealAllRooms();
+}
+
+void GameController::UseCompass()
+{
+}
+
+void GameController::UseGrenade()
+{
+	//if (!isUsedGrenade) {
+		cout << "De kerker schudt op zijn grondvesten, alle tegenstanders in de kamer zijn verslagen!" << endl;
+		cout << "Een donderend geluid maakt duidelijk dat gedeeltes van de kerker zijn ingestort..." << endl;
+		cMap->collapseByExplosion();
+		showMap();
+	//}
+	//else {
+		cout << "Je vreest dat een extra handgranaat een cruciale passage zal blokkeren." << endl;
+		cout << "Het is beter om deze niet meer te gebruiken op deze verdieping." << endl;
+	//}
+	
+}
+
+void GameController::UseTalisman()
+{
+	cout << "De talisman licht op en fluistert dat de trap omhoog " << std::to_string( cMap->talisman() ) << " kamers ver weg is" << endl;
+	showMap();
+}
+
+GameController::GameController(Game* game) : game(game)
+{
+	
 }
 
 GameController::~GameController()
 {
 }
 
-void GameController::askGameAction(Map* map, Hero* hero)
+void GameController::askWhatToDo()
 {
-	cMap = map;
-	cHero = hero;
-	
-	cout << "Action: ";
-	string output = inputController.WaitAndGetInput();
-	bool exists = this->actionMap.find(output) != this->actionMap.end();
-	if (!exists) askGameAction(cMap, cHero);
+	this->cHero = game->getHero();
+	this->cMap = game->getCurrentMap();
 
-	// find function by action
-	Actions a = this->actionMap[output];
+
 	cout << endl;
-
-	switch(a)
+	string output = inputController.WaitAndGetInput();
+	bool nExists = this->actionMap.find(output) != this->actionMap.end();
+	bool hExists = this->actionHiddenMap.find(output) != this->actionHiddenMap.end();
+	bool sExists = this->actionStatsMap.find(output) != this->actionStatsMap.end();
+	bool iExists = this->inventoryMap.find(output) != this->inventoryMap.end();
+	
+	// find function by action
+	if (nExists)
 	{
+		Actions normalActions = this->actionMap[output];
+		cout << endl;
+
+		switch (normalActions)
+		{
 		case Actions::FIGHT:
 			Fight();
 			break;
@@ -51,9 +130,86 @@ void GameController::askGameAction(Map* map, Hero* hero)
 		case Actions::STATS:
 			showHeroStats();
 			break;
-		default:
-			break;
+		}
 	}
+	if(hExists){
+		Actions hiddenAction = this->actionHiddenMap[output];
+		switch (hiddenAction){
+			//Hidden actions
+		case Actions::MST:
+			MST();
+			break;
+		case Actions::DIJKSTRA:
+			Dijkstra();
+			break;
+		case Actions::EXTREME_DIJKSTRA:
+			EDijkstra();
+			break;
+		case Actions::BFS:
+			BSF();
+			break;
+		case Actions::LVLUP:
+			LVLUP();
+			break;
+		case Actions::HPUP:
+			HPUP();
+			break;
+		case Actions::REVEAL:
+			Reveal();
+			break;
+		}
+	}
+	if(sExists){
+		Actions statsAction = this->actionStatsMap[output];
+		switch (statsAction)
+		{
+		case Actions::UP_ATTACK:
+			cHero->upAttack();
+			cout << "Attack increased by 1, attack now is: " << cHero->getAttack() << endl;
+			break;
+		case Actions::UP_DEFENSE:
+			cHero->upDefense();
+			cout << "Defense increased by 1, defense now is: " << cHero->getDefense() << endl;
+			break;
+		case Actions::UP_MINDFULLNESS:
+			cHero->upMindfulness();
+			cout << "Mindfullness increased by 1, mindfullness now is: " << cHero->getMindfulness() << endl;
+			break;
+		}
+	}
+
+	if (iExists) {
+		Actions iventoryAction = this->inventoryMap[output];
+		switch (iventoryAction)
+		{
+		case Actions::TALISMAN:
+			UseTalisman();
+			break;
+		case Actions::GRENADE:
+			UseGrenade();
+			break;
+		case Actions::COMPASS:
+			UseCompass();
+			break;
+		}
+		
+	}
+
+	if (!nExists && !hExists && !sExists && !iExists) askWhatToDo();
+}
+
+void GameController::askToUpdateStats()
+{
+	if (game->getHero()->getRemainingStatPoints() == 0) return;
+	cout << "You have " << game->getHero()->getRemainingStatPoints() << " new points left" << endl;
+	cout << "To update your hero's stats choose one of these ability's: " << endl;
+	for (const auto& i : actionStatsMap) {
+		cout << i.first << ";";
+	}
+	cout << endl;
+	askWhatToDo();
+
+	askToUpdateStats();//recursive 
 }
 
 void GameController::Fight()
@@ -127,16 +283,18 @@ void GameController::doNpcAttack(std::vector<NPC*> e)
 
 void GameController::Flee(bool b)
 {
+	/* THIS IS TEMPORARY remove this two lines */
+	this->cHero = game->getHero();
+	this->cMap = game->getCurrentMap();
 	if (b) { // Repeat question, dont need to print this below
 		map<string, Direction> posDirs = cHero->getCurrentRoom()->getAllPossibleMoveDirections();
 		inputController.printDirections(posDirs);
 	}
 
 	Direction d = inputController.getDirectionFromInput();
-	if (cHero->lookForPassage(d))
-		cHero->move(d);
-	else 
-		Flee(false);
+
+	if (cHero->lookForPassage(d)) cHero->move(d);
+	else Flee(false);
 }
 
 void GameController::Search()
@@ -160,7 +318,10 @@ void GameController::showInvertory()
 void GameController::showMap()
 {
 	cMap->show();
-	askGameAction(cMap, cHero);
+	for (const auto& i : legenda) {
+		cout << i.first << ": " << i.second << endl;
+	}
+	askWhatToDo();
 }
 
 void GameController::showHeroStats()
@@ -172,8 +333,8 @@ void GameController::showHeroStats()
 	cout << "Attack:      " << cHero->getAttack() << endl;
 	cout << "Defense:     " << cHero->getDefense() << endl;
 	cout << "Mindfulness: " << cHero->getMindfulness() << endl << endl;
-
-	askGameAction(cMap, cHero);
+	askToUpdateStats();
+	
 }
 
 std::string GameController::getGameActionString()

@@ -9,7 +9,9 @@ class Passage
 {
 private:
 	std::map<Direction, Room*> map;
-	bool collapsed = false;
+	bool _collapsed = false;
+	bool _explored = false;
+	bool _shortest = false;
 
 public:
 	Passage();//Default Constructor
@@ -23,9 +25,12 @@ public:
 	bool Exists(Direction d);
 	Room* GetRoom(Direction d);
 
-	bool const IsCollapsed() { return this->collapsed; }
-	void SetCollapsed(bool c) { this->collapsed = c; }
-
+	bool const IsCollapsed() { return this->_collapsed; }
+	void SetCollapsed(bool c) { this->_collapsed = c; }
+	void Explore() { this->_explored = true; }
+	bool IsExplored() { return this->_explored; }
+	bool IsShortest() { return _shortest; }
+	void SetShortest(bool s) { _shortest = s; }
 	std::string Display();
 };
 

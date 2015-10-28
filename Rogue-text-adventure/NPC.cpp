@@ -1,3 +1,4 @@
+#pragma once
 #include "NPC.h";
 
 NPC::NPC(std::string type, std::string desc, std::string attackDesc) : GameObject()

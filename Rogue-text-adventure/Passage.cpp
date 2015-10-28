@@ -2,7 +2,6 @@
 #include "Room.h"
 
 
-
 Passage::Passage()
 {
 }
@@ -30,12 +29,13 @@ Room * Passage::GetRoom(Direction d)
 std::string Passage::Display()
 {
 	if (map.size() == 0) return "";
+	if (!IsExplored()) return " ";
 	if (IsCollapsed()) return "~";
-
+	if (IsShortest()) return "#";
 	if (Exists(Direction::NORTH) || Exists(Direction::SOUTH))
 		return "|";
 	if (Exists(Direction::EAST) || Exists(Direction::WEST))
-		return "-";
+		return "-" ;
 
 	return "";
 }
