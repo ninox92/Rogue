@@ -12,6 +12,8 @@ private:
 	int x = -1;
 	int y = -1;
 
+	bool death = false;
+
 	int remainingStatsPoints = 0;
 	int level = 1;
 	const int maxLevel = 10;
@@ -45,6 +47,7 @@ public:
 	void upLvl();
 
 	void loseHealth(int h);
+	bool isDeath() { return this->death; }
 
 	Room* const getCurrentRoom() { return this->currentRoom; }
 
@@ -62,6 +65,7 @@ public:
 	int getMaxDamage() { return this->maxDamage; }
 
 	std::string getHealthString();
+	std::string getExpString(int exp);
 
 	int getRemainingStatPoints() { return this->remainingStatsPoints; }
 	void ResetHealth() { this->health = maxHealth; }

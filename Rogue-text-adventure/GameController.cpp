@@ -247,7 +247,6 @@ void GameController::Fight()
 			cHero->getCurrentRoom()->setAllEnemiesDeath(cHero->getCurrentRoom()->checkAllEnemiesDeath(enemies));
 		}
 	}
-
 }
 
 void GameController::askFightAction()
@@ -279,60 +278,48 @@ void GameController::askFightAction()
 
 void GameController::doHeroAttack(bool b)
 {
-	vector<NPC*> enemies = cHero->getCurrentRoom()->getEnemies();
+	std::map<string, NPC*> enemies = cHero->getCurrentRoom()->getEnemiesMap();
 	
 	if (b) {
 		inputController.printMessage("Choose an enemy to attack: ");
-		string s = "[";
-		for (auto &e : enemies)
-		{
-			if (!e->isDeath()) {
-				s += e->getNpcInputName() + ":";
-			}
-		}
-		s = s.substr(0, s.size() - 1);
-		s += "]";
-		inputController.printMessage(s);
+		inputController.printMessage(cHero->getCurrentRoom()->getEnemiesMapString());
 	}
 
 	std::random_device rd;
 	std::default_random_engine dre{ rd() };
 
-	// Als de input gelijk is aan (rat 1) 
-		// komt hij 2x in deze functie
-
 	cout << "Enemy: ";
-	string output = inputController.WaitAndGetInput();
-
-	if (!output.empty()) {
-		bool enemyFound = false;
-		for (auto &e : enemies)	{
-			if (e->getNpcInputName() == output) {
-				if (!e->isDeath()) {
-					enemyFound = true;
+	string output = inputController.getFightInput();
+	bool exists = enemies.find(output) != enemies.end();
+	if(exists) {
+		NPC* enemy = enemies[output];
+		if (!enemy->isDeath()) {
+			inputController.printEmptyLine();
+			if (chanceCalc() == true) {
+				std::uniform_int_distribution<int> dist{ cHero->getMinDamage(), cHero->getMaxDamage() };
+				int dmg = dist(dre);
+				inputController.printMsg("You attacked " + enemy->GetType() + " and do " + std::to_string(dmg) + " damage!");
+				inputController.printEmptyLine();
+				enemy->loseHealth(dmg);
+				if (enemy->isDeath()) {
+					cHero->upExp(enemy->getExp());
 					inputController.printEmptyLine();
-					if (chanceCalc() == true) {
-						std::uniform_int_distribution<int> dist{ cHero->getMinDamage(), cHero->getMaxDamage() };
-						int dmg = dist(dre);
-						inputController.printMsg("You attacked " + e->GetType() + " and do " + std::to_string(dmg) + " damage!");
-						e->loseHealth(dmg);
-						if (e->isDeath()) {
-							cHero->upExp(e->getExp());
-						}
-					} else {
-						inputController.printMsg("You attacked " + e->GetType() + " and missed!");
-					}
-					inputController.printEmptyLine();
-				} else {
-					inputController.printMessage("Enemy: " + e->GetType() + " is already death!");
+					inputController.printMessage(cHero->getExpString(enemy->getExp()));
 				}
 			} else {
-				inputController.printMessage("You've slain all enemies!");
-				inputController.pressEnterToContinue();
+				inputController.printMsg("You attacked " + enemy->GetType() + " and missed!");
+				inputController.printEmptyLine();
 			}
+		} else {
+			inputController.printMessage("Enemy: " + enemy->GetType() + " is already death!");
 		}
-		if (!enemyFound && !output.empty()) doHeroAttack(false);
-	}
+
+		if (cHero->getCurrentRoom()->checkAllEnemiesDeath(cHero->getCurrentRoom()->getEnemies())) {
+			// Set room desc that hero has slain the enemies?
+			inputController.printMessage("You've slain all enemies!");
+		}
+	}	
+	if (!exists) doHeroAttack(false);
 }
 
 void GameController::doNpcAttack(std::vector<NPC*> enemies)
@@ -348,6 +335,12 @@ void GameController::doNpcAttack(std::vector<NPC*> enemies)
 				int dmg = dist(dre);
 				inputController.printMsg(e->getAttackDesc(true, dmg));
 				cHero->loseHealth(dmg);
+				if (cHero->isDeath()) {
+					inputController.printEmptyLine();
+					inputController.printMessage("You've been slain, better luck next time!");
+					inputController.pressEnterToContinue();
+					exit(0);
+				}
 			}
 			else {
 				inputController.printMsg(e->getAttackDesc(false, 0));

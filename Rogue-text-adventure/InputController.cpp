@@ -43,7 +43,15 @@ void InputController::printMessage(string s)
 
 string InputController::WaitAndGetInput()
 {
-	cin >> input;
+	getline(cin, input);
+	//cin >> input;
+	std::transform(input.begin(), input.end(), input.begin(), ::tolower);
+	return input;
+}
+
+string InputController::getFightInput()
+{
+	getline(cin, input);
 	std::transform(input.begin(), input.end(), input.begin(), ::tolower);
 	return input;
 }

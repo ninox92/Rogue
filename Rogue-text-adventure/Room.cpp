@@ -113,6 +113,34 @@ std::string Room::getPassageDesc()
 	return s;
 }
 
+std::map<string, NPC*> Room::getEnemiesMap()
+{
+	std::map<string, NPC*> m;
+	
+	for (auto &e : this->enemies)
+	{
+		m.insert({e->getNpcInputName(),e});
+	}
+
+	return m;
+}
+
+string Room::getEnemiesMapString()
+{
+	std::map<string, NPC*> m = getEnemiesMap();
+
+	string s = "[";
+	for (auto& kv : m) {
+		if (!kv.second->isDeath()) {
+			s += kv.first + ":";
+		}
+	}
+	s = s.substr(0, s.size() - 1);
+	s += "]";
+
+	return s;
+}
+
 void Room::collapsePassage(Direction dir)
 {
 	if (hasPassage(dir))

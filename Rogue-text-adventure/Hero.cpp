@@ -57,6 +57,11 @@ std::string Hero::getHealthString()
 	return "You have " + std::to_string(health) + " of the " + std::to_string(maxHealth) + " vitality points left.";
 }
 
+std::string Hero::getExpString(int exp)
+{
+	return "You've earned " + std::to_string(exp) + "Exp, current progress to the next level: (" + std::to_string(getExp()) + "/" + std::to_string(getMaxExp()) + ")";
+}
+
 void Hero::upExp(int exp)
 {
 	experience += exp;
@@ -80,4 +85,8 @@ void Hero::upLvl()
 void Hero::loseHealth(int h)
 {
 	this->health = this->health - h;
+	if (this->health <= 0) {
+		this->health = 0;
+		this->death = true;
+	}
 }

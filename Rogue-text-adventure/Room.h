@@ -94,6 +94,9 @@ public:
 	std::string getEnemiesDesc() { return "Enemy NPC : " + this->enemiesDesc; }
 	void setRoomDesc(std::string r) { this->roomDesc = r; }
 	void setFileController(FileController* f) { this->fileController = f; }
+
+	std::map<string, NPC*> getEnemiesMap();
+	string getEnemiesMapString();
 	
 	void collapsePassage(Direction dir);
 	
