@@ -56,21 +56,15 @@ void GameController::Reveal()
 
 void GameController::UseCompass()
 {
+	//Dijkstra's
 }
 
 void GameController::UseGrenade()
 {
-	//if (!isUsedGrenade) {
-		cout << "De kerker schudt op zijn grondvesten, alle tegenstanders in de kamer zijn verslagen!" << endl;
-		cout << "Een donderend geluid maakt duidelijk dat gedeeltes van de kerker zijn ingestort..." << endl;
-		cMap->collapseByExplosion();
+	cHero->UseItem("grenade", *cMap);
+	if (!cHero->IsItemUsed("grenade")) {
 		showMap();
-	//}
-	//else {
-		cout << "Je vreest dat een extra handgranaat een cruciale passage zal blokkeren." << endl;
-		cout << "Het is beter om deze niet meer te gebruiken op deze verdieping." << endl;
-	//}
-	
+	}	
 }
 
 void GameController::UseTalisman()

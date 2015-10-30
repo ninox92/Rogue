@@ -4,11 +4,15 @@
 #include "Game.h"
 #include "Room.h"
 #include "Map.h"
+#include "Compass.h"
+#include "Grenade.h"
 #include <iostream>
 
 Hero::Hero(std::string name, Game* game) : name(name), game(game), GameObject()
 {
 	SetType("Hero");
+	AddItem("compass", new Compass());
+	AddItem("grenade", new Grenade());
 }
 
 Hero::~Hero()
@@ -70,4 +74,36 @@ void Hero::upLvl()
 	ResetHealth();
 	this->level++;
 	std::cout << getName() << ", Congratulations, you've reached level " << level << std::endl;
+}
+
+void Hero::AddItem(std::string key, Item* i)
+{
+	this->items[key] = i;
+}
+
+void Hero::UseItem(std::string key)
+{
+	if (HasItem(key)) {
+		items[key]->Use(this);
+	}
+}
+
+void Hero::UseItem(std::string key, Map & map)
+{
+	if (HasItem(key)) {
+		items[key]->Use(map, this);
+	}
+}
+
+bool Hero::HasItem(std::string key)
+{
+	return (items.count(key) == 1);
+}
+
+bool Hero::IsItemUsed(std::string key)
+{
+	if (HasItem(key)) {
+		return items[key]->IsUsed();
+	}
+	return false;
 }
