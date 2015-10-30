@@ -15,7 +15,8 @@ private:
 	int remainingStatsPoints = 0;
 	int level = 1;
 	const int maxLevel = 10;
-	int maxDamage = 4;
+	int minDamage = 15; // -- normal: 1
+	int maxDamage = 20; // -- normal: 6
 	int health = 20;
 	int maxHealth = 20;
 	int experience = 0;
@@ -57,6 +58,8 @@ public:
 	int getAttack() { return this->attack; }
 	int getDefense() { return this->defense; }
 	int getMindfulness() { return this->mindfulness; }
+	int getMinDamage() { return this->minDamage; }
+	int getMaxDamage() { return this->maxDamage; }
 
 	std::string getHealthString();
 

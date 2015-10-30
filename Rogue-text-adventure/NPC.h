@@ -11,6 +11,8 @@ class NPC : public GameObject
 		string desc;
 		string attackDesc;
 
+		bool death = false;
+
 		int level = 1;
 		int health = 8;
 		int maxHealth = 8;
@@ -25,6 +27,7 @@ class NPC : public GameObject
 
 		string getNpcName();
 		string getNpcCleanName();
+		string getNpcInputName();
 		string getLvlAndHp();
 		int getHealth() { return this->health; }
 		int getMaxDamage() { return this->maxDamage; }
@@ -32,5 +35,9 @@ class NPC : public GameObject
 		void setDesc(string s) { this->desc = s; }
 		string getAttackDesc(bool hit, int dmg);
 		void setAttackDesc(string s) { this->attackDesc = s; }
+
+		void loseHealth(int h);
+		bool isDeath() { return this->death; }
+		int getExp() { return this->exp; }
 };
 

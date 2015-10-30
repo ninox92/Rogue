@@ -90,7 +90,7 @@ class GameController {
 
 		void Fight();
 		void askFightAction();
-		void doHeroAttack();
+		void doHeroAttack(bool b);
 		void doNpcAttack(std::vector<NPC*> e);
 		void Flee(bool b);
 		void Search();
@@ -100,6 +100,7 @@ class GameController {
 		void showMap();
 		void showHeroStats();
 
+		bool chanceCalc();
 		std::string getGameActionString();
 		std::map<std::string, Actions> getGameActions();
 		std::string getFightActionString();

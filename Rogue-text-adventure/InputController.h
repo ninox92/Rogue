@@ -18,6 +18,8 @@ private:
 public:
 	InputController();
 	~InputController();
+	void clearConsole();
+	void pressEnterToContinue();
 	void printEmptyLine();
 	void printMsg(std::string s);
 	void printMessage(std::string s);

@@ -15,6 +15,17 @@ InputController::~InputController()
 {
 }
 
+void InputController::clearConsole()
+{
+	system("cls");
+}
+
+void InputController::pressEnterToContinue()
+{
+	system("pause");
+	printEmptyLine();
+}
+
 void InputController::printEmptyLine()
 {
 	cout << endl;

@@ -37,7 +37,9 @@ void GameController::BSF()
 
 void GameController::LVLUP()
 {
+	inputController.printEmptyLine();
 	game->getHero()->upExp(100);
+	inputController.printEmptyLine();
 	showHeroStats();
 }
 
@@ -161,19 +163,20 @@ void GameController::askWhatToDo()
 	}
 	if(sExists){
 		Actions statsAction = this->actionStatsMap[output];
+		inputController.printEmptyLine();
 		switch (statsAction)
 		{
 		case Actions::UP_ATTACK:
 			cHero->upAttack();
-			cout << "Attack increased by 1, attack now is: " << cHero->getAttack() << endl;
+			inputController.printMessage("Attack increased by 1, attack now is : " + std::to_string(cHero->getAttack()));
 			break;
 		case Actions::UP_DEFENSE:
 			cHero->upDefense();
-			cout << "Defense increased by 1, defense now is: " << cHero->getDefense() << endl;
+			inputController.printMessage("Defense increased by 1, defense now is : " + std::to_string(cHero->getDefense()));
 			break;
 		case Actions::UP_MINDFULLNESS:
 			cHero->upMindfulness();
-			cout << "Mindfullness increased by 1, mindfullness now is: " << cHero->getMindfulness() << endl;
+			inputController.printMessage("Mindfullness increased by 1, mindfullness now is : " + std::to_string(cHero->getMindfulness()));
 			break;
 		}
 	}
@@ -201,12 +204,15 @@ void GameController::askWhatToDo()
 void GameController::askToUpdateStats()
 {
 	if (game->getHero()->getRemainingStatPoints() == 0) return;
-	cout << "You have " << game->getHero()->getRemainingStatPoints() << " new points left" << endl;
-	cout << "To update your hero's stats choose one of these ability's: " << endl;
+	inputController.printMsg("You have " + std::to_string(game->getHero()->getRemainingStatPoints()) + " new points left");
+	inputController.printMessage("To update your hero's stats choose one of these ability's: ");
+	string s = "[";
 	for (const auto& i : actionStatsMap) {
-		cout << i.first << ";";
+		s+= i.first + ";";
 	}
-	cout << endl;
+	s = s.substr(0, s.size() - 1);
+	s += "]";
+	inputController.printMessage(s);
 	askWhatToDo();
 
 	askToUpdateStats();//recursive 
@@ -220,6 +226,7 @@ void GameController::Fight()
 	} else {
 		while (cHero->getCurrentRoom()->allEnemiesDeath() != true)
 		{
+			inputController.clearConsole();
 			vector<NPC*> enemies = cHero->getCurrentRoom()->getEnemies();
 
 			inputController.printMsg("You're fighting with: ");
@@ -233,7 +240,10 @@ void GameController::Fight()
 			inputController.printEmptyLine();
 			inputController.printMessage(cHero->getHealthString());
 			inputController.printMessage(getFightActionString());
+			
+			Room* temp = cHero->getCurrentRoom();			// -- Stop loop if hero flee in a fight
 			askFightAction();
+			if (cHero->getCurrentRoom() != temp) break;		// -- Stop loop if hero flee in a fight
 			cHero->getCurrentRoom()->setAllEnemiesDeath(cHero->getCurrentRoom()->checkAllEnemiesDeath(enemies));
 		}
 	}
@@ -251,7 +261,8 @@ void GameController::askFightAction()
 		switch (a)
 		{
 			case FightActions::FIGHT:
-				doHeroAttack();
+				doHeroAttack(true);
+				inputController.pressEnterToContinue();
 				break;
 			case FightActions::FLEE:
 				Flee(true);
@@ -266,29 +277,82 @@ void GameController::askFightAction()
 	if (!exists) askFightAction();
 }
 
-void GameController::doHeroAttack()
+void GameController::doHeroAttack(bool b)
 {
-	// change to hit based on hero attack
-	// attack single enemy
+	vector<NPC*> enemies = cHero->getCurrentRoom()->getEnemies();
+	
+	if (b) {
+		inputController.printMessage("Choose an enemy to attack: ");
+		string s = "[";
+		for (auto &e : enemies)
+		{
+			if (!e->isDeath()) {
+				s += e->getNpcInputName() + ":";
+			}
+		}
+		s = s.substr(0, s.size() - 1);
+		s += "]";
+		inputController.printMessage(s);
+	}
+
+	std::random_device rd;
+	std::default_random_engine dre{ rd() };
+
+	// Als de input gelijk is aan (rat 1) 
+		// komt hij 2x in deze functie
+
+	cout << "Enemy: ";
+	string output = inputController.WaitAndGetInput();
+
+	if (!output.empty()) {
+		bool enemyFound = false;
+		for (auto &e : enemies)	{
+			if (e->getNpcInputName() == output) {
+				if (!e->isDeath()) {
+					enemyFound = true;
+					inputController.printEmptyLine();
+					if (chanceCalc() == true) {
+						std::uniform_int_distribution<int> dist{ cHero->getMinDamage(), cHero->getMaxDamage() };
+						int dmg = dist(dre);
+						inputController.printMsg("You attacked " + e->GetType() + " and do " + std::to_string(dmg) + " damage!");
+						e->loseHealth(dmg);
+						if (e->isDeath()) {
+							cHero->upExp(e->getExp());
+						}
+					} else {
+						inputController.printMsg("You attacked " + e->GetType() + " and missed!");
+					}
+					inputController.printEmptyLine();
+				} else {
+					inputController.printMessage("Enemy: " + e->GetType() + " is already death!");
+				}
+			} else {
+				inputController.printMessage("You've slain all enemies!");
+				inputController.pressEnterToContinue();
+			}
+		}
+		if (!enemyFound && !output.empty()) doHeroAttack(false);
+	}
 }
 
 void GameController::doNpcAttack(std::vector<NPC*> enemies)
 {
 	std::random_device rd;
-	std::default_random_engine dre{ rd() };
+	std::default_random_engine dre{rd()};
 	
-	for (auto &e : enemies)
-	{
+	for (auto &e : enemies)	{
 		// change to hit based on hero defense
-
-		// if hit
-		std::uniform_int_distribution<int> dist{ 1, e->getMaxDamage() };
-		int dmg = dist(dre);
-		inputController.printMsg(e->getAttackDesc(true, dmg));
-		cHero->loseHealth(dmg);
-
-		// if not hit
-			// inputController.printMsg(e->getAttackDesc(false, 0));
+		if (!e->isDeath()) {
+			if (chanceCalc() == true) {
+				std::uniform_int_distribution<int> dist{ 1, e->getMaxDamage() };
+				int dmg = dist(dre);
+				inputController.printMsg(e->getAttackDesc(true, dmg));
+				cHero->loseHealth(dmg);
+			}
+			else {
+				inputController.printMsg(e->getAttackDesc(false, 0));
+			}
+		}
 	}
 }
 
@@ -297,6 +361,16 @@ void GameController::Flee(bool b)
 	/* THIS IS TEMPORARY remove this two lines */
 	this->cHero = game->getHero();
 	this->cMap = game->getCurrentMap();
+
+	if (cHero->getCurrentRoom()->allEnemiesDeath() == false) {
+		if (chanceCalc() == true) {
+			inputController.printMessage("There are enemies in the room, you could not successfully flee!");
+			inputController.pressEnterToContinue();
+			Fight();
+			return;
+		}
+	}
+
 	if (b) { // Repeat question, dont need to print this below
 		map<string, Direction> posDirs = cHero->getCurrentRoom()->getAllPossibleMoveDirections();
 		inputController.printDirections(posDirs);
@@ -304,8 +378,10 @@ void GameController::Flee(bool b)
 
 	Direction d = inputController.getDirectionFromInput();
 
-	if (cHero->lookForPassage(d)) cHero->move(d);
-	else Flee(false);
+	if (cHero->lookForPassage(d)) 
+		cHero->move(d);
+	else 
+		Flee(false);
 }
 
 void GameController::Search()
@@ -315,8 +391,11 @@ void GameController::Search()
 }
 void GameController::Rest()
 {
-	// Hero: health = maxHealth
+	cHero->ResetHealth();
+	inputController.printMessage(cHero->getHealthString());
 	// Random: kans op nieuwe NPC's in de kamer
+
+	inputController.pressEnterToContinue();
 
 }
 void GameController::showInvertory()
@@ -346,7 +425,12 @@ void GameController::showHeroStats()
 	cout << "Defense:     " << cHero->getDefense() << endl;
 	cout << "Mindfulness: " << cHero->getMindfulness() << endl << endl;
 	askToUpdateStats();
-	
+	askWhatToDo();
+}
+
+bool GameController::chanceCalc()
+{
+	return rand() % 2 == 1;
 }
 
 std::string GameController::getGameActionString()

@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include "NPC.h"
 
 NPC::NPC(std::string type, std::string desc, std::string attackDesc) : GameObject()
@@ -38,6 +39,13 @@ string NPC::getNpcCleanName()
 	return s.substr(0, s.size() - 2);
 }
 
+string NPC::getNpcInputName()
+{
+	string s = GetType();
+	std::replace(s.begin(), s.end(), ' ', '-');
+	return s;
+}
+
 string NPC::getLvlAndHp()
 {
 	return "Level(" + std::to_string(level) + "), Health(" + std::to_string(health) + "/" + std::to_string(maxHealth) + ")";
@@ -50,4 +58,13 @@ string NPC::getAttackDesc(bool hit, int dmg)
 		return getNpcName() + " " + this->attackDesc + " and do " + std::to_string(dmg) + " damage!";
 	}
 	return getNpcName() + " " + this->attackDesc + " and missed!";
+}
+
+void NPC::loseHealth(int h)
+{
+	this->health = this->health - h;
+	if (this->health <= 0) {
+		this->health = 0;
+		this->death = true;
+	}
 }
