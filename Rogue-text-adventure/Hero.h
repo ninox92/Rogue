@@ -17,8 +17,8 @@ private:
 	int remainingStatsPoints = 0;
 	int level = 1;
 	const int maxLevel = 10;
-	int minDamage = 15; // -- normal: 1
-	int maxDamage = 20; // -- normal: 6
+	int minDamage = 2;
+	int maxDamage = 6;
 	int health = 20;
 	int maxHealth = 20;
 	int experience = 0;
