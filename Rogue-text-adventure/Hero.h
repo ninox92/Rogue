@@ -17,16 +17,22 @@ private:
 	int remainingStatsPoints = 0;
 	int level = 1;
 	const int maxLevel = 10;
+
 	int minDamage = 2;
 	int maxDamage = 6;
+
 	int health = 20;
 	int maxHealth = 20;
+
 	int experience = 0;
 	int maxExperience = 100;
 
 	int attack = 1;
 	int defense = 1;
 	int mindfulness = 1;
+
+	int chanceToAttack = 80;
+	int chanceToDefend = 60;
 
 	int backpack;// Items[] 
 	Game* game = nullptr;
@@ -45,6 +51,7 @@ public:
 	void upDefense() { defense++; remainingStatsPoints--; }
 	void upMindfulness() { mindfulness++; remainingStatsPoints--; }
 	void upLvl();
+	void upDmg();
 
 	void loseHealth(int h);
 	bool isDeath() { return this->death; }
@@ -66,6 +73,9 @@ public:
 
 	std::string getHealthString();
 	std::string getExpString(int exp);
+
+	int getChanceToAttack();
+	int getChanceToDefend();
 
 	int getRemainingStatPoints() { return this->remainingStatsPoints; }
 	void ResetHealth() { this->health = maxHealth; }

@@ -295,7 +295,7 @@ void GameController::doHeroAttack(bool b)
 		NPC* enemy = enemies[output];
 		if (!enemy->isDeath()) {
 			inputController.printEmptyLine();
-			if (chanceCalc() == true) {
+			if (chanceCalc(cHero->getChanceToAttack()) == true) {
 				std::uniform_int_distribution<int> dist{ cHero->getMinDamage(), cHero->getMaxDamage() };
 				int dmg = dist(dre);
 				inputController.printMsg("You attacked " + enemy->GetType() + " and do " + std::to_string(dmg) + " damage!");
@@ -330,7 +330,7 @@ void GameController::doNpcAttack(std::vector<NPC*> enemies)
 	for (auto &e : enemies)	{
 		// change to hit based on hero defense
 		if (!e->isDeath()) {
-			if (chanceCalc() == true) {
+			if (chanceCalc(cHero->getChanceToDefend()) == true) {
 				std::uniform_int_distribution<int> dist{ 1, e->getMaxDamage() };
 				int dmg = dist(dre);
 				inputController.printMsg(e->getAttackDesc(true, dmg));
@@ -356,7 +356,7 @@ void GameController::Flee(bool b)
 	this->cMap = game->getCurrentMap();
 
 	if (cHero->getCurrentRoom()->allEnemiesDeath() == false) {
-		if (chanceCalc() == true) {
+		if (chanceCalc(50) == true) {
 			inputController.printMessage("There are enemies in the room, you could not successfully flee!");
 			inputController.pressEnterToContinue();
 			Fight();
@@ -421,9 +421,16 @@ void GameController::showHeroStats()
 	askWhatToDo();
 }
 
-bool GameController::chanceCalc()
+bool GameController::chanceCalc(int maxPercentage)
 {
-	return rand() % 2 == 1;
+	std::random_device rd;
+	std::default_random_engine dre{ rd() };
+	std::uniform_int_distribution<int> dist{ 1, 100 };
+	int percentage = dist(dre);
+
+	if (percentage <= maxPercentage)
+		return true;
+	return false;
 }
 
 std::string GameController::getGameActionString()

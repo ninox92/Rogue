@@ -62,6 +62,26 @@ std::string Hero::getExpString(int exp)
 	return "You've earned " + std::to_string(exp) + "Exp, current progress to the next level: (" + std::to_string(getExp()) + "/" + std::to_string(getMaxExp()) + ")";
 }
 
+int Hero::getChanceToAttack()
+{
+	int i = this->chanceToAttack + this->attack;
+
+	if(i >= 100)
+		i = 100;
+
+	return i;
+}
+
+int Hero::getChanceToDefend()
+{
+	int i = this->chanceToDefend - this->defense;
+
+	if (i <= 1)
+		i = 1;
+
+	return i;
+}
+
 void Hero::upExp(int exp)
 {
 	experience += exp;
@@ -78,8 +98,15 @@ void Hero::upLvl()
 	remainingStatsPoints += 3;
 	upHealth();
 	ResetHealth();
+	upDmg();
 	this->level++;
 	std::cout << getName() << ", Congratulations, you've reached level " << level << std::endl;
+}
+
+void Hero::upDmg()
+{
+	this->minDamage += (int)(0.5f + (this->minDamage / 2));
+	this->maxDamage += (int)(0.5f + (this->maxDamage / 2));
 }
 
 void Hero::loseHealth(int h)

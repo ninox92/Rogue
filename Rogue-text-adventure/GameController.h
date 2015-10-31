@@ -100,7 +100,7 @@ class GameController {
 		void showMap();
 		void showHeroStats();
 
-		bool chanceCalc();
+		bool chanceCalc(int maxPercentage);
 		std::string getGameActionString();
 		std::map<std::string, Actions> getGameActions();
 		std::string getFightActionString();
