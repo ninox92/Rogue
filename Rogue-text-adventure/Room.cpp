@@ -15,7 +15,8 @@ Room::Room(int id, int x, int y, Map* map, FileController* f) : ID(id), map(map)
 	this->spawnChange = ceil((cLevel * 10) * ceil(equalizer));
 	eDist = std::uniform_int_distribution<int>( 1, maxEnemies );
 	setFileController(f);
-	this->createEnemies();
+	this->createTrap();
+	this->createEnemies(true);
 }
 
 
@@ -141,6 +142,11 @@ string Room::getEnemiesMapString()
 	return s;
 }
 
+void Room::createEnemiesWhileRest()
+{
+	createEnemies(false);
+}
+
 void Room::collapsePassage(Direction dir)
 {
 	if (hasPassage(dir))
@@ -218,11 +224,22 @@ std::string Room::getToken()
 	return s;
 }
 
-void Room::createEnemies()
+void Room::createTrap()
+{
+	//int chance = dist(dre);
+	//if (chance > spawnChange) return;
+
+	this->isTrapActive = true;
+	this->trapDesc = fileController->trapDescriptionToString();
+}
+
+void Room::createEnemies(bool checkSpawn)
 {
 	//check if this room even gets some enemies
-	int chance = dist(dre);
-	if (chance > spawnChange) return;
+	if (checkSpawn) {
+		int chance = dist(dre);
+		if (chance > spawnChange) return;
+	}
 
 	//if so, create some
 	enemiesCount = eDist(dre);

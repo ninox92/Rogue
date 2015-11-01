@@ -33,6 +33,7 @@ private:
 
 	int chanceToAttack = 80;
 	int chanceToDefend = 60;
+	int chanceToMindfulness = 80;
 
 	int backpack;// Items[] 
 	Game* game = nullptr;
@@ -76,6 +77,7 @@ public:
 
 	int getChanceToAttack();
 	int getChanceToDefend();
+	int getChanceToMindfulness();
 
 	int getRemainingStatPoints() { return this->remainingStatsPoints; }
 	void ResetHealth() { this->health = maxHealth; }

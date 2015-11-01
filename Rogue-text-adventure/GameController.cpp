@@ -48,7 +48,6 @@ void GameController::HPUP()
 	Hero* h = game->getHero();
 	h->ResetHealth();
 	showHeroStats();
-
 }
 
 void GameController::Reveal()
@@ -303,7 +302,6 @@ void GameController::doHeroAttack(bool b)
 				enemy->loseHealth(dmg);
 				if (enemy->isDeath()) {
 					cHero->upExp(enemy->getExp());
-					inputController.printEmptyLine();
 					inputController.printMessage(cHero->getExpString(enemy->getExp()));
 				}
 			} else {
@@ -316,6 +314,7 @@ void GameController::doHeroAttack(bool b)
 
 		if (cHero->getCurrentRoom()->checkAllEnemiesDeath(cHero->getCurrentRoom()->getEnemies())) {
 			// Set room desc that hero has slain the enemies?
+			cHero->getCurrentRoom()->setRoomDesc("You've slain all enemies in this room!");
 			inputController.printMessage("You've slain all enemies!");
 		}
 	}	
@@ -355,6 +354,7 @@ void GameController::Flee(bool b)
 	this->cHero = game->getHero();
 	this->cMap = game->getCurrentMap();
 
+	// Enemies
 	if (cHero->getCurrentRoom()->allEnemiesDeath() == false) {
 		if (chanceCalc(50) == true) {
 			inputController.printMessage("There are enemies in the room, you could not successfully flee!");
@@ -362,6 +362,16 @@ void GameController::Flee(bool b)
 			Fight();
 			return;
 		}
+	}
+
+	// Trap
+	if(cHero->getCurrentRoom()->hasTrap()) {
+		cHero->getCurrentRoom()->disableTrap();
+		int trapDmg = (int)(0.5f + (cHero->getMaxHealth() / 4));
+		cHero->loseHealth(trapDmg);
+		inputController.printMessage(cHero->getCurrentRoom()->getTrapDesc() + " and lose " + std::to_string(trapDmg) + " vitality points!");
+		inputController.printMessage(cHero->getHealthString());
+		inputController.pressEnterToContinue();
 	}
 
 	if (b) { // Repeat question, dont need to print this below
@@ -381,16 +391,33 @@ void GameController::Search()
 {
 	// Zoek in de kamer naar een val of spullen
 	// Hero: kansberekening aan de hand van mindfulness
+	if (chanceCalc(cHero->getChanceToMindfulness()) == true) {
+		if (cHero->getCurrentRoom()->hasTrap()) {
+			cHero->getCurrentRoom()->disableTrap();
+			inputController.printMessage("You've searched the room and succesfully disabled a trap!");
+			// ELSE IF (spullen)
+		} else {
+			inputController.printMessage("You've searched the room but found nothing!");
+		}
+	} else {
+		inputController.printMessage("You've searched the room but found nothing!");
+	}
+	inputController.pressEnterToContinue();
 }
+
 void GameController::Rest()
 {
+	// Reset: health op max
 	cHero->ResetHealth();
 	inputController.printMessage(cHero->getHealthString());
 	// Random: kans op nieuwe NPC's in de kamer
-
+	if (chanceCalc(50) == true) {
+		inputController.printMessage("While you where resting, there spawned new enemies in the room!");
+		cHero->getCurrentRoom()->createEnemiesWhileRest();
+	}
 	inputController.pressEnterToContinue();
-
 }
+
 void GameController::showInvertory()
 {
 	// Hero: print lijst met spullen

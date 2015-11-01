@@ -18,6 +18,9 @@ private:
 	vector<NPC*> enemies;
 	string enemiesDesc = "There are no enemies in this room!";
 	bool enemiesDeath = true;
+
+	bool isTrapActive = false;
+	string trapDesc = "";
 	
 	int spawnChange = 0;// % chance that enemies will spawn in this room
 	int maxEnemies = 3;//maximum
@@ -48,7 +51,8 @@ private:
 	std::string getToken();
 	std::string roomDesc;
 
-	void createEnemies();
+	void createTrap();
+	void createEnemies(bool checkSpawn);
 public:
 	Room();
 	// Room(int id, int x, int y, Map* map);
@@ -97,6 +101,11 @@ public:
 
 	std::map<string, NPC*> getEnemiesMap();
 	string getEnemiesMapString();
+
+	void createEnemiesWhileRest();
+	string getTrapDesc() { return this->trapDesc; }
+	bool hasTrap() { return this->isTrapActive; }
+	void disableTrap() { this->isTrapActive = false; }
 	
 	void collapsePassage(Direction dir);
 	

@@ -21,6 +21,7 @@ class FileController
 
 		string getRandomDesc(string id);
 		string roomDescriptionToString();
+		string trapDescriptionToString();
 
 		vector<NPC*> FileController::getRandomEnemies(int nEnemies);
 

@@ -8,7 +8,10 @@ clean;semi-dirty;dirty
 room with a table and four chairs in it.;room with a bed in the corner.;empty room.
 
 #roomLight
-candle;torch;fireplace
+candle;torch;fireplace;
+
+#trapDesc
+You're standing in a broken bottle;You're standing in a broken bottle
 
 #npcName
 rat;spider

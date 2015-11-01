@@ -36,10 +36,16 @@ string FileController::getRandomDesc(string id)
 	return descriptions.find(id)->second[i];
 }
 
+// 5 x 3 x 3 x 3 = 135
 string FileController::roomDescriptionToString()
 {	
 	return "Room Description: It is a " + getRandomDesc("roomSize") + " " + getRandomDesc("roomClean") 
 			+ " " + getRandomDesc("roomLayout") + " The room is lit by a " + getRandomDesc("roomLight") + ".";
+}
+
+string FileController::trapDescriptionToString()
+{
+	return getRandomDesc("trapDesc");
 }
 
 vector<NPC*> FileController::getRandomEnemies(int nEnemies)

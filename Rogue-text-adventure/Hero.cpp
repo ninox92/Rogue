@@ -82,6 +82,16 @@ int Hero::getChanceToDefend()
 	return i;
 }
 
+int Hero::getChanceToMindfulness()
+{
+	int i = this->chanceToMindfulness + this->mindfulness;
+
+	if (i >= 100)
+		i = 100;
+
+	return i;
+}
+
 void Hero::upExp(int exp)
 {
 	experience += exp;
