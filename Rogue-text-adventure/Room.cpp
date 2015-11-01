@@ -226,11 +226,14 @@ std::string Room::getToken()
 
 void Room::createTrap()
 {
+	
 	int chance = dist(dre);
 	if (chance > spawnChange) return;
 
 	this->isTrapActive = true;
 	this->trapDesc = fileController->trapDescriptionToString();
+	int trapWeight = 2;
+	setWeight(getWeight() + trapWeight);
 }
 
 void Room::createEnemies(bool checkSpawn)
