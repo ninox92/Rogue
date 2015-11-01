@@ -274,6 +274,7 @@ void Room::createEnemies(bool checkSpawn)
 
 		for (auto &e : enemies)
 		{
+			setWeight(getWeight() + e->getHealth());
 			e->setLevel(lvlEnemy);
 		}
 	}
