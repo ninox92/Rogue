@@ -2,22 +2,28 @@
 really small;small;medium;large;really large
 
 #roomClean
-clean;semi-dirty;dirty
+clean;semi-dirty;dirty;not smelly;semi-smelly;smelly
 
 #roomLayout
-room with a table and four chairs in it.;room with a bed in the corner.;empty room.
+room with a table and four chairs in it.;room with garbage in it.;room with a bed in the corner.;empty room.
 
 #roomLight
-candle;torch;fireplace;
+candle;torch;fireplace;lantern;glow stick
+
+#roomWall
+a broken wall.;a fake wall.;a painting hanging on the wall.;a samurai sword hanging on the wall.
 
 #trapDesc
-You're standing in a broken bottle;You're standing in a broken bottle
+You're standing in a broken bottle;You're standing in a broken glass of wine;You run into a fake wall;You fall into a hole in the ground;You fall over broken furniture
 
 #npcName
-rat;spider
+rat;spider;dog;cat;donkey;monkey
+
+#npcSize
+tiny;small;medium;large;gigantic
 
 #npcDesc
 looking at you with its blood-red eyes!;looking at you in the dark corner of the room!
 
 #npcAttackDesc
-bites;bites
+bites;scratchs;headbutts;stomps;licks;tackles

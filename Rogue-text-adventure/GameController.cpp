@@ -303,7 +303,8 @@ void GameController::doHeroAttack(bool b)
 				inputController.printEmptyLine();
 			}
 		} else {
-			inputController.printMessage("Enemy: " + enemy->GetType() + " is already death!");
+			inputController.printMsg("Enemy: " + enemy->GetType() + " is already death!");
+			doHeroAttack(false);
 		}
 
 		if (cHero->getCurrentRoom()->checkAllEnemiesDeath(cHero->getCurrentRoom()->getEnemies())) {
