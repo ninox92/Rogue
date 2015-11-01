@@ -74,6 +74,7 @@ public:
 	
 	void resetRooms();
 	void collapseByExplosion();
+	void compass();
 	int talisman();
 
 	void revealAllRooms();

@@ -20,6 +20,10 @@ void Compass::Use(Hero * h)
 
 void Compass::Use(Map & m, Hero * h)
 {
-	m.revealDijkstra();
+	std::cout << "Je haalt het kompas uit je zak." << std::endl;
+	std::cout << "Het trilt in je hand en projecteert in grote lichtgevende letters in de lucht:" << std::endl;
+
+
+	m.compass();
 	_used = true;
 }

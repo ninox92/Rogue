@@ -57,25 +57,25 @@ void GameController::Reveal()
 void GameController::UseCompass()
 {
 	//Dijkstra's
+	cHero->UseItem("compass", *cMap);
+	showMap();
 }
 
 void GameController::UseGrenade()
 {
 	cHero->UseItem("grenade", *cMap);
-	if (!cHero->IsItemUsed("grenade")) {
-		showMap();
-	}	
+	showMap();
 }
 
 void GameController::UseTalisman()
 {
-	cout << "De talisman licht op en fluistert dat de trap omhoog " << std::to_string( cMap->talisman() ) << " kamers ver weg is" << endl;
+	cout << "De talisman licht op en fluistert dat de trap omhoog " << std::to_string(cMap->talisman()) << " kamers ver weg is" << endl;
 	showMap();
 }
 
 GameController::GameController(Game* game) : game(game)
 {
-	
+
 }
 
 GameController::~GameController()
@@ -94,7 +94,7 @@ void GameController::askWhatToDo()
 	bool hExists = this->actionHiddenMap.find(output) != this->actionHiddenMap.end();
 	bool sExists = this->actionStatsMap.find(output) != this->actionStatsMap.end();
 	bool iExists = this->inventoryMap.find(output) != this->inventoryMap.end();
-	
+
 	// find function by action
 	if (nExists)
 	{
@@ -126,9 +126,9 @@ void GameController::askWhatToDo()
 			break;
 		}
 	}
-	if(hExists){
+	if (hExists) {
 		Actions hiddenAction = this->actionHiddenMap[output];
-		switch (hiddenAction){
+		switch (hiddenAction) {
 			//Hidden actions
 		case Actions::MST:
 			MST();
@@ -153,7 +153,7 @@ void GameController::askWhatToDo()
 			break;
 		}
 	}
-	if(sExists){
+	if (sExists) {
 		Actions statsAction = this->actionStatsMap[output];
 		switch (statsAction)
 		{
@@ -186,7 +186,7 @@ void GameController::askWhatToDo()
 			UseCompass();
 			break;
 		}
-		
+
 	}
 
 	if (!nExists && !hExists && !sExists && !iExists) askWhatToDo();
@@ -269,7 +269,7 @@ void GameController::showHeroStats()
 	cout << "Defense:     " << cHero->getDefense() << endl;
 	cout << "Mindfulness: " << cHero->getMindfulness() << endl << endl;
 	askToUpdateStats();
-	
+
 }
 
 std::string GameController::getGameActionString()
