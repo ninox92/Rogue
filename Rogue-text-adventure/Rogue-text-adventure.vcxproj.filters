@@ -40,6 +40,12 @@
     <Filter Include="Source Files\Utils">
       <UniqueIdentifier>{400e1c67-eb58-4207-b583-5608d0939afa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameObjects\Items">
+      <UniqueIdentifier>{31d1caa7-b496-4fe9-bbc3-014155048434}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\Items">
+      <UniqueIdentifier>{9a6dfdaa-d019-44c6-8573-7b90757c0d92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -95,6 +101,18 @@
     </ClInclude>
     <ClInclude Include="BFS.h">
       <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Header Files\GameObjects\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomItem.h">
+      <Filter>Header Files\GameObjects\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Compass.h">
+      <Filter>Header Files\GameObjects\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Grenade.h">
+      <Filter>Header Files\GameObjects\Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +181,18 @@
     </ClCompile>
     <ClCompile Include="BFS.cpp">
       <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files\GameObjects\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomItem.cpp">
+      <Filter>Source Files\GameObjects\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Compass.cpp">
+      <Filter>Source Files\GameObjects\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Grenade.cpp">
+      <Filter>Source Files\GameObjects\Items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
