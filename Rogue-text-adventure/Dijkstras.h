@@ -31,6 +31,6 @@ public:
 	std::vector<int> GetPath(int start, int end);
 	bool IsValid(int start, int end);
 	void Display(Map* map, int start, int end);
-
+	void PrintPathDir(Map* map, int start, int end);
 };
 

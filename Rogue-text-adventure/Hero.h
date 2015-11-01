@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Direction.cpp"
 #include "Game.h"
+#include "Item.h"
 class Room;
 
 class Hero : public GameObject
@@ -35,7 +36,8 @@ private:
 	int chanceToDefend = 60;
 	int chanceToMindfulness = 80;
 
-	int backpack;// Items[] 
+	std::map<std::string, Item*> items;
+
 	Game* game = nullptr;
 public:
 	Hero(std::string name, Game* game);
@@ -80,6 +82,13 @@ public:
 	int getChanceToMindfulness();
 
 	int getRemainingStatPoints() { return this->remainingStatsPoints; }
+	std::map<std::string, Item*> getItems() { return this->items; }
+	void AddItem(std::string key, Item* i);
+	void UseItem(std::string key);
+	void UseItem(std::string key, Map& map);
+	bool HasItem(std::string key);
+	bool IsItemUsed(std::string key);
+
 	void ResetHealth() { this->health = maxHealth; }
 };
 

@@ -223,6 +223,13 @@ void Map::collapseByExplosion()
 	}
 }
 
+void Map::compass()
+{
+	dijkstras.Compute(this, game->getHero()->getCurrentRoom()->getID(), getEndRoom()->getID());
+	dijkstras.PrintPathDir(this, game->getHero()->getCurrentRoom()->getID(), getEndRoom()->getID());
+}
+
+
 //Find shortest path in the maze
 //returns amount of steps hero needs to make until the stairs down
 int Map::talisman()

@@ -134,3 +134,35 @@ void Dijkstras::Display(Map* map, int start, int end)
 	map->show();
 	map->resetRooms();
 }
+
+void Dijkstras::PrintPathDir(Map * map, int start, int end)
+{	
+	if (!IsValid(start, end)) {
+		printf("to node %d: unreachable\n", end);
+		return;
+	}
+	std::map<Direction, std::string> dirName = {
+		{ Direction::NORTH, "North" },
+		{ Direction::EAST, "East" },
+		{ Direction::SOUTH, "South" },
+		{ Direction::WEST, "West" }
+	};
+	std::string pathString = "";
+
+	Room* first = nullptr;
+	Room* second = nullptr;
+	
+	for (const auto& p : GetPath(start, end)) {
+		if (first == nullptr) first = map->getRoom(p);
+		else if (second == nullptr) second = map->getRoom(p);
+
+		if (first != nullptr && second != nullptr) {
+			Direction d = map->getDirection(*first, *second);
+			pathString += " - " + dirName[d];
+			first = second;
+			second = nullptr;
+		}
+	}
+	std::cout << pathString << std::endl;
+}
+
