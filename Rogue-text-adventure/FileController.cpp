@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <random>
 
 using namespace std;
 
@@ -32,7 +33,10 @@ void FileController::readFile()
 
 string FileController::getRandomDesc(string id)
 {
-	int i = rand() % descriptions.find(id)->second.size();
+	int size = descriptions.find(id)->second.size() - 1;
+	std::uniform_int_distribution<int> dist{ 0, size };
+
+	int i = dist(dre);
 	return descriptions.find(id)->second[i];
 }
 
@@ -50,7 +54,10 @@ string FileController::trapDescriptionToString()
 
 vector<NPC*> FileController::getRandomEnemies(int nEnemies)
 {
-	int i = rand() % descriptions.find("npcName")->second.size();
+	int size = descriptions.find("npcName")->second.size() - 1;
+	std::uniform_int_distribution<int> dist{ 0, size };
+
+	int i = dist(dre);
 
 	vector<NPC*> enemies;
 	for (int a = 0; a < nEnemies; a++)

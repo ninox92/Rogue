@@ -226,8 +226,8 @@ std::string Room::getToken()
 
 void Room::createTrap()
 {
-	//int chance = dist(dre);
-	//if (chance > spawnChange) return;
+	int chance = dist(dre);
+	if (chance > spawnChange) return;
 
 	this->isTrapActive = true;
 	this->trapDesc = fileController->trapDescriptionToString();
