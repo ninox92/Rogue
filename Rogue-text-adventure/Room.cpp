@@ -6,7 +6,7 @@
 
 
 Room::Room() : GameObject(){}// Default constructor
-Room::Room(int id, int x, int y, Map* map) : ID(id), map(map), col(x), row(y), GameObject()
+Room::Room(int id, int x, int y, Map* map, FileController* f) : ID(id), map(map), col(x), row(y), GameObject()
 {
 	int cLevel = map->getLevel();
 	double f1 = std::fmod(map->getMaxLevel(), 2);// maxlevel / 2
@@ -14,7 +14,9 @@ Room::Room(int id, int x, int y, Map* map) : ID(id), map(map), col(x), row(y), G
 	float equalizer = map->getLevel() >= f1 ? f2 : 1;
 	this->spawnChange = ceil((cLevel * 10) * ceil(equalizer));
 	eDist = std::uniform_int_distribution<int>( 1, maxEnemies );
-	this->createEnemies();
+	setFileController(f);
+	this->createTrap();
+	this->createEnemies(true);
 }
 
 
@@ -86,6 +88,17 @@ void Room::setPassage(Direction dir, Passage* p)
 	}
 }
 
+bool Room::checkAllEnemiesDeath(vector<NPC*> enemies)
+{
+	bool b = true;
+	for (auto &e : enemies)	{
+		if(e->getHealth() != 0)	{
+			b = false;
+		}
+	}
+	return b;
+}
+
 std::string Room::getPassageDesc()
 {
 	std::string s = "Exits: ";
@@ -99,6 +112,39 @@ std::string Room::getPassageDesc()
 		s += "West is a passage. ";
 
 	return s;
+}
+
+std::map<string, NPC*> Room::getEnemiesMap()
+{
+	std::map<string, NPC*> m;
+	
+	for (auto &e : this->enemies)
+	{
+		m.insert({e->getNpcInputName(),e});
+	}
+
+	return m;
+}
+
+string Room::getEnemiesMapString()
+{
+	std::map<string, NPC*> m = getEnemiesMap();
+
+	string s = "[";
+	for (auto& kv : m) {
+		if (!kv.second->isDeath()) {
+			s += kv.first + ":";
+		}
+	}
+	s = s.substr(0, s.size() - 1);
+	s += "]";
+
+	return s;
+}
+
+void Room::createEnemiesWhileRest()
+{
+	createEnemies(false);
 }
 
 void Room::collapsePassage(Direction dir)
@@ -178,11 +224,57 @@ std::string Room::getToken()
 	return s;
 }
 
-void Room::createEnemies()
+void Room::createTrap()
 {
-	//check if this room even gets some enemies
 	int chance = dist(dre);
 	if (chance > spawnChange) return;
+
+	this->isTrapActive = true;
+	this->trapDesc = fileController->trapDescriptionToString();
+}
+
+void Room::createEnemies(bool checkSpawn)
+{
+	//check if this room even gets some enemies
+	if (checkSpawn) {
+		int chance = dist(dre);
+		if (chance > spawnChange) return;
+	}
+
 	//if so, create some
 	enemiesCount = eDist(dre);
+
+	if (enemiesCount != 0) {
+
+		// Enemies in the room
+		enemies = fileController->getRandomEnemies(enemiesCount);
+
+		// Enemies not death
+		enemiesDeath = false;
+
+		// Enemies roomDesc
+		if (enemiesCount == 1)
+			enemiesDesc = std::to_string(enemiesCount) + " " + enemies[0]->getNpcCleanName() + " " + enemies[0]->getDesc();
+		else
+			enemiesDesc = std::to_string(enemiesCount) + " " + enemies[0]->getNpcCleanName() + "s " + enemies[0]->getDesc();
+
+		int mapLevel = map->getLevel();
+		int maxEnemiesLvl = mapLevel + 2;
+
+		// Max level of the enemies stays below 10
+		if(maxEnemiesLvl >= 10) {
+			maxEnemiesLvl = 10;
+			mapLevel = maxEnemiesLvl - 2;
+		}
+
+		std::random_device rd;
+		std::default_random_engine dre {rd()};
+		std::uniform_int_distribution<int> dist{ mapLevel, maxEnemiesLvl };
+		int lvlEnemy = dist(dre);
+
+		for (auto &e : enemies)
+		{
+			e->setLevel(lvlEnemy);
+		}
+	}
 }

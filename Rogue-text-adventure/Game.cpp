@@ -35,7 +35,7 @@ void Game::start()
 	clear();
 	cout << hero->getName() << ", Are you ready for an adventure!" << endl;
 	cout << "You're standing in front of the great Bazinga Dungeon." << endl;
-	cout << "This dungeon is full of treasures! But be carefull, you're not alone..." << endl;
+	cout << "This dungeon is full of treasures! But be carefull, you're not alone..." << endl << endl;
 	this->setRenderState(RenderState::RENDER);
 }
 
@@ -52,7 +52,7 @@ void Game::render()
 	
 	inputController.printMessage(hero->getCurrentRoom()->getRoomDesc());
 	inputController.printMessage(hero->getCurrentRoom()->getPassageDesc());
-	inputController.printMessage("Enemy NPC: ");
+	inputController.printMessage(hero->getCurrentRoom()->getEnemiesDesc());
 	inputController.printMessage("What would you like to do?");
 	inputController.printMessage(gameController->getGameActionString());
 	gameController->askWhatToDo();

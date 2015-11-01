@@ -5,6 +5,7 @@
 #include "Hero.h"
 #include "Passage.h"
 #include "RoomType.cpp"
+#include "FileController.h"
 
 class Map;
 
@@ -13,6 +14,13 @@ class Room : public GameObject
 private:
 	int ID = -1;
 	Map* map = nullptr;
+	FileController* fileController = nullptr;
+	vector<NPC*> enemies;
+	string enemiesDesc = "There are no enemies in this room!";
+	bool enemiesDeath = true;
+
+	bool isTrapActive = false;
+	string trapDesc = "";
 	
 	int spawnChange = 0;// % chance that enemies will spawn in this room
 	int maxEnemies = 3;//maximum
@@ -43,10 +51,12 @@ private:
 	std::string getToken();
 	std::string roomDesc;
 
-	void createEnemies();
+	void createTrap();
+	void createEnemies(bool checkSpawn);
 public:
 	Room();
-	Room(int id, int x, int y, Map* map);
+	// Room(int id, int x, int y, Map* map);
+	Room(int id, int x, int y, Map* map, FileController* f);
 	virtual ~Room();
 	
 	void setType(RoomType type) { this->type = type; }
@@ -79,9 +89,23 @@ public:
 	void setPassage(Direction dir, Passage* p);
 	void setWeight(int w) { this->weight = w; }
 
+	vector<NPC*> getEnemies() { return this->enemies; }
+	bool allEnemiesDeath() { return this->enemiesDeath; }
+	void setAllEnemiesDeath(bool b) { this->enemiesDeath = b; }
+	bool checkAllEnemiesDeath(vector<NPC*> enemies);
 	std::string getRoomDesc() { return this->roomDesc; }
-	void setRoomDesc(std::string r) { this->roomDesc = r; }
 	std::string getPassageDesc();
+	std::string getEnemiesDesc() { return "Enemy NPC : " + this->enemiesDesc; }
+	void setRoomDesc(std::string r) { this->roomDesc = r; }
+	void setFileController(FileController* f) { this->fileController = f; }
+
+	std::map<string, NPC*> getEnemiesMap();
+	string getEnemiesMapString();
+
+	void createEnemiesWhileRest();
+	string getTrapDesc() { return this->trapDesc; }
+	bool hasTrap() { return this->isTrapActive; }
+	void disableTrap() { this->isTrapActive = false; }
 	
 	void collapsePassage(Direction dir);
 	

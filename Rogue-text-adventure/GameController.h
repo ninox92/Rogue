@@ -3,7 +3,9 @@
 #include <map>
 
 #include "Actions.cpp"
+#include "FightActions.cpp"
 #include "InputController.h"
+#include "NPC.h"
 
 class Game;
 class Map;
@@ -50,6 +52,12 @@ class GameController {
 			{ "up-mindfullness",	Actions::UP_MINDFULLNESS },
 		};
 
+		std::map<std::string, FightActions> fightActionMap = {
+			{ "fight", FightActions::FIGHT },
+			{ "flee", FightActions::FLEE },
+			{ "invertory", FightActions::INVERTORY }
+		};
+
 		std::map<std::string, std::string> legenda = {
 			{ "|-", "Passage way" },
 			{ ".", "Unexplored room" },
@@ -81,6 +89,9 @@ class GameController {
 		void askToUpdateStats();
 
 		void Fight();
+		void askFightAction();
+		void doHeroAttack(bool b);
+		void doNpcAttack(std::vector<NPC*> e);
 		void Flee(bool b);
 		void Search();
 		void Rest();
@@ -89,8 +100,9 @@ class GameController {
 		void showMap();
 		void showHeroStats();
 
-
-
+		bool chanceCalc(int maxPercentage);
 		std::string getGameActionString();
 		std::map<std::string, Actions> getGameActions();
+		std::string getFightActionString();
+		std::map<std::string, FightActions> getFightActions();
 };

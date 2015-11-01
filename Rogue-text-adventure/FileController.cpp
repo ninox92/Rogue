@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <random>
 
 using namespace std;
 
@@ -32,14 +33,44 @@ void FileController::readFile()
 
 string FileController::getRandomDesc(string id)
 {
-	int i = rand() % descriptions.find(id)->second.size();
+	int size = descriptions.find(id)->second.size() - 1;
+	std::uniform_int_distribution<int> dist{ 0, size };
+
+	int i = dist(dre);
 	return descriptions.find(id)->second[i];
 }
 
+// 5 x 3 x 3 x 3 = 135
 string FileController::roomDescriptionToString()
 {	
 	return "Room Description: It is a " + getRandomDesc("roomSize") + " " + getRandomDesc("roomClean") 
 			+ " " + getRandomDesc("roomLayout") + " The room is lit by a " + getRandomDesc("roomLight") + ".";
+}
+
+string FileController::trapDescriptionToString()
+{
+	return getRandomDesc("trapDesc");
+}
+
+vector<NPC*> FileController::getRandomEnemies(int nEnemies)
+{
+	int size = descriptions.find("npcName")->second.size() - 1;
+	std::uniform_int_distribution<int> dist{ 0, size };
+
+	int i = dist(dre);
+
+	vector<NPC*> enemies;
+	for (int a = 0; a < nEnemies; a++)
+	{
+		string npcName = descriptions.find("npcName")->second[i];
+		npcName += " " + std::to_string(a + 1);
+		string npcDesc = descriptions.find("npcDesc")->second[i];
+		string npcAttackDesc = descriptions.find("npcAttackDesc")->second[i];
+
+		enemies.push_back(new NPC(npcName, npcDesc, npcAttackDesc));
+	}
+
+	return enemies;
 }
 
 vector<string>& FileController::split(const string &s, char delim, vector<string> &elems) {

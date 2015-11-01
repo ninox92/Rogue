@@ -15,6 +15,27 @@ InputController::~InputController()
 {
 }
 
+void InputController::clearConsole()
+{
+	system("cls");
+}
+
+void InputController::pressEnterToContinue()
+{
+	system("pause");
+	printEmptyLine();
+}
+
+void InputController::printEmptyLine()
+{
+	cout << endl;
+}
+
+void InputController::printMsg(std::string s)
+{
+	cout << s << endl;
+}
+
 void InputController::printMessage(string s)
 {
 	cout << s << endl << endl;
@@ -22,7 +43,15 @@ void InputController::printMessage(string s)
 
 string InputController::WaitAndGetInput()
 {
-	cin >> input;
+	getline(cin, input);
+	//cin >> input;
+	std::transform(input.begin(), input.end(), input.begin(), ::tolower);
+	return input;
+}
+
+string InputController::getFightInput()
+{
+	getline(cin, input);
 	std::transform(input.begin(), input.end(), input.begin(), ::tolower);
 	return input;
 }

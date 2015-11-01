@@ -1,4 +1,4 @@
-#include "GameObject.h";
+#include "GameObject.h"
 #pragma once
 class Trap : public GameObject
 {

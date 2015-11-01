@@ -297,7 +297,7 @@ void Map::resetRooms()
 
 Room* Map::createRoom(int id, int x, int y) {
 	std::default_random_engine dre;
-	Room* r = new Room(id, x, y, this);
+	Room* r = new Room(id, x, y, this, fileController);
 
 	// Generate Room Desc, set it in the room
 	string s = fileController->roomDescriptionToString();

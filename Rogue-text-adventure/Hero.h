@@ -13,18 +13,31 @@ private:
 	int x = -1;
 	int y = -1;
 
+	bool death = false;
+
 	int remainingStatsPoints = 0;
 	int level = 1;
 	const int maxLevel = 10;
-	int health = 10;
-	int maxHealth = 10;
+
+	int minDamage = 2;
+	int maxDamage = 6;
+
+	int health = 20;
+	int maxHealth = 20;
+
 	int experience = 0;
 	int maxExperience = 100;
 
 	int attack = 1;
 	int defense = 1;
 	int mindfulness = 1;
+
+	int chanceToAttack = 80;
+	int chanceToDefend = 60;
+	int chanceToMindfulness = 80;
+
 	std::map<std::string, Item*> items;
+
 	Game* game = nullptr;
 public:
 	Hero(std::string name, Game* game);
@@ -41,6 +54,10 @@ public:
 	void upDefense() { defense++; remainingStatsPoints--; }
 	void upMindfulness() { mindfulness++; remainingStatsPoints--; }
 	void upLvl();
+	void upDmg();
+
+	void loseHealth(int h);
+	bool isDeath() { return this->death; }
 
 	Room* const getCurrentRoom() { return this->currentRoom; }
 
@@ -54,6 +71,16 @@ public:
 	int getAttack() { return this->attack; }
 	int getDefense() { return this->defense; }
 	int getMindfulness() { return this->mindfulness; }
+	int getMinDamage() { return this->minDamage; }
+	int getMaxDamage() { return this->maxDamage; }
+
+	std::string getHealthString();
+	std::string getExpString(int exp);
+
+	int getChanceToAttack();
+	int getChanceToDefend();
+	int getChanceToMindfulness();
+
 	int getRemainingStatPoints() { return this->remainingStatsPoints; }
 	std::map<std::string, Item*> getItems() { return this->items; }
 	void AddItem(std::string key, Item* i);
