@@ -2,10 +2,12 @@
 #include <map>
 #include <string>
 #include "Direction.cpp"
-
+#include "GameObject.h"
 class Room;
+class FileController;
 
 class Passage
+	: public GameObject
 {
 private:
 	std::map<Direction, Room*> map;
@@ -17,9 +19,6 @@ public:
 	Passage();//Default Constructor
 	~Passage();
 
-	//virtual std::string Identify() = 0;//PURE abstract function
-	//To override use:
-	//virtual std::string Identify() override { return ""; /*new content here*/ }
 	void Add(Room* r, Direction d);
 
 	bool Exists(Direction d);
@@ -31,6 +30,7 @@ public:
 	bool IsExplored() { return this->_explored; }
 	bool IsShortest() { return _shortest; }
 	void SetShortest(bool s) { _shortest = s; }
+	void RandomName(FileController* f);
 	std::string Display();
 };
 

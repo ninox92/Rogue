@@ -400,6 +400,8 @@ void GameController::Search()
 			inputController.printMessage("When you pick up the item something magical happens");
 			inputController.printMessage("..........");
 			item->Use(cHero);
+			cHero->AddItem(item->Identify(), item);
+			inputController.printMessage(item->GetType() + " is added to your inventory");
 			
 			showHeroStats();
 		}
@@ -455,7 +457,8 @@ void GameController::showHeroStats()
 	cout << "Experience:  " << cHero->getExp() << "/" << cHero->getMaxExp() << endl;
 	cout << "Attack:      " << cHero->getAttack() << endl;
 	cout << "Defense:     " << cHero->getDefense() << endl;
-	cout << "Mindfulness: " << cHero->getMindfulness() << endl << endl;
+	cout << "Mindfulness: " << cHero->getMindfulness() << endl;
+	cout << "Damage:	  (" << cHero->getMinDamage() << "/" << cHero->getMaxDamage() << ")" << endl << endl;
 	askToUpdateStats();
 	askWhatToDo();
 }
