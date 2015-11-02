@@ -154,6 +154,11 @@ void Room::collapsePassage(Direction dir)
 		passages[dir]->SetCollapsed(true);
 }
 
+void Room::createEndRoom()
+{
+	createEndBoss();
+}
+
 int const Room::getMapLevel()
 {
 	if (map == nullptr) return -1;
@@ -227,7 +232,6 @@ std::string Room::getToken()
 
 void Room::createTrap()
 {
-	
 	int chance = dist(dre);
 	if (chance > spawnChange) return;
 
@@ -281,6 +285,29 @@ void Room::createEnemies(bool checkSpawn)
 			setWeight(getWeight() + e->getHealth());
 			e->setLevel(lvlEnemy);
 		}
+	}
+}
+
+void Room::createEndBoss()
+{
+	// Enemies in the room
+	enemies = fileController->getRandomEndBoss();
+
+	// Enemies not death
+	enemiesDeath = false;
+
+	// Enemies roomDesc
+	enemiesDesc = "A " + enemies[0]->GetType() + " " + enemies[0]->getDesc();
+
+	std::random_device rd;
+	std::default_random_engine dre{ rd() };
+	std::uniform_int_distribution<int> dist{ 11, 12 };
+	int lvlEnemy = dist(dre);
+
+	for (auto &e : enemies)
+	{
+		setWeight(getWeight() + e->getHealth());
+		e->setLevel(lvlEnemy);
 	}
 }
 

@@ -25,6 +25,15 @@ looking at you with its blood-red eyes!;looking at you in the dark corner of the
 #npcAttackDesc
 bites;scratchs;headbutts;stomps;licks;tackles
 
+#bossName
+fire drake;ice drake
+
+#bossDesc
+looking at you with his fire-red eyes!;looking at you with his blue-iced eyes!
+
+#bossAttackDesc
+spits fire;spits ice
+
 #items
 Shoe;Sword;Dagger;Helmet;Hat;Boot;Citron;Axe
 

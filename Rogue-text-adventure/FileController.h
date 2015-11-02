@@ -27,7 +27,8 @@ class FileController
 		string roomDescriptionToString();
 		string trapDescriptionToString();
 
-		vector<NPC*> FileController::getRandomEnemies(int nEnemies);
+		vector<NPC*> getRandomEnemies(int nEnemies);
+		vector<NPC*> getRandomEndBoss();
 
 		vector<string> &split(const string &s, char delim, vector<string> &elems);
 		vector<string> split(const string &s, char delim);

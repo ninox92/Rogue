@@ -84,6 +84,24 @@ vector<NPC*> FileController::getRandomEnemies(int nEnemies)
 	return enemies;
 }
 
+vector<NPC*> FileController::getRandomEndBoss()
+{
+	vector<NPC*> enemies;
+	
+	int size = descriptions.find("bossName")->second.size() - 1;
+	std::uniform_int_distribution<int> dist{ 0, size };
+	int i = dist(dre);
+
+	string npcName = descriptions.find("bossName")->second[i];
+	string npcSize = "gigantic";
+	string npcDesc = descriptions.find("bossDesc")->second[i];
+	string npcAttackDesc = descriptions.find("bossAttackDesc")->second[i];
+
+	enemies.push_back(new NPC(npcName, npcSize, npcDesc, npcAttackDesc));
+
+	return enemies;
+}
+
 vector<string>& FileController::split(const string &s, char delim, vector<string> &elems) {
 	stringstream ss(s);
 	string item;
