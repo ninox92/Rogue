@@ -42,7 +42,7 @@ string FileController::getRandomDesc(string id)
 
 string FileController::roomDescriptionToString()
 {	
-	return "Room Description: It is a " + getRandomDesc("roomSize") + " " + getRandomDesc("roomClean") 
+	return "Room Description: It is a " + getRandomDesc("sizes") + " " + getRandomDesc("roomClean") 
 			+ " " + getRandomDesc("roomLayout") + " The room is lit by a " + getRandomDesc("roomLight") + " and there is " + getRandomDesc("roomWall");
 }
 
@@ -57,7 +57,7 @@ vector<NPC*> FileController::getRandomEnemies(int nEnemies)
 	std::uniform_int_distribution<int> dist{ 0, size };
 	int i = dist(dre);
 
-	int size2 = descriptions.find("npcSize")->second.size() - 1;
+	int size2 = descriptions.find("sizes")->second.size() - 1;
 	std::uniform_int_distribution<int> dist2{ 0, size2 };
 	int i2 = dist2(dre);
 
@@ -70,7 +70,7 @@ vector<NPC*> FileController::getRandomEnemies(int nEnemies)
 	{
 		string npcName = descriptions.find("npcName")->second[i];
 		npcName += " " + std::to_string(a + 1);
-		string npcSize = descriptions.find("npcSize")->second[i2];
+		string npcSize = descriptions.find("sizes")->second[i2];
 		string npcDesc = descriptions.find("npcDesc")->second[i3];
 
 		int size4 = descriptions.find("npcAttackDesc")->second.size() - 1;

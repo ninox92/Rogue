@@ -1,5 +1,5 @@
 #sizes
-really small;small;medium;large;really large
+tiny;small;medium;large;gigantic
 
 #roomClean
 clean;semi-dirty;dirty;not smelly;semi-smelly;smelly
@@ -18,9 +18,6 @@ You're standing in a broken bottle;You're standing in a broken glass of wine;You
 
 #npcName
 rat;spider;dog;cat;donkey;monkey
-
-#npcSize
-tiny;small;medium;large;gigantic
 
 #npcDesc
 looking at you with its blood-red eyes!;looking at you in the dark corner of the room!

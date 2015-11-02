@@ -104,13 +104,13 @@ std::string Room::getPassageDesc()
 {
 	std::string s = "Exits: ";
 	if (hasPassage(Direction::EAST))
-		s += "East is a passage. ";
+		s += "East" + getPassage(Direction::EAST)->Identify() + ". ";
 	if (hasPassage(Direction::NORTH))
-		s += "North is a passage. ";
+		s += "North" + getPassage(Direction::NORTH)->Identify() + ". ";
 	if (hasPassage(Direction::SOUTH))
-		s += "South is a passage. ";
+		s += "South" + getPassage(Direction::SOUTH)->Identify() + ". ";
 	if (hasPassage(Direction::WEST))
-		s += "West is a passage. ";
+		s += "West" + getPassage(Direction::WEST)->Identify() + ". ";
 
 	return s;
 }
