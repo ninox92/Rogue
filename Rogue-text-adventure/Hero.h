@@ -10,8 +10,6 @@ class Hero : public GameObject
 private:
 	std::string name = "";
 	Room* currentRoom = nullptr;
-	int x = -1;
-	int y = -1;
 
 	bool death = false;
 
@@ -39,6 +37,8 @@ private:
 	std::map<std::string, Item*> items;
 
 	Game* game = nullptr;
+	void upAbility() { if (remainingStatsPoints > 0) remainingStatsPoints--; }
+
 public:
 	Hero(std::string name, Game* game);
 	~Hero();
@@ -50,11 +50,12 @@ public:
 
 	void upExp(int exp);
 	void upHealth() { health += (int)(0.5f + (health / 2)); }
-	void upAttack() { attack++; remainingStatsPoints--; }
-	void upDefense() { defense++; remainingStatsPoints--; }
-	void upMindfulness() { mindfulness++; remainingStatsPoints--; }
+	void upAttack() { attack++; upAbility(); }
+	void upDefense() { defense++; upAbility(); }
+	void upMindfulness() { mindfulness++; upAbility(); }
 	void upLvl();
 	void upDmg();
+	
 
 	void loseHealth(int h);
 	bool isDeath() { return this->death; }

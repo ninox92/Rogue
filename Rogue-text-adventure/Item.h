@@ -9,6 +9,7 @@ class Item
 {
 protected:
 	bool _used = false;
+	bool _useable = false;
 public:
 	Item();
 	virtual ~Item();
@@ -16,5 +17,6 @@ public:
 	virtual void Use(Hero* h) = 0;
 	virtual void Use(Map& m, Hero* h) = 0;
 	bool IsUsed() { return this->_used; }
+	bool IsUseAble() { return this->_useable; }
 };
 

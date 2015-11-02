@@ -3,7 +3,7 @@
 #include <math.h>
 #include "Room.h"
 #include "Map.h"
-
+#include "RandomItem.h"
 
 Room::Room() : GameObject(){}// Default constructor
 Room::Room(int id, int x, int y, Map* map, FileController* f) : ID(id), map(map), col(x), row(y), GameObject()
@@ -15,6 +15,7 @@ Room::Room(int id, int x, int y, Map* map, FileController* f) : ID(id), map(map)
 	this->spawnChange = ceil((cLevel * 10) * ceil(equalizer));
 	eDist = std::uniform_int_distribution<int>( 1, maxEnemies );
 	setFileController(f);
+	this->createItem();
 	this->createTrap();
 	this->createEnemies(true);
 }
@@ -226,11 +227,14 @@ std::string Room::getToken()
 
 void Room::createTrap()
 {
+	
 	int chance = dist(dre);
 	if (chance > spawnChange) return;
 
 	this->isTrapActive = true;
 	this->trapDesc = fileController->trapDescriptionToString();
+	int trapWeight = 2;
+	setWeight(getWeight() + trapWeight);
 }
 
 void Room::createEnemies(bool checkSpawn)
@@ -274,7 +278,20 @@ void Room::createEnemies(bool checkSpawn)
 
 		for (auto &e : enemies)
 		{
+			setWeight(getWeight() + e->getHealth());
 			e->setLevel(lvlEnemy);
 		}
+	}
+}
+
+void Room::createItem()
+{
+	std::random_device rd;
+	std::default_random_engine dre{ rd() };
+	std::uniform_int_distribution<int> dist{ 1, 100 };
+
+	int chance = dist(dre);
+	if (chance > 0) {//10% chance of item
+		item = new RandomItem(fileController);
 	}
 }

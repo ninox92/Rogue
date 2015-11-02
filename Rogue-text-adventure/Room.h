@@ -6,7 +6,7 @@
 #include "Passage.h"
 #include "RoomType.cpp"
 #include "FileController.h"
-
+class Item;
 class Map;
 
 class Room : public GameObject
@@ -51,8 +51,11 @@ private:
 	std::string getToken();
 	std::string roomDesc;
 
+	Item* item = nullptr;
+
 	void createTrap();
 	void createEnemies(bool checkSpawn);
+	void createItem();
 public:
 	Room();
 	// Room(int id, int x, int y, Map* map);
@@ -66,7 +69,7 @@ public:
 	int const getX() { return this->col; }
 	int const getY() { return this->row; }
 	int const getMapLevel();
-	int const getWeight() { return this->weight; }// == <<--------------------------------------------------------
+	int const getWeight() { return this->weight; }
 	std::map<std::string, Direction> getAllPossibleMoveDirections();
 	std::map<Direction, Passage*> getAllPossiblePassages();
 	Passage* const getPassage(Direction d);
@@ -106,7 +109,10 @@ public:
 	string getTrapDesc() { return this->trapDesc; }
 	bool hasTrap() { return this->isTrapActive; }
 	void disableTrap() { this->isTrapActive = false; }
-	
+
+
+	bool hasItem() { return this->item != nullptr; }
+	Item* getItem() { return this->item; }
 	void collapsePassage(Direction dir);
 	
 	void reset() {

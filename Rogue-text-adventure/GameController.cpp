@@ -116,7 +116,7 @@ void GameController::askWhatToDo()
 		case Actions::REST:
 			Rest();
 			break;
-		case Actions::INVERTORY:
+		case Actions::INVENTORY:
 			showInvertory();
 			break;
 		case Actions::MAP:
@@ -387,11 +387,26 @@ void GameController::Search()
 	// Zoek in de kamer naar een val of spullen
 	// Hero: kansberekening aan de hand van mindfulness
 	if (chanceCalc(cHero->getChanceToMindfulness()) == true) {
-		if (cHero->getCurrentRoom()->hasTrap()) {
-			cHero->getCurrentRoom()->disableTrap();
+		Room* room = cHero->getCurrentRoom();
+		if (room->hasTrap())  {
+			room->disableTrap();
 			inputController.printMessage("You've searched the room and succesfully disabled a trap!");
-			// ELSE IF (spullen)
-		} else {
+		}
+		else if (room->hasItem()) {
+			Item* item = room->getItem();
+			inputController.printMessage("Whats that in the corner...!? ");
+			inputController.printMessage(cHero->getName() + " walks toward the object");
+			inputController.printMessage("When you come close you see that it" + item->Identify());
+			inputController.printMessage("This looks awesome!");
+			inputController.printMessage("When you pick up the item something magical happens");
+			inputController.printMessage("..........");
+			item->Use(cHero);
+			cHero->AddItem(item->Identify(), item);
+			inputController.printMessage(item->GetType() + " is added to your inventory");
+			
+			showHeroStats();
+		}
+		else {
 			inputController.printMessage("You've searched the room but found nothing!");
 		}
 	} else {
@@ -418,6 +433,11 @@ void GameController::showInvertory()
 	// Hero: print lijst met spullen
 	// Optie: Spullen uit de lijst te gebruiken
 	// Of: Niet gebruiken
+	for (const auto& i : cHero->getItems()) {
+		cout << i.first << ", ";
+	}
+	inputController.printEmptyLine();
+	askWhatToDo();
 }
 
 void GameController::showMap()
@@ -438,7 +458,8 @@ void GameController::showHeroStats()
 	cout << "Experience:  " << cHero->getExp() << "/" << cHero->getMaxExp() << endl;
 	cout << "Attack:      " << cHero->getAttack() << endl;
 	cout << "Defense:     " << cHero->getDefense() << endl;
-	cout << "Mindfulness: " << cHero->getMindfulness() << endl << endl;
+	cout << "Mindfulness: " << cHero->getMindfulness() << endl;
+	cout << "Damage:	  (" << cHero->getMinDamage() << "/" << cHero->getMaxDamage() << ")" << endl << endl;
 	askToUpdateStats();
 	askWhatToDo();
 }

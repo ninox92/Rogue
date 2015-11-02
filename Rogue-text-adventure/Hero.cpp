@@ -7,12 +7,14 @@
 #include "Compass.h"
 #include "Grenade.h"
 #include <iostream>
+#include "Talisman.h"
 
 Hero::Hero(std::string name, Game* game) : name(name), game(game), GameObject()
 {
 	SetType("Hero");
 	AddItem("compass", new Compass());
 	AddItem("grenade", new Grenade());
+	AddItem("talisman", new Talisman());
 }
 
 Hero::~Hero()

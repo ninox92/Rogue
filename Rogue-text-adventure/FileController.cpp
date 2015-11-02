@@ -40,7 +40,6 @@ string FileController::getRandomDesc(string id)
 	return descriptions.find(id)->second[i];
 }
 
-// 5 x 6 x 4 x 5 = 600
 string FileController::roomDescriptionToString()
 {	
 	return "Room Description: It is a " + getRandomDesc("roomSize") + " " + getRandomDesc("roomClean") 
