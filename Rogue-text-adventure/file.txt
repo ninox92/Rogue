@@ -1,4 +1,4 @@
-#roomSize
+#sizes
 really small;small;medium;large;really large
 
 #roomClean
@@ -21,3 +21,18 @@ looking at you with its blood-red eyes!;looking at you in the dark corner of the
 
 #npcAttackDesc
 bites;bites
+
+#items
+Shoe;Sword;Dagger;Helmet;Hat;Boot;Citron;Axe
+
+#colors
+Blue;Red;Yellow;Purple;Golden;Silver;Bronze;Green;White;Black;Orange;Pink;
+
+#potions
+Herb;Potion of Regeneration;
+
+#passages
+Door;Ark;Hallway
+
+#materials
+Wooden;Iron;

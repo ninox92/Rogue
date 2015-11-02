@@ -167,6 +167,7 @@
     <ClInclude Include="RandomItem.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="RoomObject.h" />
+    <ClInclude Include="Talisman.h" />
     <ClInclude Include="Trap.h" />
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +197,7 @@
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomObject.cpp" />
     <ClCompile Include="RoomType.cpp" />
+    <ClCompile Include="Talisman.cpp" />
     <ClCompile Include="Trap.cpp" />
   </ItemGroup>
   <ItemGroup>

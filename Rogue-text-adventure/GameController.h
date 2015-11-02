@@ -23,7 +23,7 @@ class GameController {
 			{ "flee",		Actions::FLEE },
 			{ "search",		Actions::SEARCH },
 			{ "rest",		Actions::REST },
-			{ "invertory",	Actions::INVERTORY },
+			{ "inventory",	Actions::INVENTORY },
 			{ "map",		Actions::MAP },
 			{ "stats",		Actions::STATS }
 		};

@@ -2,7 +2,7 @@
 #include "Room.h"
 
 
-Passage::Passage()
+Passage::Passage() : GameObject()
 {
 }
 
@@ -24,6 +24,13 @@ Room * Passage::GetRoom(Direction d)
 {
 	if (Exists(d)) return map[d];
 	return nullptr;
+}
+
+void Passage::RandomName(FileController* f)
+{
+	std::string passageName = f->getRandomDesc("passages");
+	std::string material = f->getRandomDesc("materials");
+	SetType(material + " " + passageName);
 }
 
 std::string Passage::Display()

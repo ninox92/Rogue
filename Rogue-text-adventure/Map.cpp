@@ -309,12 +309,14 @@ Room* Map::createRoom(int id, int x, int y) {
 
 void Map::setPassages(Room* p1, Room* p2)
 {
+	
 	Direction d = getDirection(*p1, *p2);
 	Direction od = getOpositeDirection(d);
-
+	
 	Passage* p = new Passage();
 	p->Add(p1, od);
 	p->Add(p2, d);
+	p->RandomName(fileController);
 
 	p1->setPassage(d, p);
 	p2->setPassage(od, p);

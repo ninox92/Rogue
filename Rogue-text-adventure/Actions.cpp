@@ -6,7 +6,7 @@ enum class Actions
 	FLEE,
 	SEARCH,
 	REST,
-	INVERTORY,
+	INVENTORY,
 	MAP,
 	STATS,
 

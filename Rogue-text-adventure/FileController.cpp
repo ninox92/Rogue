@@ -43,7 +43,7 @@ string FileController::getRandomDesc(string id)
 // 5 x 3 x 3 x 3 = 135
 string FileController::roomDescriptionToString()
 {	
-	return "Room Description: It is a " + getRandomDesc("roomSize") + " " + getRandomDesc("roomClean") 
+	return "Room Description: It is a " + getRandomDesc("sizes") + " " + getRandomDesc("roomClean") 
 			+ " " + getRandomDesc("roomLayout") + " The room is lit by a " + getRandomDesc("roomLight") + ".";
 }
 
