@@ -55,6 +55,7 @@ private:
 
 	void createTrap();
 	void createEnemies(bool checkSpawn);
+	void createEndBoss();
 	void createItem();
 public:
 	Room();
@@ -98,7 +99,7 @@ public:
 	bool checkAllEnemiesDeath(vector<NPC*> enemies);
 	std::string getRoomDesc() { return this->roomDesc; }
 	std::string getPassageDesc();
-	std::string getEnemiesDesc() { return "Enemy NPC : " + this->enemiesDesc; }
+	std::string getEnemiesDesc() { return "Enemy NPC: " + this->enemiesDesc; }
 	void setRoomDesc(std::string r) { this->roomDesc = r; }
 	void setFileController(FileController* f) { this->fileController = f; }
 
@@ -114,6 +115,7 @@ public:
 	bool hasItem() { return this->item != nullptr; }
 	Item* getItem() { return this->item; }
 	void collapsePassage(Direction dir);
+	void createEndRoom();
 	
 	void reset() {
 		setReached(false);

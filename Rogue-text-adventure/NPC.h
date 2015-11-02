@@ -8,6 +8,7 @@ using std::string;
 class NPC : public GameObject
 {
 	private:
+		string size;
 		string desc;
 		string attackDesc;
 
@@ -20,7 +21,7 @@ class NPC : public GameObject
 		int exp = 8;
 
 	public:
-		NPC(std::string type, std::string desc, std::string attackDesc);
+		NPC(std::string type, std::string size, std::string desc, std::string attackDesc);
 		~NPC();
 
 		void setLevel(int l);
@@ -31,6 +32,8 @@ class NPC : public GameObject
 		string getLvlAndHp();
 		int getHealth() { return this->health; }
 		int getMaxDamage() { return this->maxDamage; }
+		string getSize() { return this->size; }
+		void setSize(string s) { this->size = s; }
 		string getDesc() { return this->desc; }
 		void setDesc(string s) { this->desc = s; }
 		string getAttackDesc(bool hit, int dmg);

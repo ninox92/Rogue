@@ -2,9 +2,10 @@
 #include <algorithm>
 #include "NPC.h"
 
-NPC::NPC(std::string type, std::string desc, std::string attackDesc) : GameObject()
+NPC::NPC(std::string type, std::string size, std::string desc, std::string attackDesc) : GameObject()
 {
 	SetType(type);
+	setSize(size);
 	setDesc(desc);
 	setAttackDesc(attackDesc);
 }
@@ -36,7 +37,7 @@ string NPC::getNpcName()
 string NPC::getNpcCleanName()
 {
 	string s = GetType();
-	return s.substr(0, s.size() - 2);
+	return this->size + " " + s.substr(0, s.size() - 2);
 }
 
 string NPC::getNpcInputName()

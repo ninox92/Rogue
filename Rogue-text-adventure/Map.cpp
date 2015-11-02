@@ -51,6 +51,7 @@ void Map::init()
 	if (this->level == 1) {
 		//Begin level needs Start point
 		getStartRoom()->setType(RoomType::START);
+		// getStartRoom()->createEndRoom(); // -- TESTING ONLY -- REMOVE WHEN DONE!!!
 	}
 	else {
 		//Begin is a latter Down, to the previous level
@@ -64,6 +65,7 @@ void Map::init()
 	{
 		setEndRoom(rooms[ptY*width + ptX]);
 		getEndRoom()->setType(RoomType::END);
+		getEndRoom()->createEndRoom();
 	}
 	else {
 		//End room is a latter up 

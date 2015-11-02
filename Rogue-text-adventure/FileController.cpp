@@ -40,11 +40,10 @@ string FileController::getRandomDesc(string id)
 	return descriptions.find(id)->second[i];
 }
 
-// 5 x 3 x 3 x 3 = 135
 string FileController::roomDescriptionToString()
 {	
 	return "Room Description: It is a " + getRandomDesc("sizes") + " " + getRandomDesc("roomClean") 
-			+ " " + getRandomDesc("roomLayout") + " The room is lit by a " + getRandomDesc("roomLight") + ".";
+			+ " " + getRandomDesc("roomLayout") + " The room is lit by a " + getRandomDesc("roomLight") + " and there is " + getRandomDesc("roomWall");
 }
 
 string FileController::trapDescriptionToString()
@@ -56,19 +55,49 @@ vector<NPC*> FileController::getRandomEnemies(int nEnemies)
 {
 	int size = descriptions.find("npcName")->second.size() - 1;
 	std::uniform_int_distribution<int> dist{ 0, size };
-
 	int i = dist(dre);
+
+	int size2 = descriptions.find("sizes")->second.size() - 1;
+	std::uniform_int_distribution<int> dist2{ 0, size2 };
+	int i2 = dist2(dre);
+
+	int size3 = descriptions.find("npcDesc")->second.size() - 1;
+	std::uniform_int_distribution<int> dist3{ 0, size3 };
+	int i3 = dist3(dre);
 
 	vector<NPC*> enemies;
 	for (int a = 0; a < nEnemies; a++)
 	{
 		string npcName = descriptions.find("npcName")->second[i];
 		npcName += " " + std::to_string(a + 1);
-		string npcDesc = descriptions.find("npcDesc")->second[i];
-		string npcAttackDesc = descriptions.find("npcAttackDesc")->second[i];
+		string npcSize = descriptions.find("sizes")->second[i2];
+		string npcDesc = descriptions.find("npcDesc")->second[i3];
 
-		enemies.push_back(new NPC(npcName, npcDesc, npcAttackDesc));
+		int size4 = descriptions.find("npcAttackDesc")->second.size() - 1;
+		std::uniform_int_distribution<int> dist4{ 0, size4 };
+		int i4 = dist4(dre);
+		string npcAttackDesc = descriptions.find("npcAttackDesc")->second[i4];
+
+		enemies.push_back(new NPC(npcName, npcSize, npcDesc, npcAttackDesc));
 	}
+
+	return enemies;
+}
+
+vector<NPC*> FileController::getRandomEndBoss()
+{
+	vector<NPC*> enemies;
+	
+	int size = descriptions.find("bossName")->second.size() - 1;
+	std::uniform_int_distribution<int> dist{ 0, size };
+	int i = dist(dre);
+
+	string npcName = descriptions.find("bossName")->second[i];
+	string npcSize = "gigantic";
+	string npcDesc = descriptions.find("bossDesc")->second[i];
+	string npcAttackDesc = descriptions.find("bossAttackDesc")->second[i];
+
+	enemies.push_back(new NPC(npcName, npcSize, npcDesc, npcAttackDesc));
 
 	return enemies;
 }
