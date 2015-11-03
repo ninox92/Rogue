@@ -109,14 +109,22 @@ void Hero::upExp(int exp)
 		
 }
 
+void Hero::upHealth()
+{
+	this->maxHealth += (int)(0.5f + (this->maxHealth / 2));
+	ResetHealth();
+}
+
 void Hero::upLvl()
 {
-	remainingStatsPoints += 3;
-	upHealth();
-	ResetHealth();
-	upDmg();
-	this->level++;
-	std::cout << getName() << ", Congratulations, you've reached level " << level << std::endl;
+	if (this->level != this->maxLevel) {
+		remainingStatsPoints += 3;
+		upHealth();
+		ResetHealth();
+		upDmg();
+		this->level++;
+		std::cout << getName() << ", Congratulations, you've reached level " << level << std::endl;
+	}
 }
 
 void Hero::upDmg()

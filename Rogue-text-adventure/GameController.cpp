@@ -4,6 +4,8 @@
 #include "Room.h"
 #include "GameController.h"
 #include <iostream>
+#include <algorithm>
+#include <string>
 
 using namespace std;
 
@@ -88,6 +90,7 @@ void GameController::askWhatToDo()
 	this->cHero = game->getHero();
 	this->cMap = game->getCurrentMap();
 
+	cout << "\r";
 	cout << "Action: ";
 
 	string output = inputController.WaitAndGetInput();
@@ -295,6 +298,9 @@ void GameController::doHeroAttack(bool b)
 				inputController.printEmptyLine();
 				enemy->loseHealth(dmg);
 				if (enemy->isDeath()) {
+					if (enemy->getLvl() >= cHero->getCurrentRoom()->getBossMinLvl()) {
+						game->finish();
+					}
 					cHero->upExp(enemy->getExp());
 					inputController.printMessage(cHero->getExpString(enemy->getExp()));
 				}
@@ -309,7 +315,7 @@ void GameController::doHeroAttack(bool b)
 
 		if (cHero->getCurrentRoom()->checkAllEnemiesDeath(cHero->getCurrentRoom()->getEnemies())) {
 			// Set room desc that hero has slain the enemies?
-			cHero->getCurrentRoom()->setRoomDesc("You've slain all enemies in this room!");
+			cHero->getCurrentRoom()->setEnemiesDesc("You've slain all enemies in this room!");
 			inputController.printMessage("You've slain all enemies!");
 		}
 	}	
@@ -422,10 +428,13 @@ void GameController::Rest()
 	inputController.printMessage(cHero->getHealthString());
 	// Random: kans op nieuwe NPC's in de kamer
 	if (chanceCalc(50) == true) {
-		inputController.printMessage("While you where resting, there spawned new enemies in the room!");
-		cHero->getCurrentRoom()->createEnemiesWhileRest();
+		if (cHero->getCurrentRoom()->allEnemiesDeath()) {
+			inputController.printMessage("While you where resting, there spawned new enemies in the room!");
+			cHero->getCurrentRoom()->createEnemiesWhileRest();
+		}
 	}
 	inputController.pressEnterToContinue();
+	Fight();
 }
 
 void GameController::showInvertory()
@@ -452,14 +461,14 @@ void GameController::showMap()
 
 void GameController::showHeroStats()
 {
-	cout << "Name:        " << cHero->getName() << endl;
-	cout << "Level:       " << cHero->getLevel() << endl;
-	cout << "Health:      " << cHero->getHealth() << "/" << cHero->getMaxHealth() << endl;
-	cout << "Experience:  " << cHero->getExp() << "/" << cHero->getMaxExp() << endl;
-	cout << "Attack:      " << cHero->getAttack() << endl;
-	cout << "Defense:     " << cHero->getDefense() << endl;
-	cout << "Mindfulness: " << cHero->getMindfulness() << endl;
-	cout << "Damage:	  (" << cHero->getMinDamage() << "/" << cHero->getMaxDamage() << ")" << endl << endl;
+	cout << "Name:\t\t" << cHero->getName() << endl;
+	cout << "Level:\t\t" << cHero->getLevel() << endl;
+	cout << "Health:\t\t" << cHero->getHealth() << "/" << cHero->getMaxHealth() << endl;
+	cout << "Experience:\t" << cHero->getExp() << "/" << cHero->getMaxExp() << endl;
+	cout << "Attack:\t\t" << cHero->getAttack() << endl;
+	cout << "Defense:\t" << cHero->getDefense() << endl;
+	cout << "Mindfulness:\t" << cHero->getMindfulness() << endl;
+	cout << "Damage:\t\t(" << cHero->getMinDamage() << "/" << cHero->getMaxDamage() << ")" << endl << endl;
 	askToUpdateStats();
 	askWhatToDo();
 }

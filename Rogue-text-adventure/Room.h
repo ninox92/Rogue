@@ -21,6 +21,9 @@ private:
 
 	bool isTrapActive = false;
 	string trapDesc = "";
+
+	int bossMinLvl = 11;
+	int bossMaxLvl = 12;
 	
 	int spawnChange = 0;// % chance that enemies will spawn in this room
 	int maxEnemies = 3;//maximum
@@ -63,7 +66,7 @@ public:
 	Room(int id, int x, int y, Map* map, FileController* f);
 	virtual ~Room();
 	
-	void setType(RoomType type) { this->type = type; }
+	void setType(RoomType type);
 	RoomType const getType() { return this->type; }
 
 	int const getID() { return this->ID; }
@@ -101,6 +104,7 @@ public:
 	std::string getPassageDesc();
 	std::string getEnemiesDesc() { return "Enemy NPC: " + this->enemiesDesc; }
 	void setRoomDesc(std::string r) { this->roomDesc = r; }
+	void setEnemiesDesc(std::string r) { this->enemiesDesc = r; }
 	void setFileController(FileController* f) { this->fileController = f; }
 
 	std::map<string, NPC*> getEnemiesMap();
@@ -110,12 +114,12 @@ public:
 	string getTrapDesc() { return this->trapDesc; }
 	bool hasTrap() { return this->isTrapActive; }
 	void disableTrap() { this->isTrapActive = false; }
-
+	int getBossMinLvl() { return this->bossMinLvl; }
+	int getBossMaxLvl() { return this->bossMaxLvl; }
 
 	bool hasItem() { return this->item != nullptr; }
 	Item* getItem() { return this->item; }
 	void collapsePassage(Direction dir);
-	void createEndRoom();
 	
 	void reset() {
 		setReached(false);

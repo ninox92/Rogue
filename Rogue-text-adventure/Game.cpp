@@ -15,11 +15,7 @@ Game::Game()
 	this->createHero();
 	this->nextLevel();
 	this->setGameState(GameState::RUNNING);
-	
-	
 	start();
-
-	this->setRenderState(RenderState::RENDER);//Render for one cycle
 }
 
 
@@ -32,11 +28,11 @@ Game::~Game()
 void Game::start()
 {
 	this->gameController = new GameController(this);
-	clear();
+	//clear();
 	cout << hero->getName() << ", Are you ready for an adventure!" << endl;
 	cout << "You're standing in front of the great Bazinga Dungeon." << endl;
 	cout << "This dungeon is full of treasures! But be carefull, you're not alone..." << endl << endl;
-	this->setRenderState(RenderState::RENDER);
+	render();
 }
 
 void Game::render()
@@ -67,9 +63,10 @@ void Game::createHero()
 	string name;
 	cout << "Name your awesome hero! " << endl;
 	cout << "Name: ";
-	//cin >> name;
-	//hero = new Hero(name);
-	hero = new Hero("henk", this);
+	std::cin >> name;
+	hero = new Hero(name, this);
+	std::cin.clear();
+	//hero = new Hero("Henk", this);
 }
 
 void Game::clear()
@@ -79,8 +76,7 @@ void Game::clear()
 
 void Game::nextLevel()
 {
-	if (this->level >= maxLevel) { cout << "FIGHT THE BOSS" << endl;  return; }
-	cout << "NEXT LEVEL" << endl;
+	if (this->level >= maxLevel) {  return; }
 
 	if(maps.size() < this->level+1)
 		this->createMap();
@@ -90,8 +86,6 @@ void Game::nextLevel()
 
 void Game::prevLevel()
 {
-	cout << "PREVIOUS LEVEL" << endl;
-
 	if (this->level == 1) return;
 	setLevel(this->level-1);
 }
@@ -105,15 +99,13 @@ void Game::finish()
 	cout << "You'll be marked a legend for ever and more!" << endl;
 	cout << "*swimming in gold*" << endl;
 	cout << this->hero->getName() << ":'THIS IS AMAZING'" << endl;
-	char wait;
-	std::cin >> wait;
+	system("pause");
+	exit(0);
 }
 
 void Game::createMap()
 {
-
 	this->level++;
-	cout << "Create Level: " << this->level << endl;
 
 	Map* map = new Map(lxSize, lySize, this);
 	map->setFileController(fileController);
@@ -128,8 +120,6 @@ void Game::createMap()
 
 void Game::setLevel(int l)
 {
-	cout << "Go to level: " << l << ", maps[" << (l-1) << "]" << endl;
-
 	currentMap = maps[l - 1];
 	Room* startRoom = l > this->level ? currentMap->getStartRoom() : currentMap->getEndRoom();
 	hero->setCurrentRoom(startRoom);

@@ -25,6 +25,13 @@ Room::~Room()
 {
 }
 
+void Room::setType(RoomType type)
+{
+	this->type = type;
+	if (RoomType::END == type)
+		createEndBoss();
+}
+
 
 Passage * const Room::getPassage(Direction d)
 {
@@ -67,8 +74,8 @@ void Room::visit() {
 std::string Room::displayHorizontal() {
 	std::string right = (hasPassage(Direction::EAST) ? getPassage(Direction::EAST)->Display() : " ");
 	std::string left = (hasPassage(Direction::WEST) ? getPassage(Direction::WEST)->Display() : " ");
-	if (type == RoomType::START || type == RoomType::END || type == RoomType::LATTER_UP || type == RoomType::LATTER_DOWN)
-		return  left + getToken() + right;
+	//if (type == RoomType::START || type == RoomType::END || type == RoomType::LATTER_UP || type == RoomType::LATTER_DOWN)
+		//return  left + getToken() + right;
 	if (!this->_isVisited) return left + "." + right;
 	
 	return left + getToken() + right;
@@ -152,11 +159,6 @@ void Room::collapsePassage(Direction dir)
 {
 	if (hasPassage(dir))
 		passages[dir]->SetCollapsed(true);
-}
-
-void Room::createEndRoom()
-{
-	createEndBoss();
 }
 
 int const Room::getMapLevel()
@@ -301,7 +303,7 @@ void Room::createEndBoss()
 
 	std::random_device rd;
 	std::default_random_engine dre{ rd() };
-	std::uniform_int_distribution<int> dist{ 11, 12 };
+	std::uniform_int_distribution<int> dist{ this->bossMinLvl, this->bossMaxLvl };
 	int lvlEnemy = dist(dre);
 
 	for (auto &e : enemies)

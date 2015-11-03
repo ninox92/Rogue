@@ -38,6 +38,7 @@ class NPC : public GameObject
 		void setDesc(string s) { this->desc = s; }
 		string getAttackDesc(bool hit, int dmg);
 		void setAttackDesc(string s) { this->attackDesc = s; }
+		int getLvl() { return this->level; }
 
 		void loseHealth(int h);
 		bool isDeath() { return this->death; }

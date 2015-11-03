@@ -49,7 +49,7 @@ public:
 	void move(Direction dir);
 
 	void upExp(int exp);
-	void upHealth() { health += (int)(0.5f + (health / 2)); }
+	void upHealth();
 	void upAttack() { attack++; upAbility(); }
 	void upDefense() { defense++; upAbility(); }
 	void upMindfulness() { mindfulness++; upAbility(); }
