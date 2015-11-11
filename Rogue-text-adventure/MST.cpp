@@ -22,7 +22,7 @@ int MST::findset(int x, std::vector<int> parent)
 }
 
 void MST::Kruskals(Map& map)
-{
+{//http://zobayer.blogspot.nl/2010/01/kruskals-algorithm-in-c.html
 	std::vector<Room*> rooms = map.getRooms();
 	if (rooms.size() == 0) return;
 	map.resetRooms();
