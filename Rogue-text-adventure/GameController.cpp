@@ -431,10 +431,14 @@ void GameController::Rest()
 		if (cHero->getCurrentRoom()->allEnemiesDeath()) {
 			inputController.printMessage("While you where resting, there spawned new enemies in the room!");
 			cHero->getCurrentRoom()->createEnemiesWhileRest();
+			inputController.pressEnterToContinue();
+			Fight();
+		} else {
+			inputController.pressEnterToContinue();
 		}
+	} else {
+		inputController.pressEnterToContinue();
 	}
-	inputController.pressEnterToContinue();
-	Fight();
 }
 
 void GameController::showInvertory()
